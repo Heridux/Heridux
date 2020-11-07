@@ -4,29 +4,9 @@ import { connect as reduxConnect, useSelector } from "react-redux"
 import { fromJS } from "immutable"
 import { toJS } from "./utils"
 
-/**
- * Heridux context
- */
 export const context = createContext()
 
-/**
- * Provider for Heridux context
- */
 export const { Provider } = context
-
-/**
- * Hook to use heridux store
- * @returns {Heridux} heridux object to manage store
- */
-export function useHeridux() {
-  const heridux = useContext(context)
-
-  if (!heridux) {
-    console.error("Heridux not found. Please put your component inside a Heridux Provider.")
-  }
-
-  return heridux
-}
 
 /**
  * Creation of Heridux store
@@ -106,7 +86,7 @@ export default class Heridux {
 
   /**
    * Get original redux store object
-   * private
+   * @private
    * @return {Object} redux store
    */
   _getReduxStore() {
@@ -386,4 +366,18 @@ export default class Heridux {
 
   }
 
+}
+
+/**
+ * Hook to use heridux store
+ * @returns {Heridux} heridux object to manage store
+ */
+export function useHeridux() {
+  const heridux = useContext(context)
+
+  if (!heridux) {
+    console.error("Heridux not found. Please put your component inside a Heridux Provider.")
+  }
+
+  return heridux
 }

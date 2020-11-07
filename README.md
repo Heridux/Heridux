@@ -2,48 +2,31 @@
 
 ### Table of Contents
 
--   [context][1]
--   [context][2]
--   [useHeridux][3]
--   [Heridux][4]
-    -   [Parameters][5]
-    -   [set][6]
-        -   [Parameters][7]
-    -   [\_getReduxStore][8]
-    -   [getState][9]
+-   [Heridux][1]
+    -   [Parameters][2]
+    -   [set][3]
+        -   [Parameters][4]
+    -   [getState][5]
+        -   [Parameters][6]
+    -   [get][7]
+        -   [Parameters][8]
+    -   [getIn][9]
         -   [Parameters][10]
-    -   [get][11]
-        -   [Parameters][12]
-    -   [getIn][13]
-        -   [Parameters][14]
-        -   [Examples][15]
-    -   [setInitialState][16]
-        -   [Parameters][17]
-    -   [createAction][18]
-        -   [Parameters][19]
-        -   [Examples][20]
-    -   [execAction][21]
-        -   [Parameters][22]
-    -   [register][23]
-    -   [dispatch][24]
-        -   [Parameters][25]
-    -   [connect][26]
-        -   [Parameters][27]
-    -   [createHook][28]
-
-## context
-
-Heridux context
-
-## context
-
-Provider for Heridux context
-
-## useHeridux
-
-Hook to use heridux store
-
-Returns **[Heridux][29]** heridux object to manage store
+        -   [Examples][11]
+    -   [setInitialState][12]
+        -   [Parameters][13]
+    -   [createAction][14]
+        -   [Parameters][15]
+        -   [Examples][16]
+    -   [execAction][17]
+        -   [Parameters][18]
+    -   [register][19]
+    -   [dispatch][20]
+        -   [Parameters][21]
+    -   [connect][22]
+        -   [Parameters][23]
+    -   [createHook][24]
+-   [useHeridux][25]
 
 ## Heridux
 
@@ -51,7 +34,7 @@ Creation of Heridux store
 
 ### Parameters
 
--   `STATE_PROPERTY` **[String][30]** string name for this slice of state. Generated actions wille use this as a prefix.
+-   `STATE_PROPERTY` **[String][26]** string name for this slice of state. Generated actions wille use this as a prefix.
 
 ### set
 
@@ -59,17 +42,10 @@ Set a first level value without creating a specific action
 
 #### Parameters
 
--   `prop` **[String][30]** property name
+-   `prop` **[String][26]** property name
 -   `value` **any** property value
 
-Returns **[undefined][31]** 
-
-### \_getReduxStore
-
-Get original redux store object
-private
-
-Returns **[Object][32]** redux store
+Returns **[undefined][27]** 
 
 ### getState
 
@@ -87,21 +63,21 @@ Get js value of a first level key
 
 #### Parameters
 
--   `key` **[String][30]** key name
+-   `key` **[String][26]** key name
 -   `state` **Immutable.Map?** global state (if not specified, call getState method of redux store)
 
 Returns **any** key value (converted in plain js if immutable)
 
 ### getIn
 
--   **See: [https://immutable-js.github.io/immutable-js/][33]
+-   **See: [https://immutable-js.github.io/immutable-js/][28]
     **
 
 Get js value of a nested key
 
 #### Parameters
 
--   `path` **[Array][34]** Iterable key path (more details in Immutable.js documentation)
+-   `path` **[Array][29]** Iterable key path (more details in Immutable.js documentation)
 -   `state` **Immutable.Map?** global state (if not specified, call getState method of redux store)
 
 #### Examples
@@ -122,9 +98,9 @@ Define the initial state of the store slice. It will automatically be converted 
 
 #### Parameters
 
--   `state` **[Object][32]** plain js state
+-   `state` **[Object][30]** plain js state
 
-Returns **[undefined][31]** 
+Returns **[undefined][27]** 
 
 ### createAction
 
@@ -132,8 +108,8 @@ Create action/reducer couple
 
 #### Parameters
 
--   `name` **[String][30]** action short name
--   `reducer` **[Function][35]** function to modify the state
+-   `name` **[String][26]** action short name
+-   `reducer` **[Function][31]** function to modify the state
 
 #### Examples
 
@@ -151,7 +127,7 @@ myStore.execAction("pop")
 myStore.get("list") //  ["foo"]
 ```
 
-Returns **[undefined][31]** 
+Returns **[undefined][27]** 
 
 ### execAction
 
@@ -162,16 +138,16 @@ Execute action registered by createAction method
 
 #### Parameters
 
--   `name` **[String][30]** action short name
--   `options` **[Object][32]** additional parameters
+-   `name` **[String][26]** action short name
+-   `options` **[Object][30]** additional parameters
 
-Returns **[undefined][31]** 
+Returns **[undefined][27]** 
 
 ### register
 
 Register heridux store in global redux store
 
-Returns **[undefined][31]** 
+Returns **[undefined][27]** 
 
 ### dispatch
 
@@ -179,105 +155,105 @@ dispatch any action on global redux store
 
 #### Parameters
 
--   `action` **([Object][32] \| [Function][35])** redux action
+-   `action` **([Object][30] \| [Function][31])** redux action
 
-Returns **([undefined][31] \| [Promise][36])** promise if async
+Returns **([undefined][27] \| [Promise][32])** promise if async
 
 ### connect
 
--   **See: [https://react-redux.js.org/][37]
+-   **See: [https://react-redux.js.org/][33]
     **
 
 Connect a react component to heridux store
 
 #### Parameters
 
--   `mapStateToProps` **[Function][35]** properties to inject to the component
--   `mapDispatchToProps` **[Function][35]** functions to inject to the component
+-   `mapStateToProps` **[Function][31]** properties to inject to the component
+-   `mapDispatchToProps` **[Function][31]** functions to inject to the component
 
-Returns **[Function][35]** function to connect the component
+Returns **[Function][31]** function to connect the component
 
 ### createHook
 
--   **See: [https://fr.reactjs.org/docs/hooks-custom.html][38]
+-   **See: [https://fr.reactjs.org/docs/hooks-custom.html][34]
     **
 
 Create a hook to use heridux store as internal state instead of redux
 
-Returns **[Function][35]** hook
+Returns **[Function][31]** hook
 
-[1]: #context
+## useHeridux
 
-[2]: #context-1
+Hook to use heridux store
 
-[3]: #useheridux
+Returns **[Heridux][35]** heridux object to manage store
 
-[4]: #heridux
+[1]: #heridux
 
-[5]: #parameters
+[2]: #parameters
 
-[6]: #set
+[3]: #set
 
-[7]: #parameters-1
+[4]: #parameters-1
 
-[8]: #_getreduxstore
+[5]: #getstate
 
-[9]: #getstate
+[6]: #parameters-2
 
-[10]: #parameters-2
+[7]: #get
 
-[11]: #get
+[8]: #parameters-3
 
-[12]: #parameters-3
+[9]: #getin
 
-[13]: #getin
+[10]: #parameters-4
 
-[14]: #parameters-4
+[11]: #examples
 
-[15]: #examples
+[12]: #setinitialstate
 
-[16]: #setinitialstate
+[13]: #parameters-5
 
-[17]: #parameters-5
+[14]: #createaction
 
-[18]: #createaction
+[15]: #parameters-6
 
-[19]: #parameters-6
+[16]: #examples-1
 
-[20]: #examples-1
+[17]: #execaction
 
-[21]: #execaction
+[18]: #parameters-7
 
-[22]: #parameters-7
+[19]: #register
 
-[23]: #register
+[20]: #dispatch
 
-[24]: #dispatch
+[21]: #parameters-8
 
-[25]: #parameters-8
+[22]: #connect
 
-[26]: #connect
+[23]: #parameters-9
 
-[27]: #parameters-9
+[24]: #createhook
 
-[28]: #createhook
+[25]: #useheridux
 
-[29]: #heridux
+[26]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
-[30]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+[27]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined
 
-[31]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined
+[28]: https://immutable-js.github.io/immutable-js/
 
-[32]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+[29]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
-[33]: https://immutable-js.github.io/immutable-js/
+[30]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
 
-[34]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+[31]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
 
-[35]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
+[32]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
 
-[36]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
+[33]: https://react-redux.js.org/
 
-[37]: https://react-redux.js.org/
+[34]: https://fr.reactjs.org/docs/hooks-custom.html
 
-[38]: https://fr.reactjs.org/docs/hooks-custom.html
+[35]: #heridux
