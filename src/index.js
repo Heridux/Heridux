@@ -1,5 +1,5 @@
 import React, { createContext, useReducer, useContext } from "react"
-import { combineReducers } from "redux"
+import { createStore, combineReducers } from "redux"
 import { connect as reduxConnect, useSelector } from "react-redux"
 import { fromJS } from "immutable"
 import { toJS } from "./utils"
@@ -16,6 +16,25 @@ export default class Heridux {
 
   static reduxStore = null
   static reduxReducers = null
+
+  static createReduxStore(reducer, preloadedState, enhancer) {
+
+    const DEVTOOLS = window.__REDUX_DEVTOOLS_EXTENSION__
+
+    reducer = reducer || ((state = {}) => state)
+
+    Heridux.reduxStore = createStore(
+      reducer,
+      preloadedState,
+      enhancer || DEVTOOLS?.()
+    )
+    Heridux.reduxReducers = reducer
+  }
+
+  static connect(store, initialReducers) {
+    Heridux.reduxStore = store
+    Heridux.reduxReducers = initialReducers
+  }
   /**
    * Constructor
    * @param {String} STATE_PROPERTY string name for this slice of state. Generated actions wille use this as a prefix.
@@ -299,6 +318,10 @@ export default class Heridux {
    */
   dispatch(action) {
     return this._getReduxStore().dispatch(action)
+  }
+
+  subscribe(callback) {
+    return this._getReduxStore().subscribe(callback)
   }
 
   /**
