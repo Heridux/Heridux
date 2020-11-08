@@ -1,7 +1,7 @@
 import React, { createContext, useReducer, useContext } from "react"
 import { connect as reduxConnect, useSelector } from "react-redux"
 import Heridux from "@heridux/core"
-
+import { toJS } from "./utils"
 
 export const context = createContext()
 

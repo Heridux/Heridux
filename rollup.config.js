@@ -8,6 +8,33 @@ import livereload from 'rollup-plugin-livereload';
 
 const env = process.env.NODE_ENV;
 
+const plugins = [
+  replace({ 'process.env.NODE_ENV': JSON.stringify(env) }),
+  babel({
+    babelHelpers : "bundled",
+    exclude: 'node_modules/**',
+    presets: [["@babel/preset-env", { "shippedProposals" : true }], "@babel/preset-react"]
+  }),
+  nodeResolve(),
+  commonjs()
+]
+
+if (env === "production") {
+  plugins.push(terser())
+} else {
+  plugins.push(serve({
+    open: true,
+    openPage: '/',
+    host: 'localhost',
+    port: 3000,
+    contentBase: ['./'],
+  }),
+  livereload({
+      watch: ['./'],
+      exts: ['html', 'js', 'css'],
+  }))
+}
+
 export default {
   input: 'index.js',
   output: {
@@ -15,26 +42,5 @@ export default {
     format: 'iife',
     name: 'version'
   },
-  plugins: [
-    nodeResolve(),
-    replace({ 'process.env.NODE_ENV': JSON.stringify(env) }),
-    babel({
-      babelHelpers : "bundled",
-      exclude: 'node_modules/**'
-    }),
-    commonjs(),
-    // terser()
-    serve({
-      open: true,
-      openPage: '/',
-      host: 'localhost',
-      port: 3000,
-      contentBase: ['./'],
-    }),
-    livereload({
-        watch: ['./'],
-        exts: ['html', 'js', 'css'],
-    }),
-  ],
-  external: [/@babel\/runtime/]
+  plugins
 };
