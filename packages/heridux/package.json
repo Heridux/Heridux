@@ -1,0 +1,10 @@
+{
+  "name": "@heridux/core",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "license": "MIT",
+  "dependencies": {
+    "immutable": "^4.0.0-rc.12",
+    "redux": "^4.0.5"
+  }
+}

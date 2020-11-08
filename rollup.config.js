@@ -2,29 +2,39 @@ import babel from '@rollup/plugin-babel';
 import commonjs from '@rollup/plugin-commonjs';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
-import { terser } from 'rollup-plugin-terser';
+// import { terser } from 'rollup-plugin-terser';
+import serve from 'rollup-plugin-serve';
+import livereload from 'rollup-plugin-livereload';
 
 const env = process.env.NODE_ENV;
 
 export default {
-  input: 'src/index.js',
-  output: [{
-    file: 'lib/index.js',
-    format: 'esm'
-  }, {
-    file: 'build/bundle.min.js',
+  input: 'index.js',
+  output: {
+    file: 'bundle.min.js',
     format: 'iife',
-    name: 'version',
-    plugins: [terser()]
-  }],
+    name: 'version'
+  },
   plugins: [
     nodeResolve(),
     replace({ 'process.env.NODE_ENV': JSON.stringify(env) }),
     babel({
-      babelHelpers : "runtime",
+      babelHelpers : "bundled",
       exclude: 'node_modules/**'
     }),
-    commonjs()
+    commonjs(),
+    // terser()
+    serve({
+      open: true,
+      openPage: '/',
+      host: 'localhost',
+      port: 3000,
+      contentBase: ['./'],
+    }),
+    livereload({
+        watch: ['./'],
+        exts: ['html', 'js', 'css'],
+    }),
   ],
   external: [/@babel\/runtime/]
 };
