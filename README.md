@@ -1,13 +1,15 @@
 # Heridux
 
-The easiest way to use and reuse redux stores
+The easiest way to use and reuse redux stores or react internal states.
 
 ## Packages
 
-### [@heridux/core](tree/main/packages/heridux)
+### [@heridux/core](packages/heridux)
 A few lines of code to make redux more user-friendly.
 
 ```javascript
+import Heridux from "@heridux/core"
+
 const store = new Heridux("counterStore")
 
 store.setInitialState({ counter : 0 })
@@ -20,14 +22,18 @@ store.createAction("decrement", state => (
   state.set("counter", state.get("counter") - 1)
 ))
 
+store.register()
+
 store.execAction("increment")
 store.get("counter") // 1
 ```
 
-### [@heridux/react](tree/main/packages/react-heridux)
+### [@heridux/react](packages/react-heridux)
 Use heridux with react (HOC or hook).
 
 ```javascript
+import { useHeridux } from "@heridux/react"
+
 const MyComponent = () => {
   const store = useHeridux()
   return (
