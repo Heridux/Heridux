@@ -45,3 +45,95 @@ const MyComponent = () => {
   )
 }
 ```
+
+### [@heridux/form](packages/heridux-form)
+Manage your forms easily with heridux-form
+
+```javascript
+import HeriduxForm from "@heridux/form"
+import Rules from "@heridux/rules"
+
+const store = new HeriduxForm("myForm")
+
+store.defineForm({
+  name : Rules.string.isRequired,
+  age : Rules.number,
+  address : {
+    street : Rules.string,
+    city : Rules.string,
+    zipCode : Rules.number
+  }
+})
+
+store.register()
+
+store.initFormValues({
+  name : "Roger",
+  age : 56
+})
+
+store.setFieldValue(["address", "city"], "Paris")
+
+store.getFieldValue("age") // 56
+```
+
+### [@heridux/form-rules](packages/heridux-rules)
+Type check your fields the way you know it with PropTypes
+
+```javascript
+import HeriduxForm from "@heridux/form"
+import Rules from "@heridux/form-rules"
+
+const store = new HeriduxForm("myForm")
+
+store.defineForm({
+  name : Rules.minLength(2).isRequired,
+  age : Rules.number,
+  birthday : Rules.date,
+  genre : Rules.oneOf(["male", "female"]),
+  email : Rules.email,
+  hobbies : Rules.arrayOf([Rules.string])
+})
+
+store.register()
+```
+
+### [@heridux/form-arrays](packages/heridux-form-arrays)
+Manage easily array fields with heridux
+
+```javascript
+import HeriduxForm from "@heridux/form"
+import Rules from "@heridux/form-rules"
+import FormArrays from "@heridux/form-arrays"
+
+const store = new HeriduxForm("myForm")
+
+store.defineForm({
+  name : Rules.string.isRequired,
+  age : Rules.number,
+  friends : FormArray({
+    name : Rules.string.isRequired,
+    age : Rules.number
+  })
+})
+
+store.register()
+```
+
+### [@heridux/react-form](packages/react-heridux-form)
+Use heridux forms with React
+
+```javascript
+import { useFormControl } from "@heridux/react-form"
+
+const Field = ({ formKey }) => {
+  const { value, onChange, error } = useFormControl(formKey)
+
+  return (
+    <div>
+      <input value={ value } onChange={ onChange }>
+      { error && <span style={ { color : "red" } }>{ error }</span>}
+    </div>
+  )
+}
+```
