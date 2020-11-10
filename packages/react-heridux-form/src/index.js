@@ -1,6 +1,6 @@
 import React from "react"
-import FormStore from "../Remote"
-import { Provider } from "../../"
+import FormStore from "@heridux/form-arrays"
+import { Provider } from "@heridux/form"
 import Form from "./Form"
 
 export { default as useFormControl } from "./useFormControl"

@@ -1,7 +1,7 @@
 /* eslint-disable max-statements */
 import { useCallback } from "react"
-import { useHeridux } from "../.."
-import { normalizeKey } from "../core"
+import { useHeridux } from "@heridux/form"
+import { normalizeKey } from "@heridux/form/utils"
 
 export default function useFormControl(formKey, validationRule) {
 

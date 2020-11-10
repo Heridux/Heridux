@@ -47,7 +47,7 @@ const MyComponent = () => {
 ```
 
 ### [@heridux/form](packages/heridux-form)
-Manage your forms easily with heridux-form
+Manage your forms easily with heridux-form. Type check your fields the way you know it with PropTypes.
 
 ```javascript
 import HeriduxForm from "@heridux/form"
@@ -75,27 +75,6 @@ store.initFormValues({
 store.setFieldValue(["address", "city"], "Paris")
 
 store.getFieldValue("age") // 56
-```
-
-### [@heridux/form-rules](packages/heridux-rules)
-Type check your fields the way you know it with PropTypes
-
-```javascript
-import HeriduxForm from "@heridux/form"
-import Rules from "@heridux/form-rules"
-
-const store = new HeriduxForm("myForm")
-
-store.defineForm({
-  name : Rules.minLength(2).isRequired,
-  age : Rules.number,
-  birthday : Rules.date,
-  genre : Rules.oneOf(["male", "female"]),
-  email : Rules.email,
-  hobbies : Rules.arrayOf([Rules.string])
-})
-
-store.register()
 ```
 
 ### [@heridux/form-arrays](packages/heridux-form-arrays)

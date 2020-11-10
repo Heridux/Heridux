@@ -1,0 +1,12 @@
+{
+  "name": "@heridux/form-arrays",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@heridux/core": "^1.0.0",
+    "@heridux/form": "^1.0.0",
+    "immutable": "^4.0.0-rc.12",
+    "lodash": "^4.17.20"
+  }
+}

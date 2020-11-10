@@ -1,6 +1,3 @@
-export { default } from "./Components"
-export * from "./React"
-export { default as Wrap } from "./Wrappers"
-export { Provider, useHeridux } from "../"
+export { default } from "./core"
+export { Provider, useHeridux } from "@heridux/core"
 export { default as Rules } from "./Rules"
-export { FormArray } from "./Arrays"

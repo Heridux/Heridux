@@ -2,38 +2,8 @@ import { fromJS, Iterable } from "immutable"
 import isPlainObject from "lodash/isPlainObject"
 import isEqual from "lodash/isEqual"
 import Heridux from "@heridux/core"
-import { Rules, FormWarning } from "@heridux/rules"
-import { findKey, setKeyValue } from "../utils"
-
-export function normalizeKey(path) {
-
-  if (path == null) {
-    throw new Error("path is undefined. You may forgot the formKey property on your Control component ?")
-  }
-
-  return Array.isArray(path) ? [...path] : path.split(".")
-}
-/**
- * Compare le nouveau formulaire à l'ancien et incrémente les propriétés changesCount et touched
- * s'il y a eu une modification
- * @param {Immutable.Map} oldState état avant la modification
- * @param {Immutable.Map} newState état après la modification
- * @returns {Immutable.Map} état avec la propriété changesCount et touched à jour
- */
-export function stateWithChanges(oldState, newState) {
-
-  const hasFormChange = !oldState.get("form").equals(newState.get("form"))
-
-  if (hasFormChange) {
-
-    return newState.merge({
-      touched : true,
-      changesCount : newState.get("changesCount") + 1
-    })
-
-  } else return oldState
-
-}
+import { Rules, FormWarning } from "./Rules"
+import { getKeyValue, setKeyValue, normalizeKey, stateWithChanges } from "./utils"
 
 /**
  * Gestion des formulaires avec Heridux
@@ -246,7 +216,7 @@ export default class HeriduxForm extends Heridux {
    * @returns {Rules} l'objet contenant les règles de validation
    */
   getValidationRules(path) {
-    return findKey(this.validationRules, path)
+    return getKeyValue(this.validationRules, path)
   }
 
   /**

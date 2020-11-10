@@ -26,6 +26,9 @@
   },
   "workspaces": [
     "packages/heridux",
-    "packages/react-heridux"
+    "packages/react-heridux",
+    "packages/heridux-form",
+    "packages/heridux-form-arrays",
+    "packages/react-heridux-form"
   ]
 }

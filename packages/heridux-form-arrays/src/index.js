@@ -1,6 +1,6 @@
 /* eslint max-statements:0, newline-before-return:0 */
-import Store, { stateWithChanges, normalizeKey } from "../core"
-import { findKey, setKeyValue } from "../../utils"
+import Store from "@heridux/form"
+import { findKey, setKeyValue, stateWithChanges, normalizeKey } from "@heridux/form/utils"
 import { fromJS, List, Map } from "immutable"
 import isPlainObject from "lodash/isPlainObject"
 
