@@ -1,6 +1,5 @@
 /* eslint max-statements:0, newline-before-return:0 */
-import Store from "@heridux/form"
-import { findKey, setKeyValue, stateWithChanges, normalizeKey } from "@heridux/form/utils"
+import Store, { getKeyValue, setKeyValue, stateWithChanges, normalizeKey } from "@heridux/form"
 import { fromJS, List, Map } from "immutable"
 import isPlainObject from "lodash/isPlainObject"
 
@@ -41,7 +40,7 @@ export default class FormStore extends Store {
 
       let newFields = this._processForm(fields, [...key, index], true) // on doit respecter la structure complète
 
-      newFields = findKey(newFields, [...key, index]) // mais seule la nouvelle clé nous intéresse
+      newFields = getKeyValue(newFields, [...key, index]) // mais seule la nouvelle clé nous intéresse
 
       const newState = state.updateIn(["form", ...key], arr => (
         arr ? arr.insert(index, fromJS(newFields)) : List([fromJS(newFields)])

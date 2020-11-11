@@ -32,7 +32,9 @@ export default class ReactHeridux extends Heridux {
 
       return Component => props => {
 
-        const { state, dispatch } = useHeridux()
+        const store = useHeridux()
+        const state = store.getState()
+        const dispatch = store.dispatch.bind(store)
 
         let extraProps = mapStateToProps?.(state, props) || {}
 
@@ -73,6 +75,7 @@ export default class ReactHeridux extends Heridux {
     }
 
   }
+
 }
 
 

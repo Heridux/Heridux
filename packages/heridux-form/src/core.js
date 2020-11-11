@@ -1,3 +1,4 @@
+/* eslint-disable no-empty */
 import { fromJS, Iterable } from "immutable"
 import isPlainObject from "lodash/isPlainObject"
 import isEqual from "lodash/isEqual"
@@ -11,6 +12,7 @@ import { getKeyValue, setKeyValue, normalizeKey, stateWithChanges } from "./util
  */
 export default class HeriduxForm extends Heridux {
 
+  // eslint-disable-next-line max-statements
   constructor(STATE_PROPERTY) {
 
     super(STATE_PROPERTY)
@@ -227,10 +229,12 @@ export default class HeriduxForm extends Heridux {
    * @param {Array} _path valeur interne de la clé
    * @returns {Object} objet résultat
    */
+  // eslint-disable-next-line max-params
   mapFields(callback, _state, _values, _path = []) {
 
     const state = _state || this.getState()
     const path = normalizeKey(_path)
+
     let values = _values || state.getIn(["form", ...path])
 
     if (Iterable.isIterable(values)) values = values.toJS()
@@ -293,6 +297,7 @@ export default class HeriduxForm extends Heridux {
 
     if (!(rules instanceof Rules)) {
       const msg = "rules must be an instance of Rules class"
+
       console.error(msg, rules)
       throw new Error(msg)
     }

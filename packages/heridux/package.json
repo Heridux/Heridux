@@ -5,7 +5,8 @@
   "license": "MIT",
   "dependencies": {
     "immutable": "^4.0.0-rc.12",
-    "redux": "^4.0.5"
+    "redux": "^4.0.5",
+    "@babel/runtime": "^7.12.5"
   },
   "devDependencies": {}
 }

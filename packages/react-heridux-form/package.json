@@ -9,6 +9,7 @@
     "immutable": "^4.0.0-rc.12",
     "lodash": "^4.17.20",
     "prop-types": "^15.7.2",
-    "react": "^17.0.1"
+    "react": "^17.0.1",
+    "@babel/runtime": "^7.12.5"
   }
 }

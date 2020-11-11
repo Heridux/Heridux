@@ -15,14 +15,14 @@ export default class Heridux {
 
     const DEVTOOLS = window.__REDUX_DEVTOOLS_EXTENSION__
 
-    reducer = reducer || ((state = {}) => state)
+    const _reducer = reducer || ((state = {}) => state)
 
     Heridux.reduxStore = createStore(
-      reducer,
+      _reducer,
       preloadedState,
       enhancer || DEVTOOLS?.()
     )
-    Heridux.reduxReducers = reducer
+    Heridux.reduxReducers = _reducer
   }
 
   static connect(store, initialReducers) {

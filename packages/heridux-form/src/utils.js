@@ -1,6 +1,3 @@
-import React from "react"
-import { Iterable } from "immutable"
-
 export function normalizeKey(path) {
 
   if (path == null) {
