@@ -1,5 +1,5 @@
 import isPlainObject from "lodash/isPlainObject"
-import { /* FormWarning,*/ FormError } from "../Errors"
+import { /* FormWarning,*/ FormError } from "./Errors"
 
 export const required = value => {
   if (value != null && String(value).length > 0) return true

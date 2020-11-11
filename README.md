@@ -46,8 +46,30 @@ const MyComponent = () => {
 }
 ```
 
+### [@heridux/form-rules](packages/heridux-form-rules)
+Type check your fields the way you know it with PropTypes
+
+```javascript
+import Rules from "@heridux/form-rules"
+
+const form = {
+  name : Rules.minLength(2).isRequired,
+  age : Rules.number,
+  birthday : Rules.date,
+  genre : Rules.oneOf(["male", "female"]),
+  email : Rules.email,
+  hobbies : Rules.arrayOf([Rules.string])
+}
+
+try {
+  form.name.check("Foo")
+} catch (e) {
+  console.error(e.message)
+}
+```
+
 ### [@heridux/form](packages/heridux-form)
-Manage your forms easily with heridux-form. Type check your fields the way you know it with PropTypes.
+Manage your forms easily with heridux-form.
 
 ```javascript
 import HeriduxForm from "@heridux/form"

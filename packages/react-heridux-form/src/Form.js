@@ -1,6 +1,6 @@
 import React, { memo, useEffect } from "react"
 import PropTypes from "prop-types"
-import { useHeridux } from "@heridux/form"
+import { useHeridux } from "@heridux/react"
 
 const Form = memo(({ onSubmit, looseControl, children, onChange, ...rest }) => {
 

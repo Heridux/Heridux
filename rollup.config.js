@@ -19,7 +19,7 @@ const plugins = [
   commonjs()
 ]
 
-if (env === "production") {
+/* if (env === "production") {
   plugins.push(terser())
 } else {
   plugins.push(serve({
@@ -33,14 +33,15 @@ if (env === "production") {
       watch: ['./'],
       exts: ['html', 'js', 'css'],
   }))
-}
+} */
 
 export default {
-  input: 'index.js',
+  input: 'packages/react-heridux-form/src/index.js',
   output: {
-    file: 'bundle.min.js',
-    format: 'iife',
+    file: 'packages/react-heridux-form/lib/index.js',
+    format: 'umd',
     name: 'version'
   },
+  external:/node_modules/,
   plugins
 };

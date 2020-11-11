@@ -2,7 +2,7 @@ import { fromJS, Iterable } from "immutable"
 import isPlainObject from "lodash/isPlainObject"
 import isEqual from "lodash/isEqual"
 import Heridux from "@heridux/core"
-import { Rules, FormWarning } from "./Rules"
+import { Rules, FormWarning } from "@heridux/form-rules"
 import { getKeyValue, setKeyValue, normalizeKey, stateWithChanges } from "./utils"
 
 /**
