@@ -5,7 +5,7 @@ The easiest way to use and reuse redux stores or react internal states.
 ## Packages
 
 ### [@heridux/core](packages/heridux)
-A few lines of code to make redux more user-friendly.
+A few lines of code to make redux more user-friendly, reusable and expandable.
 
 ```javascript
 import Heridux from "@heridux/core"

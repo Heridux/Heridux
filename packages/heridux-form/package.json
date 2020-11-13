@@ -1,11 +1,11 @@
 {
   "name": "@heridux/form",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "main": "lib/index.js",
   "license": "MIT",
   "dependencies": {
-    "@heridux/core": "^1.0.0",
-    "@heridux/form-rules": "^1.0.0",
+    "@heridux/core": "^0.0.1",
+    "@heridux/form-rules": "^0.0.1",
     "immutable": "^4.0.0-rc.12",
     "lodash": "^4.17.20",
     "@babel/runtime": "^7.12.5"
