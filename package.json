@@ -29,7 +29,8 @@
     "rollup-plugin-terser": "^7.0.2"
   },
   "scripts": {
-    "build": "cross-env NODE_ENV=production rollup -c",
+    "build": "cross-env NODE_ENV=production yarn build-all",
+    "build-all" : "rollup -c --config-module heridux && rollup -c --config-module react-heridux && rollup -c --config-module heridux-form && rollup -c --config-module heridux-form-rules && rollup -c --config-module heridux-form-arrays && rollup -c --config-module react-heridux-form",
     "start": "cross-env NODE_ENV=development rollup -c -w"
   },
   "workspaces": [

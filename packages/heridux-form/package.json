@@ -1,7 +1,7 @@
 {
   "name": "@heridux/form",
   "version": "1.0.0",
-  "main": "src/index.js",
+  "main": "lib/index.js",
   "license": "MIT",
   "dependencies": {
     "@heridux/core": "^1.0.0",
@@ -10,5 +10,15 @@
     "lodash": "^4.17.20",
     "@babel/runtime": "^7.12.5"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "keywords": [
+    "react",
+    "redux",
+    "hooks",
+    "form",
+    "forms",
+    "form-validation",
+    "validation",
+    "react-hooks"
+  ]
 }

@@ -1,17 +1,15 @@
-import '../node_modules/@babel/runtime/helpers/objectWithoutProperties.js';
-import _extends from '../node_modules/@babel/runtime/helpers/extends.js';
-import _classCallCheck from '../node_modules/@babel/runtime/helpers/classCallCheck.js';
-import _createClass from '../node_modules/@babel/runtime/helpers/createClass.js';
-import _defineProperty from '../node_modules/@babel/runtime/helpers/defineProperty.js';
-import '../node_modules/redux/es/redux.js';
-import { Iterable } from '../node_modules/immutable/dist/immutable.es.js';
-import Heridux from '../../heridux/lib/index.js';
-import _inherits from '../node_modules/@babel/runtime/helpers/inherits.js';
-import _possibleConstructorReturn from '../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js';
-import _getPrototypeOf from '../node_modules/@babel/runtime/helpers/getPrototypeOf.js';
-import _slicedToArray from '../node_modules/@babel/runtime/helpers/slicedToArray.js';
-import React, { createContext, useReducer, useContext } from '../node_modules/react/index.js';
-import { connect, useSelector } from '../node_modules/react-redux/es/index.js';
+import _slicedToArray from '@babel/runtime/helpers/slicedToArray';
+import _extends from '@babel/runtime/helpers/extends';
+import _defineProperty from '@babel/runtime/helpers/defineProperty';
+import _classCallCheck from '@babel/runtime/helpers/classCallCheck';
+import _createClass from '@babel/runtime/helpers/createClass';
+import _inherits from '@babel/runtime/helpers/inherits';
+import _possibleConstructorReturn from '@babel/runtime/helpers/possibleConstructorReturn';
+import _getPrototypeOf from '@babel/runtime/helpers/getPrototypeOf';
+import React, { createContext, useReducer, useContext } from 'react';
+import { connect, useSelector } from 'react-redux';
+import Heridux from '@heridux/core';
+import { Iterable } from 'immutable';
 
 function toJS(Component) {
   return function (props) {

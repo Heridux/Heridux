@@ -1,11 +1,11 @@
-import _classCallCheck from '../node_modules/@babel/runtime/helpers/classCallCheck.js';
-import _createClass from '../node_modules/@babel/runtime/helpers/createClass.js';
-import _typeof from '../node_modules/@babel/runtime/helpers/typeof.js';
-import isPlainObject from '../node_modules/lodash/isPlainObject.js';
-import _inherits from '../node_modules/@babel/runtime/helpers/inherits.js';
-import _possibleConstructorReturn from '../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js';
-import _getPrototypeOf from '../node_modules/@babel/runtime/helpers/getPrototypeOf.js';
-import _wrapNativeSuper from '../node_modules/@babel/runtime/helpers/wrapNativeSuper.js';
+import _classCallCheck from '@babel/runtime/helpers/classCallCheck';
+import _createClass from '@babel/runtime/helpers/createClass';
+import _typeof from '@babel/runtime/helpers/typeof';
+import isPlainObject from 'lodash/isPlainObject';
+import _inherits from '@babel/runtime/helpers/inherits';
+import _possibleConstructorReturn from '@babel/runtime/helpers/possibleConstructorReturn';
+import _getPrototypeOf from '@babel/runtime/helpers/getPrototypeOf';
+import _wrapNativeSuper from '@babel/runtime/helpers/wrapNativeSuper';
 
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 

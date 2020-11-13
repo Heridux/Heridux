@@ -1,23 +1,14 @@
-import '../node_modules/@babel/runtime/helpers/objectWithoutProperties.js';
-import '../node_modules/@babel/runtime/helpers/extends.js';
-import _classCallCheck from '../node_modules/@babel/runtime/helpers/classCallCheck.js';
-import _createClass from '../node_modules/@babel/runtime/helpers/createClass.js';
-import '../node_modules/@babel/runtime/helpers/defineProperty.js';
-import '../node_modules/redux/es/redux.js';
-import { fromJS, List, Map } from '../node_modules/immutable/dist/immutable.es.js';
-import '../../heridux/lib/index.js';
-import '../node_modules/@babel/runtime/helpers/typeof.js';
-import isPlainObject from '../node_modules/lodash/isPlainObject.js';
-import _inherits from '../node_modules/@babel/runtime/helpers/inherits.js';
-import _possibleConstructorReturn from '../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js';
-import _getPrototypeOf from '../node_modules/@babel/runtime/helpers/getPrototypeOf.js';
-import '../node_modules/@babel/runtime/helpers/wrapNativeSuper.js';
-import '../../heridux-form-rules/lib/index.js';
-import _toConsumableArray from '../node_modules/@babel/runtime/helpers/toConsumableArray.js';
-import '../node_modules/lodash/isEqual.js';
-import { n as normalizeKey, g as getKeyValue, a as stateWithChanges, H as HeriduxForm, s as setKeyValue } from '../../heridux-form/lib/index.js';
-import _slicedToArray from '../node_modules/@babel/runtime/helpers/slicedToArray.js';
-import _get from '../node_modules/@babel/runtime/helpers/get.js';
+import _slicedToArray from '@babel/runtime/helpers/slicedToArray';
+import _toConsumableArray from '@babel/runtime/helpers/toConsumableArray';
+import _classCallCheck from '@babel/runtime/helpers/classCallCheck';
+import _createClass from '@babel/runtime/helpers/createClass';
+import _get from '@babel/runtime/helpers/get';
+import _inherits from '@babel/runtime/helpers/inherits';
+import _possibleConstructorReturn from '@babel/runtime/helpers/possibleConstructorReturn';
+import _getPrototypeOf from '@babel/runtime/helpers/getPrototypeOf';
+import Store, { normalizeKey, getKeyValue, stateWithChanges, setKeyValue } from '@heridux/form';
+import { fromJS, List, Map } from 'immutable';
+import isPlainObject from 'lodash/isPlainObject';
 
 function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
 
@@ -462,7 +453,7 @@ var FormStore = /*#__PURE__*/function (_Store) {
   }]);
 
   return FormStore;
-}(HeriduxForm);
+}(Store);
 
 export default FormStore;
 export { FormArray };

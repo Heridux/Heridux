@@ -1,29 +1,18 @@
-import _objectWithoutProperties from '../node_modules/@babel/runtime/helpers/objectWithoutProperties.js';
-import _extends from '../node_modules/@babel/runtime/helpers/extends.js';
-import _classCallCheck from '../node_modules/@babel/runtime/helpers/classCallCheck.js';
-import _createClass from '../node_modules/@babel/runtime/helpers/createClass.js';
-import _defineProperty from '../node_modules/@babel/runtime/helpers/defineProperty.js';
-import '../node_modules/redux/es/redux.js';
-import '../node_modules/immutable/dist/immutable.es.js';
-import '../../heridux/lib/index.js';
-import '../node_modules/@babel/runtime/helpers/typeof.js';
-import '../node_modules/lodash/isPlainObject.js';
-import _inherits from '../node_modules/@babel/runtime/helpers/inherits.js';
-import _possibleConstructorReturn from '../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js';
-import _getPrototypeOf from '../node_modules/@babel/runtime/helpers/getPrototypeOf.js';
-import '../node_modules/@babel/runtime/helpers/wrapNativeSuper.js';
-import '../../heridux-form-rules/lib/index.js';
-import _toConsumableArray from '../node_modules/@babel/runtime/helpers/toConsumableArray.js';
-import '../node_modules/lodash/isEqual.js';
-import { n as normalizeKey } from '../../core-5727f50c.js';
-import '../node_modules/@babel/runtime/helpers/slicedToArray.js';
-import '../node_modules/@babel/runtime/helpers/get.js';
-import FormStore from '../../heridux-form-arrays/lib/index.js';
-import React, { memo, useEffect, useCallback } from '../node_modules/react/index.js';
-import '../node_modules/react-redux/es/index.js';
-import { useHeridux, Provider } from '../../react-heridux/lib/index.js';
-export { Provider, useHeridux } from '../../react-heridux/lib/index.js';
-import PropTypes from '../node_modules/prop-types/index.js';
+import _classCallCheck from '@babel/runtime/helpers/classCallCheck';
+import _createClass from '@babel/runtime/helpers/createClass';
+import _inherits from '@babel/runtime/helpers/inherits';
+import _possibleConstructorReturn from '@babel/runtime/helpers/possibleConstructorReturn';
+import _getPrototypeOf from '@babel/runtime/helpers/getPrototypeOf';
+import React, { memo, useEffect, useCallback } from 'react';
+import FormStore from '@heridux/form-arrays';
+import { useHeridux, Provider } from '@heridux/react';
+export { Provider, useHeridux } from '@heridux/react';
+import _extends from '@babel/runtime/helpers/extends';
+import _objectWithoutProperties from '@babel/runtime/helpers/objectWithoutProperties';
+import PropTypes from 'prop-types';
+import _defineProperty from '@babel/runtime/helpers/defineProperty';
+import _toConsumableArray from '@babel/runtime/helpers/toConsumableArray';
+import { normalizeKey } from '@heridux/form';
 
 var Form = /*#__PURE__*/memo(function (_ref) {
   var onSubmit = _ref.onSubmit,

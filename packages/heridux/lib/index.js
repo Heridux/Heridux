@@ -1,10 +1,10 @@
-import _objectWithoutProperties from '../node_modules/@babel/runtime/helpers/objectWithoutProperties.js';
-import _extends from '../node_modules/@babel/runtime/helpers/extends.js';
-import _classCallCheck from '../node_modules/@babel/runtime/helpers/classCallCheck.js';
-import _createClass from '../node_modules/@babel/runtime/helpers/createClass.js';
-import _defineProperty from '../node_modules/@babel/runtime/helpers/defineProperty.js';
-import { createStore, combineReducers } from '../node_modules/redux/es/redux.js';
-import { fromJS } from '../node_modules/immutable/dist/immutable.es.js';
+import _objectWithoutProperties from '@babel/runtime/helpers/objectWithoutProperties';
+import _extends from '@babel/runtime/helpers/extends';
+import _classCallCheck from '@babel/runtime/helpers/classCallCheck';
+import _createClass from '@babel/runtime/helpers/createClass';
+import _defineProperty from '@babel/runtime/helpers/defineProperty';
+import { createStore, combineReducers } from 'redux';
+import { fromJS } from 'immutable';
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
