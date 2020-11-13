@@ -1,6 +1,7 @@
 import babel from "@rollup/plugin-babel"
 import replace from "@rollup/plugin-replace"
 import { eslint } from "rollup-plugin-eslint"
+import { terser } from "rollup-plugin-terser"
 
 const env = process.env.NODE_ENV
 
@@ -19,7 +20,7 @@ const plugins = [
   })
 ]
 
-export default {
+export default [{
   input : {
     "heridux/lib/index" : "packages/heridux/src/index.js",
     "heridux-form-rules/lib/index" : "packages/heridux-form-rules/src/index.js",
@@ -34,4 +35,64 @@ export default {
   },
   external : /node_modules/,
   plugins
-}
+}, {
+  input : "packages/heridux/src/index.js",
+  output : {
+    file : "packages/heridux/dist/index.js",
+    format : "umd",
+    name : "Heridux",
+    indent : false
+  },
+  external : /node_modules/,
+  plugins
+}, {
+  input : "packages/heridux-form/src/index.js",
+  output : {
+    file : "packages/heridux-form/dist/index.js",
+    format : "umd",
+    name : "HeriduxForm",
+    indent : false
+  },
+  external : /node_modules/,
+  plugins
+}, {
+  input : "packages/heridux-form-arrays/src/index.js",
+  output : {
+    file : "packages/heridux-form-arrays/dist/index.js",
+    format : "umd",
+    name : "HeriduxForm",
+    indent : false
+  },
+  external : /node_modules/,
+  plugins
+}, {
+  input : "packages/heridux-form-rules/src/index.js",
+  output : {
+    file : "packages/heridux-form-rules/dist/index.js",
+    format : "umd",
+    name : "HeriduxFormRules",
+    indent : false
+  },
+  external : /node_modules/,
+  plugins
+}, {
+  input : "packages/react-heridux/src/index.js",
+  output : {
+    file : "packages/react-heridux/dist/index.js",
+    format : "umd",
+    name : "ReactHeridux",
+    indent : false
+  },
+  external : /node_modules/,
+  plugins
+}, {
+  input : "packages/react-heridux-form/src/index.js",
+  output : {
+    file : "packages/react-heridux-form/dist/index.js",
+    format : "umd",
+    name : "ReactHeriduxForm",
+    indent : false
+  },
+  external : /node_modules/,
+  plugins
+}]
