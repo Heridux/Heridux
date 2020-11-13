@@ -1,6 +1,6 @@
 {
   "parser": "babel-eslint",
-  "extends": ["eslint:recommended"],
+  "extends": ["eslint:recommended", "plugin:react-hooks/recommended"],
   "parserOptions": {
     "ecmaVersion": 2021,
     "ecmaFeatures": {
