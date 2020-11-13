@@ -12,6 +12,7 @@
   },
   "devDependencies": {},
   "keywords": [
+    "heridux",
     "react",
     "redux",
     "hooks",

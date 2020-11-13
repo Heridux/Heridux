@@ -11,5 +11,16 @@
     "prop-types": "^15.7.2",
     "react": "^17.0.1",
     "@babel/runtime": "^7.12.5"
-  }
+  },
+  "keywords": [
+    "heridux",
+    "react",
+    "redux",
+    "hooks",
+    "form",
+    "forms",
+    "form-validation",
+    "validation",
+    "react-hooks"
+  ]
 }
