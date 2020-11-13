@@ -1,18 +1,18 @@
+import _objectWithoutProperties from '@babel/runtime/helpers/objectWithoutProperties';
+import _extends from '@babel/runtime/helpers/extends';
 import _classCallCheck from '@babel/runtime/helpers/classCallCheck';
 import _createClass from '@babel/runtime/helpers/createClass';
+import _defineProperty from '@babel/runtime/helpers/defineProperty';
 import _inherits from '@babel/runtime/helpers/inherits';
 import _possibleConstructorReturn from '@babel/runtime/helpers/possibleConstructorReturn';
 import _getPrototypeOf from '@babel/runtime/helpers/getPrototypeOf';
+import _toConsumableArray from '@babel/runtime/helpers/toConsumableArray';
+import { normalizeKey } from '@heridux/form';
 import React, { memo, useEffect, useCallback } from 'react';
 import FormStore from '@heridux/form-arrays';
 import { useHeridux, Provider } from '@heridux/react';
 export { Provider, useHeridux } from '@heridux/react';
-import _extends from '@babel/runtime/helpers/extends';
-import _objectWithoutProperties from '@babel/runtime/helpers/objectWithoutProperties';
 import PropTypes from 'prop-types';
-import _defineProperty from '@babel/runtime/helpers/defineProperty';
-import _toConsumableArray from '@babel/runtime/helpers/toConsumableArray';
-import { normalizeKey } from '@heridux/form';
 
 var Form = /*#__PURE__*/memo(function (_ref) {
   var onSubmit = _ref.onSubmit,

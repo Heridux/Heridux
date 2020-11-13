@@ -1,15 +1,15 @@
-import { Rules, FormWarning } from '@heridux/form-rules';
-export { default as Rules } from '@heridux/form-rules';
-import _typeof from '@babel/runtime/helpers/typeof';
-import _toConsumableArray from '@babel/runtime/helpers/toConsumableArray';
-import _defineProperty from '@babel/runtime/helpers/defineProperty';
 import _classCallCheck from '@babel/runtime/helpers/classCallCheck';
 import _createClass from '@babel/runtime/helpers/createClass';
+import _defineProperty from '@babel/runtime/helpers/defineProperty';
+import { fromJS, Iterable } from 'immutable';
+import _typeof from '@babel/runtime/helpers/typeof';
+import isPlainObject from 'lodash/isPlainObject';
 import _inherits from '@babel/runtime/helpers/inherits';
 import _possibleConstructorReturn from '@babel/runtime/helpers/possibleConstructorReturn';
 import _getPrototypeOf from '@babel/runtime/helpers/getPrototypeOf';
-import { fromJS, Iterable } from 'immutable';
-import isPlainObject from 'lodash/isPlainObject';
+import { Rules, FormWarning } from '@heridux/form-rules';
+export { default as Rules } from '@heridux/form-rules';
+import _toConsumableArray from '@babel/runtime/helpers/toConsumableArray';
 import isEqual from 'lodash/isEqual';
 import Heridux from '@heridux/core';
 

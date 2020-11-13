@@ -1,15 +1,15 @@
-import _slicedToArray from '@babel/runtime/helpers/slicedToArray';
 import _extends from '@babel/runtime/helpers/extends';
-import _defineProperty from '@babel/runtime/helpers/defineProperty';
 import _classCallCheck from '@babel/runtime/helpers/classCallCheck';
 import _createClass from '@babel/runtime/helpers/createClass';
+import _defineProperty from '@babel/runtime/helpers/defineProperty';
+import { Iterable } from 'immutable';
 import _inherits from '@babel/runtime/helpers/inherits';
 import _possibleConstructorReturn from '@babel/runtime/helpers/possibleConstructorReturn';
 import _getPrototypeOf from '@babel/runtime/helpers/getPrototypeOf';
+import Heridux from '@heridux/core';
+import _slicedToArray from '@babel/runtime/helpers/slicedToArray';
 import React, { createContext, useReducer, useContext } from 'react';
 import { connect, useSelector } from 'react-redux';
-import Heridux from '@heridux/core';
-import { Iterable } from 'immutable';
 
 function toJS(Component) {
   return function (props) {
