@@ -2,6 +2,13 @@
   "name": "@heridux/react-form",
   "version": "0.0.1",
   "main": "lib/index.js",
+  "description": "Use heridux forms with React",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/Heridux/Heridux.git",
+    "directory": "packages/react-heridux-form"
+  },
+  "author": "Yannick Bochatay",
   "license": "MIT",
   "dependencies": {
     "@heridux/core": "^0.0.1",

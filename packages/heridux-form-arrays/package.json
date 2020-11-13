@@ -2,6 +2,13 @@
   "name": "@heridux/form-arrays",
   "version": "0.0.1",
   "main": "lib/index.js",
+  "description": "Manage easily array fields with heridux",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/Heridux/Heridux.git",
+    "directory": "packages/heridux-form-arrays"
+  },
+  "author": "Yannick Bochatay",
   "license": "MIT",
   "dependencies": {
     "@heridux/core": "^0.0.1",

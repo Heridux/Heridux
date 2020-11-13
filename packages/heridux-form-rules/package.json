@@ -2,6 +2,13 @@
   "name": "@heridux/form-rules",
   "version": "0.0.1",
   "main": "lib/index.js",
+  "description": "Type check your fields the way you know it with PropTypes",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/Heridux/Heridux.git",
+    "directory": "packages/heridux-form-rules"
+  },
+  "author": "Yannick Bochatay",
   "license": "MIT",
   "dependencies": {
     "@babel/runtime": "^7.12.5"

@@ -2,6 +2,13 @@
   "name": "@heridux/form",
   "version": "0.0.1",
   "main": "lib/index.js",
+  "description": "Manage your forms easily with heridux-form",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/Heridux/Heridux.git",
+    "directory": "packages/heridux-form"
+  },
+  "author": "Yannick Bochatay",
   "license": "MIT",
   "dependencies": {
     "@heridux/core": "^0.0.1",

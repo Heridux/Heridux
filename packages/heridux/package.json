@@ -2,6 +2,13 @@
   "name": "@heridux/core",
   "version": "0.0.1",
   "main": "lib/index.js",
+  "description": "The easiest way to use and reuse redux stores or react internal states",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/Heridux/Heridux.git",
+    "directory": "packages/heridux"
+  },
+  "author": "Yannick Bochatay",
   "license": "MIT",
   "dependencies": {
     "immutable": "^4.0.0-rc.12",
