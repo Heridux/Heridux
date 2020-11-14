@@ -190,6 +190,8 @@
     "yield-star-spacing": ["warn", "after"]
   },
   "globals" : {
-    "process" : true
+    "process" : true,
+    "test" : true,
+    "expect" : true
   }
 }
