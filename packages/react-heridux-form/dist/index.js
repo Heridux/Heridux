@@ -1,55 +1,45 @@
 (function (global, factory) {
-typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@babel/runtime/helpers/classCallCheck'), require('@babel/runtime/helpers/createClass'), require('@babel/runtime/helpers/inherits'), require('@babel/runtime/helpers/possibleConstructorReturn'), require('@babel/runtime/helpers/getPrototypeOf'), require('react'), require('@heridux/form-arrays'), require('@heridux/react'), require('@babel/runtime/helpers/extends'), require('@babel/runtime/helpers/objectWithoutProperties'), require('prop-types'), require('@babel/runtime/helpers/defineProperty'), require('@babel/runtime/helpers/toConsumableArray'), require('@heridux/form')) :
-typeof define === 'function' && define.amd ? define(['exports', '@babel/runtime/helpers/classCallCheck', '@babel/runtime/helpers/createClass', '@babel/runtime/helpers/inherits', '@babel/runtime/helpers/possibleConstructorReturn', '@babel/runtime/helpers/getPrototypeOf', 'react', '@heridux/form-arrays', '@heridux/react', '@babel/runtime/helpers/extends', '@babel/runtime/helpers/objectWithoutProperties', 'prop-types', '@babel/runtime/helpers/defineProperty', '@babel/runtime/helpers/toConsumableArray', '@heridux/form'], factory) :
-(global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.ReactHeriduxForm = {}, global._classCallCheck, global._createClass, global._inherits, global._possibleConstructorReturn, global._getPrototypeOf, global.React, global.FormStore, global.react, global._extends, global._objectWithoutProperties, global.PropTypes, global._defineProperty, global._toConsumableArray, global.form));
-}(this, (function (exports, _classCallCheck, _createClass, _inherits, _possibleConstructorReturn, _getPrototypeOf, React, FormStore, react, _extends, _objectWithoutProperties, PropTypes, _defineProperty, _toConsumableArray, form) { 'use strict';
+typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('react'), require('@heridux/form-arrays'), require('@heridux/react'), require('@babel/runtime/helpers/extends'), require('prop-types'), require('@heridux/form')) :
+typeof define === 'function' && define.amd ? define(['exports', 'react', '@heridux/form-arrays', '@heridux/react', '@babel/runtime/helpers/extends', 'prop-types', '@heridux/form'], factory) :
+(global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.ReactHeriduxForm = {}, global.React, global.HeriduxForm, global.ReactHeridux, global._extends, global.PropTypes, global.HeriduxForm));
+}(this, (function (exports, React, FormStore, react, _extends, PropTypes, form) { 'use strict';
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
-var _classCallCheck__default = /*#__PURE__*/_interopDefaultLegacy(_classCallCheck);
-var _createClass__default = /*#__PURE__*/_interopDefaultLegacy(_createClass);
-var _inherits__default = /*#__PURE__*/_interopDefaultLegacy(_inherits);
-var _possibleConstructorReturn__default = /*#__PURE__*/_interopDefaultLegacy(_possibleConstructorReturn);
-var _getPrototypeOf__default = /*#__PURE__*/_interopDefaultLegacy(_getPrototypeOf);
 var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
 var FormStore__default = /*#__PURE__*/_interopDefaultLegacy(FormStore);
 var _extends__default = /*#__PURE__*/_interopDefaultLegacy(_extends);
-var _objectWithoutProperties__default = /*#__PURE__*/_interopDefaultLegacy(_objectWithoutProperties);
 var PropTypes__default = /*#__PURE__*/_interopDefaultLegacy(PropTypes);
-var _defineProperty__default = /*#__PURE__*/_interopDefaultLegacy(_defineProperty);
-var _toConsumableArray__default = /*#__PURE__*/_interopDefaultLegacy(_toConsumableArray);
 
-var Form = /*#__PURE__*/React.memo(function (_ref) {
-  var onSubmit = _ref.onSubmit,
-      looseControl = _ref.looseControl,
-      children = _ref.children,
-      onChange = _ref.onChange,
-      rest = _objectWithoutProperties__default['default'](_ref, ["onSubmit", "looseControl", "children", "onChange"]);
+const Form = /*#__PURE__*/React.memo(({
+  onSubmit,
+  looseControl,
+  children,
+  onChange,
+  ...rest
+}) => {
+  const store = react.useHeridux();
+  const changesCount = store.get("changesCount");
 
-  var store = react.useHeridux();
-  var changesCount = store.get("changesCount");
-
-  var handleSubmit = function handleSubmit(e) {
+  const handleSubmit = e => {
     e.preventDefault();
     e.stopPropagation();
-    var test = store.checkForm();
+    const test = store.checkForm();
 
     if (onSubmit && (test || looseControl)) {
       onSubmit(store.getFormValues());
     }
   };
 
-  React.useEffect(function () {
+  React.useEffect(() => {
     if (onChange) onChange(store.getFormValues());
-  }, [changesCount]);
-  React.useEffect(function () {
-    return function () {
-      if (store.templateDriven) {
-        // nettoyage au démontage
-        // store est un objet dont le prototype est le store réel
-        Object.getPrototypeOf(store).validationRules = {};
-      }
-    };
+  }, [changesCount, onChange]);
+  React.useEffect(() => () => {
+    if (store.templateDriven) {
+      // nettoyage au démontage
+      // store est un objet dont le prototype est le store réel
+      Object.getPrototypeOf(store).validationRules = {};
+    }
   }, []);
   return (
     /*#__PURE__*/
@@ -67,84 +57,62 @@ Form.propTypes = {
   looseControl: PropTypes__default['default'].bool
 };
 
+/* eslint-disable max-statements */
 function useFormControl(formKey, validationRule) {
-  var store = react.useHeridux();
-  var onChange = React.useCallback(function (e) {
-    var val = e && e.target ? e.target.value : e;
+  const store = react.useHeridux();
+  const onChange = React.useCallback(e => {
+    const val = e && e.target ? e.target.value : e;
     store.setFieldValue(key, val);
   }, []);
   if (!store) return {};
-  var key = form.normalizeKey(formKey);
-  var field = store.getIn(["form"].concat(_toConsumableArray__default['default'](key)));
-  var rule = store.getValidationRules(key);
+  const key = form.normalizeKey(formKey);
+  const field = store.getIn(["form", ...key]);
+  let rule = store.getValidationRules(key);
 
   if (!rule || !field) {
     if (validationRule && store.templateDriven) {
-      var path = _toConsumableArray__default['default'](key);
-
-      var lastKey = path.pop();
-      store.addFields(path, _defineProperty__default['default']({}, lastKey, validationRule));
+      const path = [...key];
+      const lastKey = path.pop();
+      store.addFields(path, {
+        [lastKey]: validationRule
+      });
       rule = validationRule;
     } else {
-      var msg = "[".concat(key.join(), "] is not a known key in form ").concat(store.STATE_PROPERTY);
+      const msg = `[${key.join()}] is not a known key in form ${store.STATE_PROPERTY}`;
       console.error(msg, store.validationRules);
       throw new Error(msg);
     }
   }
 
-  var _ref = field || {},
-      _ref$value = _ref.value,
-      value = _ref$value === void 0 ? null : _ref$value,
-      _ref$touched = _ref.touched,
-      touched = _ref$touched === void 0 ? false : _ref$touched,
-      _ref$error = _ref.error,
-      error = _ref$error === void 0 ? null : _ref$error,
-      _ref$warning = _ref.warning,
-      warning = _ref$warning === void 0 ? null : _ref$warning;
-
+  const {
+    value = null,
+    touched = false,
+    error = null,
+    warning = null
+  } = field || {};
   return {
-    store: store,
-    touched: touched,
-    warning: warning,
-    error: error,
+    store,
+    touched,
+    warning,
+    error,
     value: value == null ? "" : value,
     required: rule.required,
-    onChange: onChange
+    onChange
   };
 }
 
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf__default['default'](Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf__default['default'](this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn__default['default'](this, result); }; }
+class HeriduxForm extends FormStore__default['default'] {
+  createFormComponent() {
+    const useHeriduxHook = this.createHook();
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+    const FormComponent = props => /*#__PURE__*/React__default['default'].createElement(react.Provider, {
+      value: useHeriduxHook()
+    }, /*#__PURE__*/React__default['default'].createElement(Form, props));
 
-var HeriduxForm = /*#__PURE__*/function (_FormStore) {
-  _inherits__default['default'](HeriduxForm, _FormStore);
-
-  var _super = _createSuper(HeriduxForm);
-
-  function HeriduxForm() {
-    _classCallCheck__default['default'](this, HeriduxForm);
-
-    return _super.apply(this, arguments);
+    return FormComponent;
   }
 
-  _createClass__default['default'](HeriduxForm, [{
-    key: "createFormComponent",
-    value: function createFormComponent() {
-      var useHeriduxHook = this.createHook();
-
-      var FormComponent = function FormComponent(props) {
-        return /*#__PURE__*/React__default['default'].createElement(react.Provider, {
-          value: useHeriduxHook()
-        }, /*#__PURE__*/React__default['default'].createElement(Form, props));
-      };
-
-      return FormComponent;
-    }
-  }]);
-
-  return HeriduxForm;
-}(FormStore__default['default']);
+}
 
 Object.defineProperty(exports, 'Provider', {
 enumerable: true,

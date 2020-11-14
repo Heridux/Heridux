@@ -21,7 +21,7 @@ const Form = memo(({ onSubmit, looseControl, children, onChange, ...rest }) => {
 
   useEffect(() => {
     if (onChange) onChange(store.getFormValues())
-  }, [changesCount])
+  }, [changesCount, onChange])
 
   useEffect(() => () => {
     if (store.templateDriven) { // nettoyage au démontage

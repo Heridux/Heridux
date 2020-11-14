@@ -1,7 +1,7 @@
 import babel from "@rollup/plugin-babel"
 import replace from "@rollup/plugin-replace"
 import { eslint } from "rollup-plugin-eslint"
-import { terser } from "rollup-plugin-terser"
+import babelConfig from "./babel.config.json"
 
 const env = process.env.NODE_ENV
 
@@ -9,16 +9,42 @@ const plugins = [
   replace({ "process.env.NODE_ENV" : JSON.stringify(env) }),
   eslint({
     fix : true,
-    throwOnError : true,
-    throwOnWarning : true
+    throwOnError : true/* ,
+    throwOnWarning : true */
   }),
-  babel({
+  babel(Object.assign(babelConfig, {
     babelHelpers : "runtime",
-    exclude : "node_modules/**",
-    presets : [ ["@babel/preset-env", { shippedProposals : true }], "@babel/preset-react"],
     plugins : ["@babel/plugin-transform-runtime"]
-  })
+  }))
 ]
+
+const commonConfig = {
+  external : /node_modules/,
+  plugins
+}
+
+const commonUmdOutput = {
+  format : "umd",
+  indent : false,
+  exports : "named",
+  globals : {
+    react : "React",
+    "prop-types" : "PropTypes",
+    immutable : "Immutable",
+    redux : "redux",
+    "react-redux" : "reactRedux",
+    "@babel/runtime/helpers/defineProperty" : "_defineProperty",
+    "@babel/runtime/helpers/extends" : "_extends",
+    "lodash/isPlainObject" : "isPlainObject",
+    "lodash/isEqual" : "isEqual",
+    "@heridux/core" : "Heridux",
+    "@heridux/react" : "ReactHeridux",
+    "@heridux/form" : "HeriduxForm",
+    "@heridux/form-rules" : "HeriduxFormRules",
+    "@heridux/form-arrays" : "HeriduxForm",
+    "@heridux/react-form" : "ReactHeriduxForm",
+  }
+}
 
 export default [{
   input : {
@@ -33,66 +59,53 @@ export default [{
     dir : "packages",
     format : "es"
   },
-  external : /node_modules/,
-  plugins
+  ...commonConfig
 }, {
   input : "packages/heridux/src/index.js",
   output : {
     file : "packages/heridux/dist/index.js",
-    format : "umd",
     name : "Heridux",
-    indent : false
+    ...commonUmdOutput
   },
-  external : /node_modules/,
-  plugins
+  ...commonConfig
 }, {
   input : "packages/heridux-form/src/index.js",
   output : {
     file : "packages/heridux-form/dist/index.js",
-    format : "umd",
     name : "HeriduxForm",
-    indent : false
+    ...commonUmdOutput
   },
-  external : /node_modules/,
-  plugins
+  ...commonConfig
 }, {
   input : "packages/heridux-form-arrays/src/index.js",
   output : {
     file : "packages/heridux-form-arrays/dist/index.js",
-    format : "umd",
     name : "HeriduxForm",
-    indent : false
+    ...commonUmdOutput
   },
-  external : /node_modules/,
-  plugins
+  ...commonConfig
 }, {
   input : "packages/heridux-form-rules/src/index.js",
   output : {
     file : "packages/heridux-form-rules/dist/index.js",
-    format : "umd",
     name : "HeriduxFormRules",
-    indent : false
+    ...commonUmdOutput
   },
-  external : /node_modules/,
-  plugins
+  ...commonConfig
 }, {
   input : "packages/react-heridux/src/index.js",
   output : {
     file : "packages/react-heridux/dist/index.js",
-    format : "umd",
     name : "ReactHeridux",
-    indent : false
+    ...commonUmdOutput
   },
-  external : /node_modules/,
-  plugins
+  ...commonConfig
 }, {
   input : "packages/react-heridux-form/src/index.js",
   output : {
     file : "packages/react-heridux-form/dist/index.js",
-    format : "umd",
     name : "ReactHeriduxForm",
-    indent : false
+    ...commonUmdOutput
   },
-  external : /node_modules/,
-  plugins
+  ...commonConfig
 }]

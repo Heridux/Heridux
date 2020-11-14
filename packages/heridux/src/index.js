@@ -23,6 +23,8 @@ export default class Heridux {
       enhancer || DEVTOOLS?.()
     )
     Heridux.reduxReducers = _reducer
+
+    return Heridux.reduxStore
   }
 
   static connect(store, initialReducers) {
