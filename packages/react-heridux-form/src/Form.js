@@ -1,14 +1,12 @@
-import React, { memo, useEffect } from "react"
+import React, { memo, useEffect, useCallback } from "react"
 import PropTypes from "prop-types"
-import { useHeridux } from "@heridux/react"
+import { useSelector, useStore } from "@heridux/react"
 
 const Form = memo(({ onSubmit, looseControl, children, onChange, ...rest }) => {
+  const store = useStore()
+  const changesCount = useSelector(state => state.get("changesCount"))
 
-  const store = useHeridux()
-
-  const changesCount = store.get("changesCount")
-
-  const handleSubmit = e => {
+  const handleSubmit = useCallback(e => {
     e.preventDefault()
     e.stopPropagation()
 
@@ -17,18 +15,18 @@ const Form = memo(({ onSubmit, looseControl, children, onChange, ...rest }) => {
     if (onSubmit && (test || looseControl)) {
       onSubmit(store.getFormValues())
     }
-  }
+  }, [store, looseControl, onSubmit])
 
   useEffect(() => {
     if (onChange) onChange(store.getFormValues())
-  }, [changesCount, onChange])
+  }, [store, onChange, changesCount])
 
   useEffect(() => () => {
     if (store.templateDriven) { // nettoyage au démontage
       // store est un objet dont le prototype est le store réel
       Object.getPrototypeOf(store).validationRules = {}
     }
-  }, [])
+  }, [store])
 
   return (
     // eslint-disable-next-line react/jsx-no-bind
@@ -41,7 +39,6 @@ const Form = memo(({ onSubmit, looseControl, children, onChange, ...rest }) => {
 
 Form.propTypes = {
   children : PropTypes.node,
-  intl : PropTypes.object,
   onSubmit : PropTypes.func,
   onChange : PropTypes.func,
   looseControl : PropTypes.bool

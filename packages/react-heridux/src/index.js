@@ -1,11 +1,13 @@
-import React, { createContext, useReducer, useContext } from "react"
-import { connect as reduxConnect, useSelector } from "react-redux"
+import React, { createContext, useReducer, useContext, memo } from "react"
+import PropTypes from "prop-types"
+import { Iterable } from "immutable"
+import { connect as reduxConnect, useSelector as useReduxSelector } from "react-redux"
 import Heridux from "@heridux/core"
 import { toJS } from "./utils"
 
 export const context = createContext()
 
-export const { Provider } = context
+export const { Provider : ContextProvider } = context
 
 export default class ReactHeridux extends Heridux {
 
@@ -32,63 +34,87 @@ export default class ReactHeridux extends Heridux {
 
       return Component => props => {
 
-        const store = useHeridux()
-        const state = store.getState()
-        const dispatch = store.dispatch.bind(store)
+        const state = useSelector(s => s)
 
         let extraProps = mapStateToProps?.(state, props) || {}
 
-        if (mapDispatchToProps) extraProps = { ...extraProps, ...mapDispatchToProps(dispatch, props) }
+        if (mapDispatchToProps) extraProps = { ...extraProps, ...mapDispatchToProps(this.dispatch, props) }
 
         return <Component { ...props } { ...extraProps }/>
       }
     }
   }
 
-  /**
-   * Create a hook to use heridux store as internal state instead of redux
-   * @returns {Function} hook
-   * @see {@link https://fr.reactjs.org/docs/hooks-custom.html}
-   */
-  createHook() {
-
-    if (this._hookCreated) {
-      throw new Error("Only one hook can be created from an instance of Heridux")
-    }
-
-    return () => {
-
-      if (this._isReduxRegistered()) {
-        useSelector(state => state[this.STATE_PROPERTY])
-
-      } else {
-
-        const [state, dispatch] = useReducer(this._reducer, this.initialState)
-
-        this.dispatch = dispatch
-        this.getState = () => state
-
-        this._hookCreated = true
-      }
-
-      return Object.create(this) // new reference to force update
-    }
-
-  }
-
 }
-
 
 /**
- * Hook to use heridux store
- * @returns {Heridux} heridux object to manage store
+ * Provider component
  */
-export function useHeridux() {
-  const heridux = useContext(context)
+export const Provider = memo(({ store, children }) => {
+  let heriduxState
 
-  if (!heridux) {
-    console.error("Heridux not found. Please put your component inside a Heridux Provider.")
+  if (store._isReduxRegistered()) {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    heriduxState = useReduxSelector(state => state[store.STATE_PROPERTY])
+  } else {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [state, dispatch] = useReducer(store._reducer, store.initialState)
+
+    store.dispatch = dispatch
+    store.getState = () => state
+    heriduxState = state
   }
 
-  return heridux
+  return (
+    <ContextProvider value={ { store, state : heriduxState } }>
+      { children }
+    </ContextProvider>
+  )
+})
+
+Provider.propTypes = {
+  store : PropTypes.instanceOf(Heridux),
+  children : PropTypes.node
 }
+
+/**
+ * Extract data from the store state, using a selector function
+ * @param {Function} selector function receiving state as argument
+ * @see {@link https://react-redux.js.org/api/hooks#useselector)}
+ * @returns {*} data extracted
+ */
+export const useSelector = selector => {
+  const { state } = useContext(context)
+  const value = selector(state)
+
+  return Iterable.isIterable(value) ? value.toJS() : value
+}
+
+/**
+ * Returns a reference to the store that was passed in to the <Provider> component
+ * @see {@link https://react-redux.js.org/api/hooks#usestore}
+ * @returns {Heridux} heridux store
+ */
+export const useStore = () => {
+  const { store } = useContext(context)
+
+  return store
+}
+
+/**
+   * Connect a react component to heridux store, inside a <Provider> component
+   * @param {Function} mapStateToProps properties to inject to the component
+   * @param {Function} mapDispatchToProps functions to inject to the component
+   * @return {Function} function to connect the component
+   * @see {@link https://react-redux.js.org/}
+   */
+export const connect = (mapStateToProps, mapDispatchToProps) => Component => props => {
+  const { store, state } = useContext(context)
+
+  let extraProps = mapStateToProps?.(state, props) || {}
+
+  if (mapDispatchToProps) extraProps = { ...extraProps, ...mapDispatchToProps(store.dispatch, props) }
+
+  return <Component { ...props } { ...extraProps } store={ store }/>
+}
+

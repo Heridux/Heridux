@@ -49,6 +49,8 @@ class Heridux {
       return func ? func(currentState, action) : currentState;
     });
 
+    _defineProperty__default['default'](this, "dispatch", action => this._getReduxStore().dispatch(action));
+
     this.initialState = {};
     this.STATE_PROPERTY = STATE_PROPERTY;
     this._actions = {};
@@ -312,10 +314,6 @@ class Heridux {
    * @return {undefined|Promise} promise if async
    */
 
-
-  dispatch(action) {
-    return this._getReduxStore().dispatch(action);
-  }
 
   subscribe(callback) {
     return this._getReduxStore().subscribe(callback);

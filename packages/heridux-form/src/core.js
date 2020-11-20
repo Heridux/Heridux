@@ -191,11 +191,11 @@ export default class HeriduxForm extends Heridux {
     })
 
     this.createAction("setFieldWarning", (state, { path, message, properties }) => (
-      state.mergeDeepIn(["form", ...path], { warning : { message, properties } })
+      state.mergeDeepIn(["form", ...path], { warning : { message, properties }, touched : true })
     ))
 
     this.createAction("setFieldError", (state, { path, message, properties }) => (
-      state.mergeDeepIn(["form", ...path], { error : { message, properties } })
+      state.mergeDeepIn(["form", ...path], { error : { message, properties }, touched : true })
     ))
 
     this.createAction("setGlobalError", (state, { error }) => state.set("error", error))

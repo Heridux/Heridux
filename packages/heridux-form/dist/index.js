@@ -18,6 +18,9 @@ function normalizeKey(path) {
 
   return Array.isArray(path) ? [...path] : path.split(".");
 }
+function stringifyKey(key) {
+  if (typeof key === "string") return key;else if (Array.isArray(key)) return key.join(".");else throw new TypeError(typeof key + " : incorrect type for key");
+}
 function getKeyValue(obj, key) {
   return obj && key.length ? getKeyValue(obj[key[0]], key.slice(1)) : obj;
 }
@@ -219,7 +222,8 @@ class HeriduxForm extends Heridux__default['default'] {
       warning: {
         message,
         properties
-      }
+      },
+      touched: true
     }));
     this.createAction("setFieldError", (state, {
       path,
@@ -229,7 +233,8 @@ class HeriduxForm extends Heridux__default['default'] {
       error: {
         message,
         properties
-      }
+      },
+      touched: true
     }));
     this.createAction("setGlobalError", (state, {
       error
@@ -852,6 +857,7 @@ exports.getKeyValue = getKeyValue;
 exports.normalizeKey = normalizeKey;
 exports.setKeyValue = setKeyValue;
 exports.stateWithChanges = stateWithChanges;
+exports.stringifyKey = stringifyKey;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 

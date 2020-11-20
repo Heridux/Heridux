@@ -7,6 +7,12 @@ export function normalizeKey(path) {
   return Array.isArray(path) ? [...path] : path.split(".")
 }
 
+export function stringifyKey(key) {
+  if (typeof key === "string") return key
+  else if (Array.isArray(key)) return key.join(".")
+  else throw new TypeError((typeof key) + " : incorrect type for key")
+}
+
 export function getKeyValue(obj, key) {
   return obj && key.length ? getKeyValue(obj[key[0]], key.slice(1)) : obj
 }

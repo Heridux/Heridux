@@ -1,6 +1,6 @@
 /* eslint no-unused-expressions:0 max-statements:0*/
 import Heridux from "@heridux/core"
-import FormStore, { Rules } from "../lib"
+import FormStore, { Rules } from "../src"
 
 Heridux.createReduxStore()
 
@@ -48,7 +48,6 @@ test("should unset field", () => {
   myRedux.setFieldValue("name", null)
 
   expect(myRedux.getIn(["form", "name", "value"])).toBeNull()
-  expect(myRedux.getIn(["form", "name", "touched"])).toBe(false)
 
 })
 

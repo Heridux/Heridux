@@ -18,10 +18,9 @@ const Form = /*#__PURE__*/React.memo(({
   onChange,
   ...rest
 }) => {
-  const store = react.useHeridux();
-  const changesCount = store.get("changesCount");
-
-  const handleSubmit = e => {
+  const store = react.useStore();
+  const changesCount = react.useSelector(state => state.get("changesCount"));
+  const handleSubmit = React.useCallback(e => {
     e.preventDefault();
     e.stopPropagation();
     const test = store.checkForm();
@@ -29,18 +28,17 @@ const Form = /*#__PURE__*/React.memo(({
     if (onSubmit && (test || looseControl)) {
       onSubmit(store.getFormValues());
     }
-  };
-
+  }, [store, looseControl, onSubmit]);
   React.useEffect(() => {
     if (onChange) onChange(store.getFormValues());
-  }, [changesCount, onChange]);
+  }, [store, onChange, changesCount]);
   React.useEffect(() => () => {
     if (store.templateDriven) {
       // nettoyage au démontage
       // store est un objet dont le prototype est le store réel
       Object.getPrototypeOf(store).validationRules = {};
     }
-  }, []);
+  }, [store]);
   return (
     /*#__PURE__*/
     // eslint-disable-next-line react/jsx-no-bind
@@ -51,7 +49,6 @@ const Form = /*#__PURE__*/React.memo(({
 });
 Form.propTypes = {
   children: PropTypes__default['default'].node,
-  intl: PropTypes__default['default'].object,
   onSubmit: PropTypes__default['default'].func,
   onChange: PropTypes__default['default'].func,
   looseControl: PropTypes__default['default'].bool
@@ -59,14 +56,15 @@ Form.propTypes = {
 
 /* eslint-disable max-statements */
 function useFormControl(formKey, validationRule) {
-  const store = react.useHeridux();
+  const key = form.normalizeKey(formKey);
+  const strKey = form.stringifyKey(formKey);
+  const store = react.useStore();
+  const field = react.useSelector(state => state.getIn(["form", ...key]));
   const onChange = React.useCallback(e => {
     const val = e && e.target ? e.target.value : e;
-    store.setFieldValue(key, val);
-  }, []);
+    store.setFieldValue(strKey, val);
+  }, [store, strKey]);
   if (!store) return {};
-  const key = form.normalizeKey(formKey);
-  const field = store.getIn(["form", ...key]);
   let rule = store.getValidationRules(key);
 
   if (!rule || !field) {
@@ -103,13 +101,9 @@ function useFormControl(formKey, validationRule) {
 
 class HeriduxForm extends FormStore__default['default'] {
   createFormComponent() {
-    const useHeriduxHook = this.createHook();
-
-    const FormComponent = props => /*#__PURE__*/React__default['default'].createElement(react.Provider, {
-      value: useHeriduxHook()
+    return props => /*#__PURE__*/React__default['default'].createElement(react.Provider, {
+      value: this
     }, /*#__PURE__*/React__default['default'].createElement(Form, props));
-
-    return FormComponent;
   }
 
 }
@@ -120,10 +114,22 @@ get: function () {
 return react.Provider;
 }
 });
-Object.defineProperty(exports, 'useHeridux', {
+Object.defineProperty(exports, 'connect', {
 enumerable: true,
 get: function () {
-return react.useHeridux;
+return react.connect;
+}
+});
+Object.defineProperty(exports, 'useSelector', {
+enumerable: true,
+get: function () {
+return react.useSelector;
+}
+});
+Object.defineProperty(exports, 'useStore', {
+enumerable: true,
+get: function () {
+return react.useStore;
 }
 });
 exports.Form = Form;

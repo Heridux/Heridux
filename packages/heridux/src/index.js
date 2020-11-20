@@ -312,9 +312,7 @@ export default class Heridux {
    * @param {Object|Function} action redux action
    * @return {undefined|Promise} promise if async
    */
-  dispatch(action) {
-    return this._getReduxStore().dispatch(action)
-  }
+  dispatch = action => this._getReduxStore().dispatch(action)
 
   subscribe(callback) {
     return this._getReduxStore().subscribe(callback)

@@ -1,22 +1,21 @@
 /* eslint-disable max-statements */
 import { useCallback } from "react"
-import { useHeridux } from "@heridux/react"
-import { normalizeKey } from "@heridux/form"
+import { useStore, useSelector } from "@heridux/react"
+import { normalizeKey, stringifyKey } from "@heridux/form"
 
 export default function useFormControl(formKey, validationRule) {
-
-  const store = useHeridux()
+  const key = normalizeKey(formKey)
+  const strKey = stringifyKey(formKey)
+  const store = useStore()
+  const field = useSelector(state => state.getIn(["form", ...key]))
 
   const onChange = useCallback(e => {
     const val = e && e.target ? e.target.value : e
 
-    store.setFieldValue(key, val)
-  }, [])
+    store.setFieldValue(strKey, val)
+  }, [store, strKey])
 
   if (!store) return {}
-
-  const key = normalizeKey(formKey)
-  const field = store.getIn(["form", ...key])
 
   let rule = store.getValidationRules(key)
 

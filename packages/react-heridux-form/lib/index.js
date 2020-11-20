@@ -1,10 +1,10 @@
-import { normalizeKey } from '@heridux/form';
+import { normalizeKey, stringifyKey } from '@heridux/form';
 import _extends from '@babel/runtime/helpers/extends';
-import React, { memo, useEffect, useCallback } from 'react';
-import FormStore from '@heridux/form-arrays';
-import { useHeridux, Provider } from '@heridux/react';
-export { Provider, useHeridux } from '@heridux/react';
+import React, { memo, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import FormStore from '@heridux/form-arrays';
+import { useStore, useSelector, Provider } from '@heridux/react';
+export { Provider, connect, useSelector, useStore } from '@heridux/react';
 
 const Form = /*#__PURE__*/memo(({
   onSubmit,
@@ -13,10 +13,9 @@ const Form = /*#__PURE__*/memo(({
   onChange,
   ...rest
 }) => {
-  const store = useHeridux();
-  const changesCount = store.get("changesCount");
-
-  const handleSubmit = e => {
+  const store = useStore();
+  const changesCount = useSelector(state => state.get("changesCount"));
+  const handleSubmit = useCallback(e => {
     e.preventDefault();
     e.stopPropagation();
     const test = store.checkForm();
@@ -24,18 +23,17 @@ const Form = /*#__PURE__*/memo(({
     if (onSubmit && (test || looseControl)) {
       onSubmit(store.getFormValues());
     }
-  };
-
+  }, [store, looseControl, onSubmit]);
   useEffect(() => {
     if (onChange) onChange(store.getFormValues());
-  }, [changesCount, onChange]);
+  }, [store, onChange, changesCount]);
   useEffect(() => () => {
     if (store.templateDriven) {
       // nettoyage au démontage
       // store est un objet dont le prototype est le store réel
       Object.getPrototypeOf(store).validationRules = {};
     }
-  }, []);
+  }, [store]);
   return (
     /*#__PURE__*/
     // eslint-disable-next-line react/jsx-no-bind
@@ -46,7 +44,6 @@ const Form = /*#__PURE__*/memo(({
 });
 Form.propTypes = {
   children: PropTypes.node,
-  intl: PropTypes.object,
   onSubmit: PropTypes.func,
   onChange: PropTypes.func,
   looseControl: PropTypes.bool
@@ -54,14 +51,15 @@ Form.propTypes = {
 
 /* eslint-disable max-statements */
 function useFormControl(formKey, validationRule) {
-  const store = useHeridux();
+  const key = normalizeKey(formKey);
+  const strKey = stringifyKey(formKey);
+  const store = useStore();
+  const field = useSelector(state => state.getIn(["form", ...key]));
   const onChange = useCallback(e => {
     const val = e && e.target ? e.target.value : e;
-    store.setFieldValue(key, val);
-  }, []);
+    store.setFieldValue(strKey, val);
+  }, [store, strKey]);
   if (!store) return {};
-  const key = normalizeKey(formKey);
-  const field = store.getIn(["form", ...key]);
   let rule = store.getValidationRules(key);
 
   if (!rule || !field) {
@@ -98,13 +96,9 @@ function useFormControl(formKey, validationRule) {
 
 class HeriduxForm extends FormStore {
   createFormComponent() {
-    const useHeriduxHook = this.createHook();
-
-    const FormComponent = props => /*#__PURE__*/React.createElement(Provider, {
-      value: useHeriduxHook()
+    return props => /*#__PURE__*/React.createElement(Provider, {
+      value: this
     }, /*#__PURE__*/React.createElement(Form, props));
-
-    return FormComponent;
   }
 
 }

@@ -1,13 +1,14 @@
 (function (global, factory) {
-typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@babel/runtime/helpers/extends'), require('react'), require('react-redux'), require('@heridux/core'), require('immutable')) :
-typeof define === 'function' && define.amd ? define(['exports', '@babel/runtime/helpers/extends', 'react', 'react-redux', '@heridux/core', 'immutable'], factory) :
-(global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.ReactHeridux = {}, global._extends, global.React, global.reactRedux, global.Heridux, global.Immutable));
-}(this, (function (exports, _extends, React, reactRedux, Heridux, immutable) { 'use strict';
+typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@babel/runtime/helpers/extends'), require('react'), require('prop-types'), require('immutable'), require('react-redux'), require('@heridux/core')) :
+typeof define === 'function' && define.amd ? define(['exports', '@babel/runtime/helpers/extends', 'react', 'prop-types', 'immutable', 'react-redux', '@heridux/core'], factory) :
+(global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.ReactHeridux = {}, global._extends, global.React, global.PropTypes, global.Immutable, global.reactRedux, global.Heridux));
+}(this, (function (exports, _extends, React, PropTypes, immutable, reactRedux, Heridux) { 'use strict';
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
 var _extends__default = /*#__PURE__*/_interopDefaultLegacy(_extends);
 var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
+var PropTypes__default = /*#__PURE__*/_interopDefaultLegacy(PropTypes);
 var Heridux__default = /*#__PURE__*/_interopDefaultLegacy(Heridux);
 
 function toJS(Component) {
@@ -22,7 +23,7 @@ function toJS(Component) {
 
 const context = /*#__PURE__*/React.createContext();
 const {
-  Provider
+  Provider: ContextProvider
 } = context;
 class ReactHeridux extends Heridux__default['default'] {
   /**
@@ -40,65 +41,106 @@ class ReactHeridux extends Heridux__default['default'] {
       }, mapDispatchToProps || (() => ({})))(toJS(Component));
     } else {
       return Component => props => {
-        const store = useHeridux();
-        const state = store.getState();
-        const dispatch = store.dispatch.bind(store);
+        const state = useSelector(s => s);
         let extraProps = (mapStateToProps === null || mapStateToProps === void 0 ? void 0 : mapStateToProps(state, props)) || {};
         if (mapDispatchToProps) extraProps = { ...extraProps,
-          ...mapDispatchToProps(dispatch, props)
+          ...mapDispatchToProps(this.dispatch, props)
         };
         return /*#__PURE__*/React__default['default'].createElement(Component, _extends__default['default']({}, props, extraProps));
       };
     }
   }
-  /**
-   * Create a hook to use heridux store as internal state instead of redux
-   * @returns {Function} hook
-   * @see {@link https://fr.reactjs.org/docs/hooks-custom.html}
-   */
-
-
-  createHook() {
-    if (this._hookCreated) {
-      throw new Error("Only one hook can be created from an instance of Heridux");
-    }
-
-    return () => {
-      if (this._isReduxRegistered()) {
-        reactRedux.useSelector(state => state[this.STATE_PROPERTY]);
-      } else {
-        const [state, dispatch] = React.useReducer(this._reducer, this.initialState);
-        this.dispatch = dispatch;
-
-        this.getState = () => state;
-
-        this._hookCreated = true;
-      }
-
-      return Object.create(this); // new reference to force update
-    };
-  }
 
 }
 /**
- * Hook to use heridux store
- * @returns {Heridux} heridux object to manage store
+ * Provider component
  */
 
-function useHeridux() {
-  const heridux = React.useContext(context);
+const Provider = /*#__PURE__*/React.memo(({
+  store,
+  children
+}) => {
+  let heriduxState;
 
-  if (!heridux) {
-    console.error("Heridux not found. Please put your component inside a Heridux Provider.");
+  if (store._isReduxRegistered()) {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    heriduxState = reactRedux.useSelector(state => state[store.STATE_PROPERTY]);
+  } else {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [state, dispatch] = React.useReducer(store._reducer, store.initialState);
+    store.dispatch = dispatch;
+
+    store.getState = () => state;
+
+    heriduxState = state;
   }
 
-  return heridux;
-}
+  return /*#__PURE__*/React__default['default'].createElement(ContextProvider, {
+    value: {
+      store,
+      state: heriduxState
+    }
+  }, children);
+});
+Provider.propTypes = {
+  store: PropTypes__default['default'].instanceOf(Heridux__default['default']),
+  children: PropTypes__default['default'].node
+};
+/**
+ * Extract data from the store state, using a selector function
+ * @param {Function} selector function receiving state as argument
+ * @see {@link https://react-redux.js.org/api/hooks#useselector)}
+ * @returns {*} data extracted
+ */
 
+const useSelector = selector => {
+  const {
+    state
+  } = React.useContext(context);
+  const value = selector(state);
+  return immutable.Iterable.isIterable(value) ? value.toJS() : value;
+};
+/**
+ * Returns a reference to the store that was passed in to the <Provider> component
+ * @see {@link https://react-redux.js.org/api/hooks#usestore}
+ * @returns {Heridux} heridux store
+ */
+
+const useStore = () => {
+  const {
+    store
+  } = React.useContext(context);
+  return store;
+};
+/**
+   * Connect a react component to heridux store, inside a <Provider> component
+   * @param {Function} mapStateToProps properties to inject to the component
+   * @param {Function} mapDispatchToProps functions to inject to the component
+   * @return {Function} function to connect the component
+   * @see {@link https://react-redux.js.org/}
+   */
+
+const connect = (mapStateToProps, mapDispatchToProps) => Component => props => {
+  const {
+    store,
+    state
+  } = React.useContext(context);
+  let extraProps = (mapStateToProps === null || mapStateToProps === void 0 ? void 0 : mapStateToProps(state, props)) || {};
+  if (mapDispatchToProps) extraProps = { ...extraProps,
+    ...mapDispatchToProps(store.dispatch, props)
+  };
+  return /*#__PURE__*/React__default['default'].createElement(Component, _extends__default['default']({}, props, extraProps, {
+    store: store
+  }));
+};
+
+exports.ContextProvider = ContextProvider;
 exports.Provider = Provider;
+exports.connect = connect;
 exports.context = context;
 exports.default = ReactHeridux;
-exports.useHeridux = useHeridux;
+exports.useSelector = useSelector;
+exports.useStore = useStore;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 

@@ -4,48 +4,87 @@
 
 -   [connect][1]
     -   [Parameters][2]
--   [createHook][3]
--   [useHeridux][4]
+-   [Provider][3]
+-   [useSelector][4]
+    -   [Parameters][5]
+-   [useStore][6]
+-   [connect][7]
+    -   [Parameters][8]
 
 ## connect
 
--   **See: [https://react-redux.js.org/][5]
+-   **See: [https://react-redux.js.org/][9]
     **
 
 Connect a react component to heridux store
 
 ### Parameters
 
--   `mapStateToProps` **[Function][6]** properties to inject to the component
--   `mapDispatchToProps` **[Function][6]** functions to inject to the component
+-   `mapStateToProps` **[Function][10]** properties to inject to the component
+-   `mapDispatchToProps` **[Function][10]** functions to inject to the component
 
-Returns **[Function][6]** function to connect the component
+Returns **[Function][10]** function to connect the component
 
-## createHook
+## Provider
 
--   **See: [https://fr.reactjs.org/docs/hooks-custom.html][7]
+Provider component
+
+## useSelector
+
+-   **See: [https://react-redux.js.org/api/hooks#useselector)][11]
     **
 
-Create a hook to use heridux store as internal state instead of redux
+Extract data from the store state, using a selector function
 
-Returns **[Function][6]** hook
+### Parameters
 
-## useHeridux
+-   `selector` **[Function][10]** function receiving state as argument
 
-Hook to use heridux store
+Returns **any** data extracted
 
-Returns **Heridux** heridux object to manage store
+## useStore
+
+-   **See: [https://react-redux.js.org/api/hooks#usestore][12]
+    **
+
+Returns a reference to the store that was passed in to the <Provider> component
+
+Returns **Heridux** heridux store
+
+## connect
+
+-   **See: [https://react-redux.js.org/][9]
+    **
+
+Connect a react component to heridux store, inside a <Provider> component
+
+### Parameters
+
+-   `mapStateToProps` **[Function][10]** properties to inject to the component
+-   `mapDispatchToProps` **[Function][10]** functions to inject to the component
+
+Returns **[Function][10]** function to connect the component
 
 [1]: #connect
 
 [2]: #parameters
 
-[3]: #createhook
+[3]: #provider
 
-[4]: #useheridux
+[4]: #useselector
 
-[5]: https://react-redux.js.org/
+[5]: #parameters-1
 
-[6]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
+[6]: #usestore
 
-[7]: https://fr.reactjs.org/docs/hooks-custom.html
+[7]: #connect-1
+
+[8]: #parameters-2
+
+[9]: https://react-redux.js.org/
+
+[10]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
+
+[11]: <https://react-redux.js.org/api/hooks#useselector)>
+
+[12]: https://react-redux.js.org/api/hooks#usestore

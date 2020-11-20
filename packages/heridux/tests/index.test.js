@@ -1,5 +1,5 @@
 /* eslint no-unused-expressions:0 max-statements:0*/
-import Heridux from "../lib"
+import Heridux from "../src"
 
 Heridux.createReduxStore()
 

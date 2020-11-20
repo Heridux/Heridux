@@ -32,13 +32,15 @@ store.get("counter") // 1
 Use heridux with react (HOC or hook).
 
 ```javascript
-import { useHeridux } from "@heridux/react"
+import { useStore, useSelector } from "@heridux/react"
 
 const MyComponent = () => {
-  const store = useHeridux()
+  const store = useStore()
+  const counter = useSelector(state => state.get("counter"))
+
   return (
     <div>
-      <p>Clicked: <span>{ store.get("counter") }</span> times</p>
+      <p>Clicked: <span>{ counter }</span> times</p>
       <button onClick={ () => store.execAction("increment") }>+</button>
       <button onClick={ () => store.execAction("increment") }>-</button>
     </div>

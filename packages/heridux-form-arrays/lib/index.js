@@ -202,8 +202,8 @@ class FormStore extends Store {
 
   formArrayDef(path, itemDefinition) {
     /* mode strict (pas de redéfinition possible)
-     const rules = this.getValidationRules([...path, 0])
-     if (rules) throw new Error(`FormArray has already been defined at path ${this._stringifyPath(path)}`)*/
+      const rules = this.getValidationRules([...path, 0])
+      if (rules) throw new Error(`FormArray has already been defined at path ${this._stringifyPath(path)}`)*/
     return this._processForm(new FormArray(itemDefinition), normalizeKey(path));
   }
   /**
