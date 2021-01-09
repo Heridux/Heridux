@@ -164,6 +164,30 @@ test("should reset form values", () => {
 
 })
 
+test("should validate form values", () => {
+
+  const values = {
+    name : "Pauline",
+    age : "Croze",
+    genre : "female",
+    hobbies : {
+      first : "music",
+      second : "music"
+    }
+  }
+
+  myRedux.setFormValues(values)
+
+  myRedux.validateForm()
+
+  expect( myRedux.getFieldValue("name") ).toBe("Pauline")
+  expect( myRedux._getFieldProp("name", "initialValue") ).toBe("Pauline")
+  expect( myRedux.getFieldError("name") ).toBeNull()
+  expect( myRedux.isFieldTouched("name") ).toBeFalsy()
+  expect( myRedux.isFormTouched() ).toBeFalsy()
+
+})
+
 test("should manage object values", () => {
 
   myRedux.addFields([], { period : null })

@@ -155,7 +155,7 @@ class HeriduxForm extends Heridux {
         touched: false
       }), state, values, path);
       const newState = stateWithChanges(state, state.mergeDeepIn(["form", ...path], emptyValues).mergeDeepIn(["form", ...path], newValues));
-      return path ? newState : newState.set("touched", false);
+      return (path === null || path === void 0 ? void 0 : path.length) ? newState : newState.set("touched", false);
     });
     this.createAction("resetFormValues", (state, {
       path = []
@@ -233,6 +233,19 @@ class HeriduxForm extends Heridux {
     this.createAction("setGlobalError", (state, {
       error
     }) => state.set("error", error));
+    this.createAction("validateForm", state => {
+      const values = this.mapFields(field => ({ ...field,
+        initialValue: field.value,
+        touched: false,
+        error: null,
+        warning: null
+      }), state);
+      return state.mergeDeepIn(["form"], values).merge({
+        touched: false,
+        error: null,
+        changesCount: 0
+      });
+    });
   }
 
   set templateDriven(bool) {
@@ -255,6 +268,10 @@ class HeriduxForm extends Heridux {
 
   getValidationRules(path) {
     return getKeyValue(this.validationRules, path);
+  }
+
+  validateForm() {
+    this.execAction("validateForm");
   }
   /**
    * Renvoie un objet composé des résultats d'une fonction de rappel exécutée sur chaque champ de formulaire

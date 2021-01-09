@@ -131,7 +131,7 @@ export default class HeriduxForm extends Heridux {
           .mergeDeepIn(["form", ...path], newValues)
       )
 
-      return path ? newState : newState.set("touched", false)
+      return path?.length ? newState : newState.set("touched", false)
     })
 
     this.createAction("resetFormValues", (state, { path = [] }) => {
@@ -199,6 +199,22 @@ export default class HeriduxForm extends Heridux {
     ))
 
     this.createAction("setGlobalError", (state, { error }) => state.set("error", error))
+
+    this.createAction("validateForm", state => {
+
+      const values = this.mapFields(field => ({
+        ...field,
+        initialValue : field.value,
+        touched : false,
+        error : null,
+        warning : null
+      }), state)
+
+      return state
+        .mergeDeepIn(["form"], values)
+        .merge({ touched : false, error : null, changesCount : 0 })
+    })
+
   }
 
   set templateDriven(bool) {
@@ -219,6 +235,10 @@ export default class HeriduxForm extends Heridux {
    */
   getValidationRules(path) {
     return getKeyValue(this.validationRules, path)
+  }
+
+  validateForm() {
+    this.execAction("validateForm")
   }
 
   /**
