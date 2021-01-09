@@ -7,7 +7,7 @@ import { Rules, FormWarning } from "@heridux/form-rules"
 import { getKeyValue, setKeyValue, normalizeKey, stateWithChanges } from "./utils"
 
 /**
- * Gestion des formulaires avec Heridux
+ * Manage forms with Heridux
  * @extends Heridux
  */
 export default class HeriduxForm extends Heridux {
@@ -217,37 +217,40 @@ export default class HeriduxForm extends Heridux {
 
   }
 
-  set templateDriven(bool) {
-    this._templateDriven = Boolean(bool)
-  }
-
-  get templateDriven() {
-    return Boolean(this._templateDriven)
-  }
-
+  /**
+   * Transform array path to string
+   * @private
+   * @param {Array} path array path
+   * @returns {String} string path
+   */
   _stringifyPath(path) {
     return "[" + path.join(", ") + "]"
   }
   /**
-   * Récupération des règles de validation d'un champ du formulaire
-   * @param {Array} path clé d'accès au champ
-   * @returns {Rules} l'objet contenant les règles de validation
+   * Get validation rules of form field
+   * @param {Array} path field key path
+   * @returns {Rules} object containing validation rules
    */
   getValidationRules(path) {
     return getKeyValue(this.validationRules, path)
   }
 
+  /**
+   * Set current values as initial values
+   * @returns {undefined}
+   */
   validateForm() {
     this.execAction("validateForm")
   }
 
   /**
-   * Renvoie un objet composé des résultats d'une fonction de rappel exécutée sur chaque champ de formulaire
-   * @param {Function} callback fonction à exécuter sur chaque champ de formulaire
-   * @param {Object} _state state à utiliser si disponible
-   * @param {Object} _values valeurs sur lesquelles itérer si ce ne sont pas celles du formulaire dans le store
-   * @param {Array} _path valeur interne de la clé
-   * @returns {Object} objet résultat
+   * Returns an object composed of the results of a callback executed on each form field
+   * @param {Function} callback function to run on each form field
+   * @param {Object} _state state to use if available
+   * @param {Object} _values values to iterate over if they are not those of the form in the store
+   * @param {Array} _path internal key value
+   * @returns {Object} result
+   * @private
    */
   // eslint-disable-next-line max-params
   mapFields(callback, _state, _values, _path = []) {
@@ -296,6 +299,11 @@ export default class HeriduxForm extends Heridux {
     return map
   }
 
+  /**
+   * Checks if a field is registered at path passed as argument
+   * @param {Array} path key path
+   * @returns {Bool} true if a field is registered
+   */
   isField(path) {
     return this.getValidationRules(path) instanceof Rules
   }

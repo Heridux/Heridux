@@ -6,74 +6,75 @@
     -   [Parameters][2]
     -   [getValidationRules][3]
         -   [Parameters][4]
-    -   [mapFields][5]
-        -   [Parameters][6]
-    -   [checkFieldValue][7]
-        -   [Parameters][8]
-    -   [checkForm][9]
-        -   [Parameters][10]
-    -   [initFormValues][11]
-        -   [Parameters][12]
-    -   [initFormValuesIn][13]
-        -   [Parameters][14]
-    -   [cancelFormValues][15]
-    -   [cancelFormValuesIn][16]
-        -   [Parameters][17]
-    -   [resetFormValues][18]
-    -   [resetFormValuesIn][19]
-        -   [Parameters][20]
-    -   [addFields][21]
-        -   [Parameters][22]
-    -   [removeFields][23]
-        -   [Parameters][24]
-    -   [setFieldValue][25]
-        -   [Parameters][26]
-    -   [initFieldValue][27]
-        -   [Parameters][28]
-    -   [cancelFieldValue][29]
-        -   [Parameters][30]
-    -   [setFieldWarning][31]
-        -   [Parameters][32]
-    -   [setFieldError][33]
-        -   [Parameters][34]
-    -   [setGlobalError][35]
-        -   [Parameters][36]
-    -   [isFormTouched][37]
-        -   [Parameters][38]
-    -   [isFormValid][39]
-        -   [Parameters][40]
-    -   [getFormErrors][41]
-        -   [Parameters][42]
-    -   [setFormValues][43]
-        -   [Parameters][44]
-    -   [setFormValuesIn][45]
-        -   [Parameters][46]
-    -   [getFormValues][47]
-        -   [Parameters][48]
-    -   [getFormValuesIn][49]
-        -   [Parameters][50]
-    -   [getFieldValue][51]
-        -   [Parameters][52]
-    -   [getFieldWarning][53]
-        -   [Parameters][54]
-    -   [getFieldError][55]
-        -   [Parameters][56]
-    -   [isFieldTouched][57]
-        -   [Parameters][58]
-    -   [defineForm][59]
-        -   [Parameters][60]
-    -   [destroyForm][61]
-    -   [defineFieldRules][62]
-        -   [Parameters][63]
-    -   [submitForm][64]
--   [stateWithChanges][65]
-    -   [Parameters][66]
+    -   [validateForm][5]
+    -   [isField][6]
+        -   [Parameters][7]
+    -   [checkFieldValue][8]
+        -   [Parameters][9]
+    -   [checkForm][10]
+        -   [Parameters][11]
+    -   [initFormValues][12]
+        -   [Parameters][13]
+    -   [initFormValuesIn][14]
+        -   [Parameters][15]
+    -   [cancelFormValues][16]
+    -   [cancelFormValuesIn][17]
+        -   [Parameters][18]
+    -   [resetFormValues][19]
+    -   [resetFormValuesIn][20]
+        -   [Parameters][21]
+    -   [addFields][22]
+        -   [Parameters][23]
+    -   [removeFields][24]
+        -   [Parameters][25]
+    -   [setFieldValue][26]
+        -   [Parameters][27]
+    -   [initFieldValue][28]
+        -   [Parameters][29]
+    -   [cancelFieldValue][30]
+        -   [Parameters][31]
+    -   [setFieldWarning][32]
+        -   [Parameters][33]
+    -   [setFieldError][34]
+        -   [Parameters][35]
+    -   [setGlobalError][36]
+        -   [Parameters][37]
+    -   [isFormTouched][38]
+        -   [Parameters][39]
+    -   [isFormValid][40]
+        -   [Parameters][41]
+    -   [getFormErrors][42]
+        -   [Parameters][43]
+    -   [setFormValues][44]
+        -   [Parameters][45]
+    -   [setFormValuesIn][46]
+        -   [Parameters][47]
+    -   [getFormValues][48]
+        -   [Parameters][49]
+    -   [getFormValuesIn][50]
+        -   [Parameters][51]
+    -   [getFieldValue][52]
+        -   [Parameters][53]
+    -   [getFieldWarning][54]
+        -   [Parameters][55]
+    -   [getFieldError][56]
+        -   [Parameters][57]
+    -   [isFieldTouched][58]
+        -   [Parameters][59]
+    -   [defineForm][60]
+        -   [Parameters][61]
+    -   [destroyForm][62]
+    -   [defineFieldRules][63]
+        -   [Parameters][64]
+    -   [submitForm][65]
+-   [stateWithChanges][66]
+    -   [Parameters][67]
 
 ## HeriduxForm
 
 **Extends Heridux**
 
-Gestion des formulaires avec Heridux
+Manage forms with Heridux
 
 ### Parameters
 
@@ -81,26 +82,29 @@ Gestion des formulaires avec Heridux
 
 ### getValidationRules
 
-Récupération des règles de validation d'un champ du formulaire
+Get validation rules of form field
 
 #### Parameters
 
--   `path` **[Array][67]** clé d'accès au champ
+-   `path` **[Array][68]** field key path
 
-Returns **Rules** l'objet contenant les règles de validation
+Returns **Rules** object containing validation rules
 
-### mapFields
+### validateForm
 
-Renvoie un objet composé des résultats d'une fonction de rappel exécutée sur chaque champ de formulaire
+Set current values as initial values
+
+Returns **[undefined][69]** 
+
+### isField
+
+Checks if a field is registered at path passed as argument
 
 #### Parameters
 
--   `callback` **[Function][68]** fonction à exécuter sur chaque champ de formulaire
--   `_state` **[Object][69]** state à utiliser si disponible
--   `_values` **[Object][69]** valeurs sur lesquelles itérer si ce ne sont pas celles du formulaire dans le store
--   `_path` **[Array][67]** valeur interne de la clé (optional, default `[]`)
+-   `path` **[Array][68]** key path
 
-Returns **[Object][69]** objet résultat
+Returns **Bool** true if a field is registered
 
 ### checkFieldValue
 
@@ -108,7 +112,7 @@ Vérification de la validité de la valeur d'un champ
 
 #### Parameters
 
--   `params` **[Object][69]** objet contenant les clés suivantes :
+-   `params` **[Object][70]** objet contenant les clés suivantes :
     key : position du champ dans le formulaire ;
     value : valeur du champ ;
     values : autres valeurs du formulaire (en cas de champs dépendants les uns des autres) ;
@@ -119,7 +123,7 @@ Vérification de la validité de la valeur d'un champ
 
 -   Throws **(FormError | FormWarning)** en cas de non validité
 
-Returns **[undefined][70]** 
+Returns **[undefined][69]** 
 
 ### checkForm
 
@@ -127,7 +131,7 @@ Vérification du formulaire
 
 #### Parameters
 
--   `formValues` **[Object][69]** valeurs à vérifier si ce ne sont pas celles du store (optional, default `null`)
+-   `formValues` **[Object][70]** valeurs à vérifier si ce ne sont pas celles du store (optional, default `null`)
 
 Returns **[Boolean][71]** true si tous les champs sont corrects, false sinon
 
@@ -137,9 +141,9 @@ Initialisation du formulaire. Les champs non déclarés seront ignorés
 
 #### Parameters
 
--   `values` **[Object][69]** valeurs d'initialisation
+-   `values` **[Object][70]** valeurs d'initialisation
 
-Returns **[undefined][70]** 
+Returns **[undefined][69]** 
 
 ### initFormValuesIn
 
@@ -147,16 +151,16 @@ Initialisation d'une partie du formulaire. Les champs non déclarés seront igno
 
 #### Parameters
 
--   `path` **[Array][67]** point d'entrée
--   `values` **[Object][69]** valeurs d'initialisation
+-   `path` **[Array][68]** point d'entrée
+-   `values` **[Object][70]** valeurs d'initialisation
 
-Returns **[undefined][70]** 
+Returns **[undefined][69]** 
 
 ### cancelFormValues
 
 Annulation des modifications (retour aux valeurs initiales définies par la méthode initFormValues)
 
-Returns **[undefined][70]** 
+Returns **[undefined][69]** 
 
 ### cancelFormValuesIn
 
@@ -165,15 +169,15 @@ Annulation des modifications d'une partie du formulaure
 
 #### Parameters
 
--   `path` **[Array][67]** point d'entrée
+-   `path` **[Array][68]** point d'entrée
 
-Returns **[undefined][70]** 
+Returns **[undefined][69]** 
 
 ### resetFormValues
 
 Réinitialisation des valeurs du formulaires (toutes fixées à null)
 
-Returns **[undefined][70]** 
+Returns **[undefined][69]** 
 
 ### resetFormValuesIn
 
@@ -181,9 +185,9 @@ Réinitialisation d'une partie des valeurs du formulaires (toutes fixées à nul
 
 #### Parameters
 
--   `path` **[Array][67]** point d'entrée
+-   `path` **[Array][68]** point d'entrée
 
-Returns **[undefined][70]** 
+Returns **[undefined][69]** 
 
 ### addFields
 
@@ -191,11 +195,11 @@ Ajout dynamique de champs dans le formulaire (postérieur à la méthode defineF
 
 #### Parameters
 
--   `path` **([Array][67] \| [String][72])** chemin où insérer les nouveaux champs
--   `fields` **[Object][69]** objet dont les clés sont les noms des champs et les valeurs les règles
+-   `path` **([Array][68] \| [String][72])** chemin où insérer les nouveaux champs
+-   `fields` **[Object][70]** objet dont les clés sont les noms des champs et les valeurs les règles
     de validation
 
-Returns **[undefined][70]** 
+Returns **[undefined][69]** 
 
 ### removeFields
 
@@ -203,9 +207,9 @@ Suppression dynamique de champs de formulaire
 
 #### Parameters
 
--   `path` **([Array][67] \| [String][72])** chemin ou supprimer les champs
+-   `path` **([Array][68] \| [String][72])** chemin ou supprimer les champs
 
-Returns **[undefined][70]** 
+Returns **[undefined][69]** 
 
 ### setFieldValue
 
@@ -213,10 +217,10 @@ Attribution d'une valeur à un champ
 
 #### Parameters
 
--   `path` **([Array][67] \| [String][72])** chemin du champ
+-   `path` **([Array][68] \| [String][72])** chemin du champ
 -   `value` **any** valeur du champ
 
-Returns **[undefined][70]** 
+Returns **[undefined][69]** 
 
 ### initFieldValue
 
@@ -224,10 +228,10 @@ Initialisation d'un champ
 
 #### Parameters
 
--   `path` **([Array][67] \| [String][72])** chemin du champ
+-   `path` **([Array][68] \| [String][72])** chemin du champ
 -   `value` **any** valeur du champ
 
-Returns **[undefined][70]** 
+Returns **[undefined][69]** 
 
 ### cancelFieldValue
 
@@ -235,9 +239,9 @@ Annulation des modifications d'un champ (retour à la valeur initiale)
 
 #### Parameters
 
--   `path` **([Array][67] \| [String][72])** chemin du champ
+-   `path` **([Array][68] \| [String][72])** chemin du champ
 
-Returns **[undefined][70]** 
+Returns **[undefined][69]** 
 
 ### setFieldWarning
 
@@ -245,11 +249,11 @@ Définition d'un message d'avetissement
 
 #### Parameters
 
--   `path` **([Array][67] \| [String][72])** chemin du champ
+-   `path` **([Array][68] \| [String][72])** chemin du champ
 -   `message` **[String][72]** contenu du message
--   `properties` **[Object][69]** propriétés supplémentaires liées à l'erreur
+-   `properties` **[Object][70]** propriétés supplémentaires liées à l'erreur
 
-Returns **[undefined][70]** 
+Returns **[undefined][69]** 
 
 ### setFieldError
 
@@ -257,11 +261,11 @@ Définition d'un message d'erreur
 
 #### Parameters
 
--   `path` **([Array][67] \| [String][72])** chemin du champ
+-   `path` **([Array][68] \| [String][72])** chemin du champ
 -   `message` **[String][72]** contenu du message
--   `properties` **[Object][69]** propriétés supplémentaires liées à l'erreur
+-   `properties` **[Object][70]** propriétés supplémentaires liées à l'erreur
 
-Returns **[undefined][70]** 
+Returns **[undefined][69]** 
 
 ### setGlobalError
 
@@ -271,7 +275,7 @@ Définition d'une erreur globale sur le formulaire
 
 -   `error` **[String][72]** contenu de l'erreur
 
-Returns **[undefined][70]** 
+Returns **[undefined][69]** 
 
 ### isFormTouched
 
@@ -302,7 +306,7 @@ Récupère l'ensemble des erreurs du formulaire sous forme de tableau
 
 -   `state` **Immutable.Map** optionnel état du store si on l'a sous la main
 
-Returns **[Array][67]** tableau des erreurs
+Returns **[Array][68]** tableau des erreurs
 
 ### setFormValues
 
@@ -312,9 +316,9 @@ méthode checkForm ensuite)
 
 #### Parameters
 
--   `values` **[Object][69]** objet contenant les valeurs
+-   `values` **[Object][70]** objet contenant les valeurs
 
-Returns **[undefined][70]** 
+Returns **[undefined][69]** 
 
 ### setFormValuesIn
 
@@ -324,10 +328,10 @@ méthode checkForm ensuite)
 
 #### Parameters
 
--   `path` **[Array][67]** optionnel, point d'entrée si on ne veut affecter qu'une partie du formulaire
--   `values` **[Object][69]** objet contenant les valeurs
+-   `path` **[Array][68]** optionnel, point d'entrée si on ne veut affecter qu'une partie du formulaire
+-   `values` **[Object][70]** objet contenant les valeurs
 
-Returns **[undefined][70]** 
+Returns **[undefined][69]** 
 
 ### getFormValues
 
@@ -337,7 +341,7 @@ Récupère l'ensemble des valeurs du formulaire
 
 -   `state` **Immutable.Map** optionnel état du store si on l'a sous la main
 
-Returns **[Object][69]** objet décrivant les valeurs
+Returns **[Object][70]** objet décrivant les valeurs
 
 ### getFormValuesIn
 
@@ -345,10 +349,10 @@ Récupère une partie des valeurs du formulaire
 
 #### Parameters
 
--   `path` **[Array][67]** optionnel, point d'entrée si on ne veut récupérer qu'une partie du formulaire
+-   `path` **[Array][68]** optionnel, point d'entrée si on ne veut récupérer qu'une partie du formulaire
 -   `state` **Immutable.Map** optionnel état du store si on l'a sous la main
 
-Returns **[Object][69]** objet décrivant les valeurs
+Returns **[Object][70]** objet décrivant les valeurs
 
 ### getFieldValue
 
@@ -356,7 +360,7 @@ Récupération de la valeur d'un champ
 
 #### Parameters
 
--   `path` **([Array][67] \| [String][72])** chemin du champ
+-   `path` **([Array][68] \| [String][72])** chemin du champ
 -   `state` **Immutable.Map** optionnel état du store si on l'a sous la main
 
 Returns **any** valeur du champ
@@ -367,7 +371,7 @@ Récupération du message d'avertissement d'un champ
 
 #### Parameters
 
--   `path` **([Array][67] \| [String][72])** chemin du champ
+-   `path` **([Array][68] \| [String][72])** chemin du champ
 -   `state` **Immutable.Map** optionnel état du store si on l'a sous la main
 
 Returns **[String][72]** message d'avertissement du champ
@@ -378,7 +382,7 @@ Récupération du message d'erreur d'un champ
 
 #### Parameters
 
--   `path` **([Array][67] \| [String][72])** chemin du champ
+-   `path` **([Array][68] \| [String][72])** chemin du champ
 -   `state` **Immutable.Map** optionnel état du store si on l'a sous la main
 
 Returns **[String][72]** message d'erreur du champ
@@ -389,7 +393,7 @@ Teste si un champ a été modifié
 
 #### Parameters
 
--   `path` **([Array][67] \| [String][72])** chemin du champ
+-   `path` **([Array][68] \| [String][72])** chemin du champ
 -   `state` **Immutable.Map** optionnel état du store si on l'a sous la main
 
 Returns **[Boolean][71]** true si le champ a été modifié
@@ -400,15 +404,15 @@ Définit la structure du formulaire
 
 #### Parameters
 
--   `fields` **[Object][69]** objet décrivant le formulaire (nom des champs en clé, objet Rules en valeur)
+-   `fields` **[Object][70]** objet décrivant le formulaire (nom des champs en clé, objet Rules en valeur)
 
-Returns **[undefined][70]** 
+Returns **[undefined][69]** 
 
 ### destroyForm
 
 Réinitialise complètement la structure du formulaire
 
-Returns **[undefined][70]** 
+Returns **[undefined][69]** 
 
 ### defineFieldRules
 
@@ -416,10 +420,10 @@ Définit les règles de validation pour un champ donné
 
 #### Parameters
 
--   `path` **([Array][67] \| [String][72])** chemin du champ
+-   `path` **([Array][68] \| [String][72])** chemin du champ
 -   `rules` **Rules** objet de validation
 
-Returns **[undefined][70]** 
+Returns **[undefined][69]** 
 
 ### submitForm
 
@@ -428,7 +432,7 @@ Une erreur est jetée dans le cas contraire
 
 -   Throws **any** jète une erreur si des champs ne sont pas valides
 
-Returns **[Object][69]** objet contenant les valeurs
+Returns **[Object][70]** objet contenant les valeurs
 
 ## stateWithChanges
 
@@ -450,137 +454,137 @@ Returns **Immutable.Map** état avec la propriété changesCount et touched à j
 
 [4]: #parameters-1
 
-[5]: #mapfields
+[5]: #validateform
 
-[6]: #parameters-2
+[6]: #isfield
 
-[7]: #checkfieldvalue
+[7]: #parameters-2
 
-[8]: #parameters-3
+[8]: #checkfieldvalue
 
-[9]: #checkform
+[9]: #parameters-3
 
-[10]: #parameters-4
+[10]: #checkform
 
-[11]: #initformvalues
+[11]: #parameters-4
 
-[12]: #parameters-5
+[12]: #initformvalues
 
-[13]: #initformvaluesin
+[13]: #parameters-5
 
-[14]: #parameters-6
+[14]: #initformvaluesin
 
-[15]: #cancelformvalues
+[15]: #parameters-6
 
-[16]: #cancelformvaluesin
+[16]: #cancelformvalues
 
-[17]: #parameters-7
+[17]: #cancelformvaluesin
 
-[18]: #resetformvalues
+[18]: #parameters-7
 
-[19]: #resetformvaluesin
+[19]: #resetformvalues
 
-[20]: #parameters-8
+[20]: #resetformvaluesin
 
-[21]: #addfields
+[21]: #parameters-8
 
-[22]: #parameters-9
+[22]: #addfields
 
-[23]: #removefields
+[23]: #parameters-9
 
-[24]: #parameters-10
+[24]: #removefields
 
-[25]: #setfieldvalue
+[25]: #parameters-10
 
-[26]: #parameters-11
+[26]: #setfieldvalue
 
-[27]: #initfieldvalue
+[27]: #parameters-11
 
-[28]: #parameters-12
+[28]: #initfieldvalue
 
-[29]: #cancelfieldvalue
+[29]: #parameters-12
 
-[30]: #parameters-13
+[30]: #cancelfieldvalue
 
-[31]: #setfieldwarning
+[31]: #parameters-13
 
-[32]: #parameters-14
+[32]: #setfieldwarning
 
-[33]: #setfielderror
+[33]: #parameters-14
 
-[34]: #parameters-15
+[34]: #setfielderror
 
-[35]: #setglobalerror
+[35]: #parameters-15
 
-[36]: #parameters-16
+[36]: #setglobalerror
 
-[37]: #isformtouched
+[37]: #parameters-16
 
-[38]: #parameters-17
+[38]: #isformtouched
 
-[39]: #isformvalid
+[39]: #parameters-17
 
-[40]: #parameters-18
+[40]: #isformvalid
 
-[41]: #getformerrors
+[41]: #parameters-18
 
-[42]: #parameters-19
+[42]: #getformerrors
 
-[43]: #setformvalues
+[43]: #parameters-19
 
-[44]: #parameters-20
+[44]: #setformvalues
 
-[45]: #setformvaluesin
+[45]: #parameters-20
 
-[46]: #parameters-21
+[46]: #setformvaluesin
 
-[47]: #getformvalues
+[47]: #parameters-21
 
-[48]: #parameters-22
+[48]: #getformvalues
 
-[49]: #getformvaluesin
+[49]: #parameters-22
 
-[50]: #parameters-23
+[50]: #getformvaluesin
 
-[51]: #getfieldvalue
+[51]: #parameters-23
 
-[52]: #parameters-24
+[52]: #getfieldvalue
 
-[53]: #getfieldwarning
+[53]: #parameters-24
 
-[54]: #parameters-25
+[54]: #getfieldwarning
 
-[55]: #getfielderror
+[55]: #parameters-25
 
-[56]: #parameters-26
+[56]: #getfielderror
 
-[57]: #isfieldtouched
+[57]: #parameters-26
 
-[58]: #parameters-27
+[58]: #isfieldtouched
 
-[59]: #defineform
+[59]: #parameters-27
 
-[60]: #parameters-28
+[60]: #defineform
 
-[61]: #destroyform
+[61]: #parameters-28
 
-[62]: #definefieldrules
+[62]: #destroyform
 
-[63]: #parameters-29
+[63]: #definefieldrules
 
-[64]: #submitform
+[64]: #parameters-29
 
-[65]: #statewithchanges
+[65]: #submitform
 
-[66]: #parameters-30
+[66]: #statewithchanges
 
-[67]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
+[67]: #parameters-30
 
-[68]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
+[68]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
 
-[69]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+[69]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined
 
-[70]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined
+[70]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
 
 [71]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean
 

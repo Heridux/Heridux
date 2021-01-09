@@ -100,6 +100,14 @@ function useFormControl(formKey, validationRule) {
 }
 
 class HeriduxForm extends FormStore__default['default'] {
+  set templateDriven(bool) {
+    this._templateDriven = Boolean(bool);
+  }
+
+  get templateDriven() {
+    return Boolean(this._templateDriven);
+  }
+
   createFormComponent() {
     return props => /*#__PURE__*/React__default['default'].createElement(react.Provider, {
       value: this
