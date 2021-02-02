@@ -1,31 +1,27 @@
 {
-  "name": "@heridux/react-form",
+  "name": "@heridux/immutable",
   "version": "0.0.1",
   "main": "lib/index.js",
-  "description": "Use heridux forms with React",
+  "description": "Use heridux with ImmutableJS",
   "repository": {
     "type" : "git",
     "url" : "https://github.com/Heridux/Heridux.git",
-    "directory": "packages/react-heridux-form"
+    "directory": "packages/heridux-immutable"
   },
   "author": "Yannick Bochatay",
   "license": "MIT",
   "dependencies": {
-    "@heridux/react": "^0.0.2",
-    "@heridux/form": "^0.0.1",
-    "@heridux/form-arrays": "^0.0.1",
-    "react": "^17.0.1",
+    "immutable": "^4.0.0-rc.12",
     "@babel/runtime": "^7.12.5"
   },
+  "devDependencies": {},
   "keywords": [
     "heridux",
-    "react",
+    "immutable",
+    "immutable-js",
     "redux",
+    "react",
     "hooks",
-    "form",
-    "forms",
-    "form-validation",
-    "validation",
     "react-hooks"
   ]
 }

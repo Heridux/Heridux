@@ -1,10 +1,9 @@
-import { normalizeKey, stringifyKey } from '@heridux/form';
-import _extends from '@babel/runtime/helpers/extends';
 import React, { memo, useCallback, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import FormStore from '@heridux/form-arrays';
 import { useStore, useSelector, Provider } from '@heridux/react';
 export { Provider, connect, useSelector, useStore } from '@heridux/react';
+import _extends from '@babel/runtime/helpers/extends';
+import { normalizeKey, stringifyKey } from '@heridux/form';
 
 const Form = /*#__PURE__*/memo(({
   onSubmit,
@@ -42,12 +41,6 @@ const Form = /*#__PURE__*/memo(({
     }), children)
   );
 });
-Form.propTypes = {
-  children: PropTypes.node,
-  onSubmit: PropTypes.func,
-  onChange: PropTypes.func,
-  looseControl: PropTypes.bool
-};
 
 /* eslint-disable max-statements */
 function useFormControl(formKey, validationRule) {

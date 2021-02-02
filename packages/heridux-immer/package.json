@@ -1,32 +1,27 @@
 {
-  "name": "@heridux/form",
+  "name": "@heridux/immer",
   "version": "0.0.1",
   "main": "lib/index.js",
-  "description": "Manage your forms easily with heridux-form",
+  "description": "Use heridux with Immer",
   "repository": {
     "type": "git",
     "url": "https://github.com/Heridux/Heridux.git",
-    "directory": "packages/heridux-form"
+    "directory": "packages/heridux-immer"
   },
   "author": "Yannick Bochatay",
   "license": "MIT",
   "dependencies": {
     "@babel/runtime": "^7.12.5",
-    "@heridux/immutable": "^0.0.1",
-    "@heridux/form-rules": "^0.0.1",
-    "immutable": "^4.0.0-rc.12",
-    "lodash": "^4.17.20"
+    "immer": "^8.0.1"
   },
   "devDependencies": {},
   "keywords": [
     "heridux",
-    "react",
+    "immer",
+    "immer-js",
     "redux",
+    "react",
     "hooks",
-    "form",
-    "forms",
-    "form-validation",
-    "validation",
     "react-hooks"
   ]
 }

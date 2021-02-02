@@ -1,14 +1,14 @@
-import { Iterable } from 'immutable';
-import Heridux from '@heridux/core';
 import _extends from '@babel/runtime/helpers/extends';
 import React, { createContext, memo, useReducer, useContext } from 'react';
-import PropTypes from 'prop-types';
 import { connect as connect$1, useSelector as useSelector$1 } from 'react-redux';
+import Heridux from '@heridux/core';
 
 function toJS(Component) {
   return props => {
     const propsJS = Object.entries(props).reduce((newProps, prop) => {
-      newProps[prop[0]] = Iterable.isIterable(prop[1]) ? prop[1].toJS() : prop[1];
+      var _prop$;
+
+      newProps[prop[0]] = typeof ((_prop$ = prop[1]) === null || _prop$ === void 0 ? void 0 : _prop$.toJS) === "function" ? prop[1].toJS() : prop[1];
       return newProps;
     }, {});
     return /*#__PURE__*/React.createElement(Component, propsJS);
@@ -76,10 +76,6 @@ const Provider = /*#__PURE__*/memo(({
     }
   }, children);
 });
-Provider.propTypes = {
-  store: PropTypes.instanceOf(Heridux),
-  children: PropTypes.node
-};
 /**
  * Extract data from the store state, using a selector function
  * @param {Function} selector function receiving state as argument
@@ -92,7 +88,7 @@ const useSelector = selector => {
     state
   } = useContext(context);
   const value = selector(state);
-  return Iterable.isIterable(value) ? value.toJS() : value;
+  return typeof (value === null || value === void 0 ? void 0 : value.toJS) === "function" ? value.toJS() : value;
 };
 /**
  * Returns a reference to the store that was passed in to the <Provider> component

@@ -1,6 +1,5 @@
+/* eslint-disable react/prop-types */
 import React, { createContext, useReducer, useContext, memo } from "react"
-import PropTypes from "prop-types"
-import { Iterable } from "immutable"
 import { connect as reduxConnect, useSelector as useReduxSelector } from "react-redux"
 import Heridux from "@heridux/core"
 import { toJS } from "./utils"
@@ -72,11 +71,6 @@ export const Provider = memo(({ store, children }) => {
   )
 })
 
-Provider.propTypes = {
-  store : PropTypes.instanceOf(Heridux),
-  children : PropTypes.node
-}
-
 /**
  * Extract data from the store state, using a selector function
  * @param {Function} selector function receiving state as argument
@@ -87,7 +81,7 @@ export const useSelector = selector => {
   const { state } = useContext(context)
   const value = selector(state)
 
-  return Iterable.isIterable(value) ? value.toJS() : value
+  return (typeof value?.toJS === "function") ? value.toJS() : value
 }
 
 /**

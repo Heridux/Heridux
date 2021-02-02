@@ -4,25 +4,20 @@
 
 -   [Heridux][1]
     -   [Parameters][2]
-    -   [set][3]
+    -   [getState][3]
         -   [Parameters][4]
-    -   [getState][5]
+    -   [get][5]
         -   [Parameters][6]
-    -   [get][7]
+    -   [setInitialState][7]
         -   [Parameters][8]
-    -   [getIn][9]
+    -   [createAction][9]
         -   [Parameters][10]
         -   [Examples][11]
-    -   [setInitialState][12]
+    -   [execAction][12]
         -   [Parameters][13]
-    -   [createAction][14]
-        -   [Parameters][15]
-        -   [Examples][16]
-    -   [execAction][17]
-        -   [Parameters][18]
-    -   [register][19]
-    -   [dispatch][20]
-        -   [Parameters][21]
+    -   [register][14]
+    -   [dispatch][15]
+        -   [Parameters][16]
 
 ## Heridux
 
@@ -30,18 +25,7 @@ Creation of Heridux store
 
 ### Parameters
 
--   `STATE_PROPERTY` **[String][22]** string name for this slice of state. Generated actions wille use this as a prefix.
-
-### set
-
-Set a first level value without creating a specific action
-
-#### Parameters
-
--   `prop` **[String][22]** property name
--   `value` **any** property value
-
-Returns **[undefined][23]** 
+-   `STATE_PROPERTY` **[String][17]** string name for this slice of state. Generated actions wille use this as a prefix.
 
 ### getState
 
@@ -49,9 +33,9 @@ Get store slice
 
 #### Parameters
 
--   `state` **Immutable.Map?** global state (if not specified, call getState method of redux store)
+-   `state` **[Object][18]?** global state (if not specified, call getState method of redux store)
 
-Returns **Immutable.Map** store slice
+Returns **[Object][18]** store slice
 
 ### get
 
@@ -59,44 +43,20 @@ Get js value of a first level key
 
 #### Parameters
 
--   `key` **[String][22]** key name
--   `state` **Immutable.Map?** global state (if not specified, call getState method of redux store)
+-   `key` **[String][17]** key name
+-   `_state` **[Object][18]?** global state (if not specified, call getState method of redux store)
 
-Returns **any** key value (converted in plain js if immutable)
-
-### getIn
-
--   **See: [https://immutable-js.github.io/immutable-js/][24]
-    **
-
-Get js value of a nested key
-
-#### Parameters
-
--   `path` **[Array][25]** Iterable key path (more details in Immutable.js documentation)
--   `state` **Immutable.Map?** global state (if not specified, call getState method of redux store)
-
-#### Examples
-
-```javascript
-const store = new Heridux("myPartialStore")
-store.setInitialState({
- list : [{ name : "foo"}, { name : "bar" }]
-})
-store.getIn(["list", 0, "name"]) // foo
-```
-
-Returns **any** key value (converted in plain js if immutable)
+Returns **any** key value
 
 ### setInitialState
 
-Define the initial state of the store slice. It will automatically be converted to immutable.
+Define the initial state of the store slice
 
 #### Parameters
 
--   `state` **[Object][26]** plain js state
+-   `state` **[Object][18]** plain js state
 
-Returns **[undefined][23]** 
+Returns **[undefined][19]** 
 
 ### createAction
 
@@ -104,8 +64,8 @@ Create action/reducer couple
 
 #### Parameters
 
--   `name` **[String][22]** action short name
--   `reducer` **[Function][27]** function to modify the state
+-   `name` **[String][17]** action short name
+-   `reducer` **[Function][20]** function to modify the state
 
 #### Examples
 
@@ -123,7 +83,7 @@ myStore.execAction("pop")
 myStore.get("list") //  ["foo"]
 ```
 
-Returns **[undefined][23]** 
+Returns **[undefined][19]** 
 
 ### execAction
 
@@ -134,16 +94,16 @@ Execute action registered by createAction method
 
 #### Parameters
 
--   `name` **[String][22]** action short name
--   `options` **[Object][26]** additional parameters
+-   `name` **[String][17]** action short name
+-   `options` **[Object][18]** additional parameters
 
-Returns **[undefined][23]** 
+Returns **[undefined][19]** 
 
 ### register
 
 Register heridux store in global redux store
 
-Returns **[undefined][23]** 
+Returns **[undefined][19]** 
 
 ### dispatch
 
@@ -151,62 +111,46 @@ dispatch any action on global redux store
 
 #### Parameters
 
--   `action` **([Object][26] \| [Function][27])** redux action
+-   `action` **([Object][18] \| [Function][20])** redux action
 
-Returns **([undefined][23] \| [Promise][28])** promise if async
+Returns **[undefined][19]** 
 
 [1]: #heridux
 
 [2]: #parameters
 
-[3]: #set
+[3]: #getstate
 
 [4]: #parameters-1
 
-[5]: #getstate
+[5]: #get
 
 [6]: #parameters-2
 
-[7]: #get
+[7]: #setinitialstate
 
 [8]: #parameters-3
 
-[9]: #getin
+[9]: #createaction
 
 [10]: #parameters-4
 
 [11]: #examples
 
-[12]: #setinitialstate
+[12]: #execaction
 
 [13]: #parameters-5
 
-[14]: #createaction
+[14]: #register
 
-[15]: #parameters-6
+[15]: #dispatch
 
-[16]: #examples-1
+[16]: #parameters-6
 
-[17]: #execaction
+[17]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
-[18]: #parameters-7
+[18]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
 
-[19]: #register
+[19]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined
 
-[20]: #dispatch
-
-[21]: #parameters-8
-
-[22]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
-
-[23]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined
-
-[24]: https://immutable-js.github.io/immutable-js/
-
-[25]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
-
-[26]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
-
-[27]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
-
-[28]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise
+[20]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function

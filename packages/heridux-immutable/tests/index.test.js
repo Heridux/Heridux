@@ -1,5 +1,6 @@
 /* eslint no-unused-expressions:0 max-statements:0*/
 import Heridux from "../src"
+import { Map } from "immutable"
 
 Heridux.createReduxStore()
 
@@ -10,33 +11,15 @@ myRedux.setInitialState({
   type : "firstNames"
 })
 
-myRedux.createAction("editItem", (state, { index, name }) => {
-  const newItems = [...state.items]
+myRedux.createAction("editItem", (state, { index, name }) => state.setIn(["items", index], name))
 
-  newItems[index] = name
-
-  return {
-    ...state,
-    items : newItems
-  }
-})
-
-myRedux.createAction("changeType", (state, { type }) => ({ ...state, type }))
+myRedux.createAction("changeType", (state, { type }) => state.set("type", type))
 
 myRedux.register()
 
-test("should prefix actions correctly", () => {
+test("should store as immutable", () => {
 
-  const fullName = myRedux._getFullActionName("setItem")
-
-  expect(fullName).toBe("STORE_EXAMPLE/SET_ITEM")
-})
-
-test("should unprefix actions correctly", () => {
-
-  const shortName = myRedux._getShortActionName("STORE_EXAMPLE/SET_ITEM")
-
-  expect(shortName).toBe("setItem")
+  expect(myRedux.getState()).toBeInstanceOf(Map)
 })
 
 test("should update list", () => {

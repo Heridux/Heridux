@@ -1,5 +1,5 @@
+/* eslint-disable react/prop-types */
 import React, { memo, useEffect, useCallback } from "react"
-import PropTypes from "prop-types"
 import { useSelector, useStore } from "@heridux/react"
 
 const Form = memo(({ onSubmit, looseControl, children, onChange, ...rest }) => {
@@ -36,12 +36,5 @@ const Form = memo(({ onSubmit, looseControl, children, onChange, ...rest }) => {
   )
 
 })
-
-Form.propTypes = {
-  children : PropTypes.node,
-  onSubmit : PropTypes.func,
-  onChange : PropTypes.func,
-  looseControl : PropTypes.bool
-}
 
 export default Form

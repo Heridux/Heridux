@@ -1,15 +1,14 @@
 (function (global, factory) {
-typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('react'), require('@heridux/form-arrays'), require('@heridux/react'), require('@babel/runtime/helpers/extends'), require('prop-types'), require('@heridux/form')) :
-typeof define === 'function' && define.amd ? define(['exports', 'react', '@heridux/form-arrays', '@heridux/react', '@babel/runtime/helpers/extends', 'prop-types', '@heridux/form'], factory) :
-(global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.ReactHeriduxForm = {}, global.React, global.HeriduxForm, global.ReactHeridux, global._extends, global.PropTypes, global.HeriduxForm));
-}(this, (function (exports, React, FormStore, react, _extends, PropTypes, form) { 'use strict';
+typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('react'), require('@heridux/form-arrays'), require('@heridux/react'), require('@babel/runtime/helpers/extends'), require('@heridux/form')) :
+typeof define === 'function' && define.amd ? define(['exports', 'react', '@heridux/form-arrays', '@heridux/react', '@babel/runtime/helpers/extends', '@heridux/form'], factory) :
+(global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.ReactHeriduxForm = {}, global.React, global.HeriduxForm, global.ReactHeridux, global._extends, global.HeriduxForm));
+}(this, (function (exports, React, FormStore, react, _extends, form) { 'use strict';
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
 var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
 var FormStore__default = /*#__PURE__*/_interopDefaultLegacy(FormStore);
 var _extends__default = /*#__PURE__*/_interopDefaultLegacy(_extends);
-var PropTypes__default = /*#__PURE__*/_interopDefaultLegacy(PropTypes);
 
 const Form = /*#__PURE__*/React.memo(({
   onSubmit,
@@ -47,12 +46,6 @@ const Form = /*#__PURE__*/React.memo(({
     }), children)
   );
 });
-Form.propTypes = {
-  children: PropTypes__default['default'].node,
-  onSubmit: PropTypes__default['default'].func,
-  onChange: PropTypes__default['default'].func,
-  looseControl: PropTypes__default['default'].bool
-};
 
 /* eslint-disable max-statements */
 function useFormControl(formKey, validationRule) {

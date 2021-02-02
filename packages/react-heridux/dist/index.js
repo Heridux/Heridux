@@ -1,20 +1,21 @@
 (function (global, factory) {
-typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@babel/runtime/helpers/extends'), require('react'), require('prop-types'), require('immutable'), require('react-redux'), require('@heridux/core')) :
-typeof define === 'function' && define.amd ? define(['exports', '@babel/runtime/helpers/extends', 'react', 'prop-types', 'immutable', 'react-redux', '@heridux/core'], factory) :
-(global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.ReactHeridux = {}, global._extends, global.React, global.PropTypes, global.Immutable, global.reactRedux, global.Heridux));
-}(this, (function (exports, _extends, React, PropTypes, immutable, reactRedux, Heridux) { 'use strict';
+typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@babel/runtime/helpers/extends'), require('react'), require('react-redux'), require('@heridux/core')) :
+typeof define === 'function' && define.amd ? define(['exports', '@babel/runtime/helpers/extends', 'react', 'react-redux', '@heridux/core'], factory) :
+(global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.ReactHeridux = {}, global._extends, global.React, global.reactRedux, global.Heridux));
+}(this, (function (exports, _extends, React, reactRedux, Heridux) { 'use strict';
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
 var _extends__default = /*#__PURE__*/_interopDefaultLegacy(_extends);
 var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
-var PropTypes__default = /*#__PURE__*/_interopDefaultLegacy(PropTypes);
 var Heridux__default = /*#__PURE__*/_interopDefaultLegacy(Heridux);
 
 function toJS(Component) {
   return props => {
     const propsJS = Object.entries(props).reduce((newProps, prop) => {
-      newProps[prop[0]] = immutable.Iterable.isIterable(prop[1]) ? prop[1].toJS() : prop[1];
+      var _prop$;
+
+      newProps[prop[0]] = typeof ((_prop$ = prop[1]) === null || _prop$ === void 0 ? void 0 : _prop$.toJS) === "function" ? prop[1].toJS() : prop[1];
       return newProps;
     }, {});
     return /*#__PURE__*/React__default['default'].createElement(Component, propsJS);
@@ -82,10 +83,6 @@ const Provider = /*#__PURE__*/React.memo(({
     }
   }, children);
 });
-Provider.propTypes = {
-  store: PropTypes__default['default'].instanceOf(Heridux__default['default']),
-  children: PropTypes__default['default'].node
-};
 /**
  * Extract data from the store state, using a selector function
  * @param {Function} selector function receiving state as argument
@@ -98,7 +95,7 @@ const useSelector = selector => {
     state
   } = React.useContext(context);
   const value = selector(state);
-  return immutable.Iterable.isIterable(value) ? value.toJS() : value;
+  return typeof (value === null || value === void 0 ? void 0 : value.toJS) === "function" ? value.toJS() : value;
 };
 /**
  * Returns a reference to the store that was passed in to the <Provider> component

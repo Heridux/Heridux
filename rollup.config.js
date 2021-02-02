@@ -38,17 +38,19 @@ const commonUmdOutput = {
     "lodash/isPlainObject" : "isPlainObject",
     "lodash/isEqual" : "isEqual",
     "@heridux/core" : "Heridux",
+    "@heridux/immutable" : "HeriduxImmutable",
     "@heridux/react" : "ReactHeridux",
     "@heridux/form" : "HeriduxForm",
     "@heridux/form-rules" : "HeriduxFormRules",
     "@heridux/form-arrays" : "HeriduxForm",
-    "@heridux/react-form" : "ReactHeriduxForm",
+    "@heridux/react-form" : "ReactHeriduxForm"
   }
 }
 
 export default [{
   input : {
     "heridux/lib/index" : "packages/heridux/src/index.js",
+    "heridux-immutable/lib/index" : "packages/heridux-immutable/src/index.js",
     "heridux-form-rules/lib/index" : "packages/heridux-form-rules/src/index.js",
     "heridux-form/lib/index" : "packages/heridux-form/src/index.js",
     "heridux-form-arrays/lib/index" : "packages/heridux-form-arrays/src/index.js",
@@ -65,6 +67,14 @@ export default [{
   output : {
     file : "packages/heridux/dist/index.js",
     name : "Heridux",
+    ...commonUmdOutput
+  },
+  ...commonConfig
+}, {
+  input : "packages/heridux-immutable/src/index.js",
+  output : {
+    file : "packages/heridux-immutable/dist/index.js",
+    name : "HeriduxImmutable",
     ...commonUmdOutput
   },
   ...commonConfig

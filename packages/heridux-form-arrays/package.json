@@ -11,7 +11,6 @@
   "author": "Yannick Bochatay",
   "license": "MIT",
   "dependencies": {
-    "@heridux/core": "^0.0.1",
     "@heridux/form": "^0.0.1",
     "immutable": "^4.0.0-rc.12",
     "lodash": "^4.17.20",

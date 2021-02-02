@@ -1,9 +1,9 @@
-import { fromJS, Iterable } from 'immutable';
-import isPlainObject from 'lodash/isPlainObject';
 import { Rules, FormWarning } from '@heridux/form-rules';
 export { FormError, FormWarning, default as Rules } from '@heridux/form-rules';
+import { fromJS, Iterable } from 'immutable';
+import isPlainObject from 'lodash/isPlainObject';
 import isEqual from 'lodash/isEqual';
-import Heridux from '@heridux/core';
+import Heridux from '@heridux/immutable';
 
 function normalizeKey(path) {
   if (path == null) {
@@ -155,7 +155,7 @@ class HeriduxForm extends Heridux {
         touched: false
       }), state, values, path);
       const newState = stateWithChanges(state, state.mergeDeepIn(["form", ...path], emptyValues).mergeDeepIn(["form", ...path], newValues));
-      return (path === null || path === void 0 ? void 0 : path.length) ? newState : newState.set("touched", false);
+      return path !== null && path !== void 0 && path.length ? newState : newState.set("touched", false);
     });
     this.createAction("resetFormValues", (state, {
       path = []
@@ -169,7 +169,7 @@ class HeriduxForm extends Heridux {
         touched: false
       }), state, null, path);
       const newState = stateWithChanges(state, state.mergeDeepIn(["form", ...path], newValues));
-      return (path === null || path === void 0 ? void 0 : path.length) ? newState : newState.merge({
+      return path !== null && path !== void 0 && path.length ? newState : newState.merge({
         touched: false,
         error: null
       });
@@ -187,7 +187,7 @@ class HeriduxForm extends Heridux {
         touched: false
       }), state, null, path);
       const newState = stateWithChanges(state, state.mergeDeepIn(["form", ...path], emptyValues).mergeDeepIn(["form", ...path], newValues));
-      return (path === null || path === void 0 ? void 0 : path.length) ? newState : newState.merge({
+      return path !== null && path !== void 0 && path.length ? newState : newState.merge({
         touched: false,
         error: null
       });
@@ -397,7 +397,7 @@ class HeriduxForm extends Heridux {
     const callback = (field, key) => {
       var _field$error;
 
-      if ((_field$error = field.error) === null || _field$error === void 0 ? void 0 : _field$error.message) valid = false;else {
+      if ((_field$error = field.error) !== null && _field$error !== void 0 && _field$error.message) valid = false;else {
         try {
           this.checkFieldValue({
             key,
@@ -736,7 +736,7 @@ class HeriduxForm extends Heridux {
   getFieldWarning(path, state) {
     const warning = this._getFieldProp(path, "warning", state);
 
-    return (warning === null || warning === void 0 ? void 0 : warning.message) ? warning : null;
+    return warning !== null && warning !== void 0 && warning.message ? warning : null;
   }
   /**
    * Récupération du message d'erreur d'un champ
@@ -749,7 +749,7 @@ class HeriduxForm extends Heridux {
   getFieldError(path, state) {
     const error = this._getFieldProp(path, "error", state);
 
-    return (error === null || error === void 0 ? void 0 : error.message) ? error : null;
+    return error !== null && error !== void 0 && error.message ? error : null;
   }
   /**
    * Teste si un champ a été modifié

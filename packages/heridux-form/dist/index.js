@@ -1,7 +1,7 @@
 (function (global, factory) {
-typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@heridux/form-rules'), require('immutable'), require('lodash/isPlainObject'), require('lodash/isEqual'), require('@heridux/core')) :
-typeof define === 'function' && define.amd ? define(['exports', '@heridux/form-rules', 'immutable', 'lodash/isPlainObject', 'lodash/isEqual', '@heridux/core'], factory) :
-(global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.HeriduxForm = {}, global.HeriduxFormRules, global.Immutable, global.isPlainObject, global.isEqual, global.Heridux));
+typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@heridux/form-rules'), require('immutable'), require('lodash/isPlainObject'), require('lodash/isEqual'), require('@heridux/immutable')) :
+typeof define === 'function' && define.amd ? define(['exports', '@heridux/form-rules', 'immutable', 'lodash/isPlainObject', 'lodash/isEqual', '@heridux/immutable'], factory) :
+(global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.HeriduxForm = {}, global.HeriduxFormRules, global.Immutable, global.isPlainObject, global.isEqual, global.HeriduxImmutable));
 }(this, (function (exports, formRules, immutable, isPlainObject, isEqual, Heridux) { 'use strict';
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
@@ -161,7 +161,7 @@ class HeriduxForm extends Heridux__default['default'] {
         touched: false
       }), state, values, path);
       const newState = stateWithChanges(state, state.mergeDeepIn(["form", ...path], emptyValues).mergeDeepIn(["form", ...path], newValues));
-      return (path === null || path === void 0 ? void 0 : path.length) ? newState : newState.set("touched", false);
+      return path !== null && path !== void 0 && path.length ? newState : newState.set("touched", false);
     });
     this.createAction("resetFormValues", (state, {
       path = []
@@ -175,7 +175,7 @@ class HeriduxForm extends Heridux__default['default'] {
         touched: false
       }), state, null, path);
       const newState = stateWithChanges(state, state.mergeDeepIn(["form", ...path], newValues));
-      return (path === null || path === void 0 ? void 0 : path.length) ? newState : newState.merge({
+      return path !== null && path !== void 0 && path.length ? newState : newState.merge({
         touched: false,
         error: null
       });
@@ -193,7 +193,7 @@ class HeriduxForm extends Heridux__default['default'] {
         touched: false
       }), state, null, path);
       const newState = stateWithChanges(state, state.mergeDeepIn(["form", ...path], emptyValues).mergeDeepIn(["form", ...path], newValues));
-      return (path === null || path === void 0 ? void 0 : path.length) ? newState : newState.merge({
+      return path !== null && path !== void 0 && path.length ? newState : newState.merge({
         touched: false,
         error: null
       });
@@ -403,7 +403,7 @@ class HeriduxForm extends Heridux__default['default'] {
     const callback = (field, key) => {
       var _field$error;
 
-      if ((_field$error = field.error) === null || _field$error === void 0 ? void 0 : _field$error.message) valid = false;else {
+      if ((_field$error = field.error) !== null && _field$error !== void 0 && _field$error.message) valid = false;else {
         try {
           this.checkFieldValue({
             key,
@@ -742,7 +742,7 @@ class HeriduxForm extends Heridux__default['default'] {
   getFieldWarning(path, state) {
     const warning = this._getFieldProp(path, "warning", state);
 
-    return (warning === null || warning === void 0 ? void 0 : warning.message) ? warning : null;
+    return warning !== null && warning !== void 0 && warning.message ? warning : null;
   }
   /**
    * Récupération du message d'erreur d'un champ
@@ -755,7 +755,7 @@ class HeriduxForm extends Heridux__default['default'] {
   getFieldError(path, state) {
     const error = this._getFieldProp(path, "error", state);
 
-    return (error === null || error === void 0 ? void 0 : error.message) ? error : null;
+    return error !== null && error !== void 0 && error.message ? error : null;
   }
   /**
    * Teste si un champ a été modifié
