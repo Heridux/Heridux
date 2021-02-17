@@ -14,6 +14,49 @@ const store = new Heridux("counterStore")
 
 store.setInitialState({ counter : 0 })
 
+store.createAction("increment", state => ({
+  ...state, counter : state.counter + 1
+}))
+
+store.createAction("decrement", state => ({
+  ...state, counter : state.counter - 1
+}))
+
+store.register()
+
+store.execAction("increment")
+store.get("counter") // 1
+```
+
+### [@heridux/immer](packages/heridux-immer)
+Manage your state with [ImmerJS](https://immerjs.github.io/immer)
+
+```javascript
+import Heridux from "@heridux/immer"
+
+const store = new Heridux("counterStore")
+
+store.setInitialState({ counter : 0 })
+
+store.createAction("increment", state => {
+  state.counter++
+})
+
+store.createAction("decrement", state => {
+  state.counter--
+})
+```
+
+### [@heridux/imutable](packages/heridux-imutable)
+Manage your state with [ImmutableJS](https://immutable-js.github.io/immutable-js/)
+
+```javascript
+import Heridux from "@heridux/immutable"
+
+const store = new Heridux("counterStore")
+
+store.setInitialState({ counter : 0 })
+
 store.createAction("increment", state => (
   state.set("counter", state.get("counter") + 1)
 ))
@@ -21,11 +64,6 @@ store.createAction("increment", state => (
 store.createAction("decrement", state => (
   state.set("counter", state.get("counter") - 1)
 ))
-
-store.register()
-
-store.execAction("increment")
-store.get("counter") // 1
 ```
 
 ### [@heridux/react](packages/react-heridux)
@@ -36,13 +74,13 @@ import { useStore, useSelector } from "@heridux/react"
 
 const MyComponent = () => {
   const store = useStore()
-  const counter = useSelector(state => state.get("counter"))
+  const counter = useSelector(state => state.counter)
 
   return (
     <div>
       <p>Clicked: <span>{ counter }</span> times</p>
       <button onClick={ () => store.execAction("increment") }>+</button>
-      <button onClick={ () => store.execAction("increment") }>-</button>
+      <button onClick={ () => store.execAction("decrement") }>-</button>
     </div>
   )
 }

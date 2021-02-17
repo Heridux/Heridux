@@ -9,30 +9,62 @@ function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'defau
 var _defineProperty__default = /*#__PURE__*/_interopDefaultLegacy(_defineProperty);
 
 /**
- * Creation of Heridux store
- * @class
+ * Creation of a Heridux store
+ * @param {String} STATE_PROPERTY string name for this slice of state. Generated actions wille use this as a prefix.
+ * @example
+ * import Heridux from "@heridux/core"
+ * const store = new Heridux("counterStore")
  */
 
 class Heridux {
-  static createReduxStore(reducer, preloadedState, enhancer) {
+  /**
+   * Reference to redux store object
+   */
+
+  /**
+   * Reference to actual redux reducers
+   */
+
+  /**
+   * Create an empty redux store configured for Heridux.
+   * Add Redux DevTools if available
+   * @return {Object} redux store
+   * @example
+   * import Heridux from "@heridux/core"
+   *
+   * export default Heridux.createReduxStore()
+   */
+  static createReduxStore() {
     const DEVTOOLS = window.__REDUX_DEVTOOLS_EXTENSION__;
 
-    const _reducer = reducer || ((state = {}) => state);
+    const reducer = state => state;
 
-    Heridux.reduxStore = redux.createStore(_reducer, preloadedState, enhancer || (DEVTOOLS === null || DEVTOOLS === void 0 ? void 0 : DEVTOOLS()));
-    Heridux.reduxReducers = _reducer;
+    Heridux.reduxStore = redux.createStore(reducer, {}, DEVTOOLS === null || DEVTOOLS === void 0 ? void 0 : DEVTOOLS());
+    Heridux.reduxReducers = reducer;
     return Heridux.reduxStore;
   }
+  /**
+   * Connect Heridux to an existing redux store
+   * @param {Object} store existing redux store
+   * @param {Function} initialReducers reducing function
+   * @return {undefined}
+   * @example
+   * import { createStore } from "redux"
+   * import Heridux from "@heridux/core"
+   *
+   * const reducers = function(state){ return state }
+   * const store = createStore(reducers)
+   *
+   * Heridux.connect(store, reducers)
+   *
+   * export default store
+   */
+
 
   static connect(store, initialReducers) {
     Heridux.reduxStore = store;
     Heridux.reduxReducers = initialReducers;
   }
-  /**
-   * Constructor
-   * @param {String} STATE_PROPERTY string name for this slice of state. Generated actions wille use this as a prefix.
-   */
-
 
   constructor(STATE_PROPERTY) {
     _defineProperty__default['default'](this, "_reducer", (state, { ...action
@@ -55,6 +87,87 @@ class Heridux {
     this.STATE_PROPERTY = STATE_PROPERTY;
     this._actions = {};
     this._reducers = {};
+  }
+  /**
+   * Define the initial state of the store slice
+   * @param {Object} state plain js state
+   * @return {undefined}
+   * @example
+   * import Heridux from "@heridux/core"
+   *
+   * const store = new Heridux("counterStore")
+   *
+   * store.setInitialState({ counter : 0 })
+   */
+
+
+  setInitialState(state) {
+    this.initialState = state;
+  }
+  /**
+   * Create action/reducer couple
+   * @example
+   * const myStore = new Heridux("myPartialStore")
+   *
+   * myStore.setInitialState({
+   *  list : ["foo", "bar"]
+   * })
+   *
+   * myStore.createAction("pop", state => { state.list.pop() })
+   * @param {String} name action short name
+   * @param {Function} reducer function to modify the state
+   * @return {undefined}
+   */
+
+
+  createAction(name, reducer) {
+    const actionName = this._getFullActionName(name);
+
+    this._actions[actionName] = args => {
+      let payload = {};
+
+      if (args) {
+        const {
+          type,
+          ...rest
+        } = args;
+        payload = { ...rest
+        };
+        if (type) payload._type = type;
+      }
+
+      return {
+        type: actionName,
+        ...payload
+      };
+    };
+
+    this._reducers[actionName] = reducer;
+  }
+  /**
+   * Execute action registered by createAction method
+   * @param {String} name action short name
+   * @param {Object} options additional parameters
+   * @return {undefined}
+   * @see createAction
+   * @example
+   * const myStore = new Heridux("myPartialStore")
+   *
+   * myStore.setInitialState({
+   *  list : ["foo", "bar"]
+   * })
+   *
+   * myStore.createAction("pop", state => { state.list.pop() })
+   *
+   * myStore.execAction("pop")
+   */
+
+
+  execAction(name, options) {
+    const func = this._getAction(name);
+
+    if (!func) throw new Error(name + " : unknown action on store " + this.STATE_PROPERTY);
+    return this.dispatch(func(options));
   }
   /**
    * Get full action name with prefix + SCREAMING_SNAKE_CASE action name
@@ -104,6 +217,14 @@ class Heridux {
    * Get store slice
    * @param {Object} [state] global state (if not specified, call getState method of redux store)
    * @return {Object} store slice
+   * @example
+   * import Heridux from "@heridux/core"
+   *
+   * const store = new Heridux("counterStore")
+   *
+   * store.setInitialState({ counter : 0 })
+   *
+   * store.getState() // { counter : 0 }
    */
 
 
@@ -122,6 +243,14 @@ class Heridux {
    * @param {String} key key name
    * @param {Object} [_state] global state (if not specified, call getState method of redux store)
    * @return {*} key value
+   * @example
+   * import Heridux from "@heridux/core"
+   *
+   * const store = new Heridux("counterStore")
+   *
+   * store.setInitialState({ counter : 0 })
+   *
+   * store.get("counter") // 0
    */
 
 
@@ -140,79 +269,10 @@ class Heridux {
     return this._actions[this._getFullActionName(name)];
   }
   /**
-   * Define the initial state of the store slice
-   * @param {Object} state plain js state
-   * @return {undefined}
-   */
-
-
-  setInitialState(state) {
-    this.initialState = state;
-  }
-  /**
-   * Create action/reducer couple
-   * @example
-   * const myStore = new Heridux("myPartialStore")
-   *
-   * myStore.setInitialState({
-   *  list : ["foo", "bar"]
-   * })
-   *
-   * myStore.createAction("pop", state => state.update("list", arr => arr.pop())
-   *
-   * myStore.execAction("pop")
-   *
-   * myStore.get("list") //  ["foo"]
-   * @param {String} name action short name
-   * @param {Function} reducer function to modify the state
-   * @return {undefined}
-   */
-
-
-  createAction(name, reducer) {
-    const actionName = this._getFullActionName(name);
-
-    this._actions[actionName] = args => {
-      let payload = {};
-
-      if (args) {
-        const {
-          type,
-          ...rest
-        } = args;
-        payload = { ...rest
-        };
-        if (type) payload._type = type;
-      }
-
-      return {
-        type: actionName,
-        ...payload
-      };
-    };
-
-    this._reducers[actionName] = reducer;
-  }
-  /**
-   * Execute action registered by createAction method
-   * @param {String} name action short name
-   * @param {Object} options additional parameters
-   * @return {undefined}
-   * @see createAction
-   */
-
-
-  execAction(name, options) {
-    const func = this._getAction(name);
-
-    if (!func) throw new Error(name + " : unknown action on store " + this.STATE_PROPERTY);
-    return this.dispatch(func(options));
-  }
-  /**
    * reducer function
    * @private
-   * @param {*} state state slice
-   * @param {*} params action parameters
+   * @param {Object} state state slice
+   * @param {Object} params action parameters
    * @returns {undefined}
    */
 
@@ -233,6 +293,18 @@ class Heridux {
   /**
    * Register heridux store in global redux store
    * @return {undefined}
+   * @example
+   * import Heridux from "@heridux/core"
+   *
+   * const store = new Heridux("counterStore")
+   *
+   * store.setInitialState({ counter : 0 })
+   *
+   * store.createAction("increment", state => {
+   *   state.counter++
+   * })
+   *
+   * store.register()
    */
 
 
@@ -256,12 +328,9 @@ class Heridux {
    * dispatch any action on global redux store
    * @param {Object|Function} action redux action
    * @return {undefined}
+   * @private
    */
 
-
-  subscribe(callback) {
-    return this._getReduxStore().subscribe(callback);
-  }
 
 }
 
