@@ -22,13 +22,11 @@
         -   [Examples][18]
     -   [register][19]
         -   [Examples][20]
-    -   [reduxStore][21]
-    -   [reduxReducers][22]
-    -   [createReduxStore][23]
-        -   [Examples][24]
-    -   [connect][25]
-        -   [Parameters][26]
-        -   [Examples][27]
+    -   [createReduxStore][21]
+        -   [Examples][22]
+    -   [connect][23]
+        -   [Parameters][24]
+        -   [Examples][25]
 
 ## Heridux
 
@@ -36,12 +34,13 @@ Creation of a Heridux store
 
 ### Parameters
 
--   `STATE_PROPERTY` **[String][28]** string name for this slice of state. Generated actions wille use this as a prefix.
+-   `STATE_PROPERTY` **[String][26]** string name for this slice of state. Generated actions wille use this as a prefix.
 
 ### Examples
 
 ```javascript
 import Heridux from "@heridux/core"
+
 const store = new Heridux("counterStore")
 ```
 
@@ -51,7 +50,7 @@ Define the initial state of the store slice
 
 #### Parameters
 
--   `state` **[Object][29]** plain js state
+-   `state` **[Object][27]** plain js state
 
 #### Examples
 
@@ -63,7 +62,7 @@ const store = new Heridux("counterStore")
 store.setInitialState({ counter : 0 })
 ```
 
-Returns **[undefined][30]** 
+Returns **[undefined][28]** 
 
 ### createAction
 
@@ -71,8 +70,8 @@ Create action/reducer couple
 
 #### Parameters
 
--   `name` **[String][28]** action short name
--   `reducer` **[Function][31]** function to modify the state
+-   `name` **[String][26]** action short name
+-   `reducer` **[Function][29]** function to modify the state
 
 #### Examples
 
@@ -83,10 +82,10 @@ myStore.setInitialState({
  list : ["foo", "bar"]
 })
 
-myStore.createAction("pop", state => { state.list.pop() })
+myStore.createAction("pop", state => state.slice(0, -1))
 ```
 
-Returns **[undefined][30]** 
+Returns **[undefined][28]** 
 
 ### execAction
 
@@ -97,8 +96,8 @@ Execute action registered by createAction method
 
 #### Parameters
 
--   `name` **[String][28]** action short name
--   `options` **[Object][29]** additional parameters
+-   `name` **[String][26]** action short name
+-   `options` **[Object][27]** additional parameters
 
 #### Examples
 
@@ -109,12 +108,16 @@ myStore.setInitialState({
  list : ["foo", "bar"]
 })
 
-myStore.createAction("pop", state => { state.list.pop() })
+myStore.createAction("pop", state => state.slice(0, -1))
+
+myStore.register()
 
 myStore.execAction("pop")
+
+myStore.get("list") // ["foo"]
 ```
 
-Returns **[undefined][30]** 
+Returns **[undefined][28]** 
 
 ### getState
 
@@ -122,7 +125,7 @@ Get store slice
 
 #### Parameters
 
--   `state` **[Object][29]?** global state (if not specified, call getState method of redux store)
+-   `_state` **[Object][27]?** global state (if not specified, call getState method of redux store)
 
 #### Examples
 
@@ -132,20 +135,22 @@ import Heridux from "@heridux/core"
 const store = new Heridux("counterStore")
 
 store.setInitialState({ counter : 0 })
+
+store.register()
 
 store.getState() // { counter : 0 }
 ```
 
-Returns **[Object][29]** store slice
+Returns **[Object][27]** store slice
 
 ### get
 
-Get js value of a first level key
+Shortcut to get js value of a first level key
 
 #### Parameters
 
--   `key` **[String][28]** key name
--   `_state` **[Object][29]?** global state (if not specified, call getState method of redux store)
+-   `key` **[String][26]** key name
+-   `_state` **[Object][27]?** global state (if not specified, call getState method of redux store)
 
 #### Examples
 
@@ -156,7 +161,9 @@ const store = new Heridux("counterStore")
 
 store.setInitialState({ counter : 0 })
 
-store.get("counter") // 0
+store.register()
+
+store.get("counter") === store.getState().counter // true
 ```
 
 Returns **any** key value
@@ -181,15 +188,7 @@ store.createAction("increment", state => {
 store.register()
 ```
 
-Returns **[undefined][30]** 
-
-### reduxStore
-
-Reference to redux store object
-
-### reduxReducers
-
-Reference to actual redux reducers
+Returns **[undefined][28]** 
 
 ### createReduxStore
 
@@ -204,7 +203,7 @@ import Heridux from "@heridux/core"
 export default Heridux.createReduxStore()
 ```
 
-Returns **[Object][29]** redux store
+Returns **[Object][27]** redux store
 
 ### connect
 
@@ -212,8 +211,8 @@ Connect Heridux to an existing redux store
 
 #### Parameters
 
--   `store` **[Object][29]** existing redux store
--   `initialReducers` **[Function][31]** reducing function
+-   `store` **[Object][27]** existing redux store
+-   `initialReducers` **[Function][29]** reducing function
 
 #### Examples
 
@@ -229,7 +228,7 @@ Heridux.connect(store, reducers)
 export default store
 ```
 
-Returns **[undefined][30]** 
+Returns **[undefined][28]** 
 
 [1]: #heridux
 
@@ -271,24 +270,20 @@ Returns **[undefined][30]**
 
 [20]: #examples-6
 
-[21]: #reduxstore
+[21]: #createreduxstore
 
-[22]: #reduxreducers
+[22]: #examples-7
 
-[23]: #createreduxstore
+[23]: #connect
 
-[24]: #examples-7
+[24]: #parameters-6
 
-[25]: #connect
+[25]: #examples-8
 
-[26]: #parameters-6
+[26]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
-[27]: #examples-8
+[27]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
 
-[28]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
+[28]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined
 
-[29]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
-
-[30]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined
-
-[31]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
+[29]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function

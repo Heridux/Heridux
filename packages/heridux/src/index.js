@@ -5,19 +5,22 @@ import { createStore, combineReducers } from "redux"
  * @param {String} STATE_PROPERTY string name for this slice of state. Generated actions wille use this as a prefix.
  * @example
  * import Heridux from "@heridux/core"
+ *
  * const store = new Heridux("counterStore")
  */
 export default class Heridux {
 
   /**
    * Reference to redux store object
+   * @private
    */
-  static reduxStore = null
+  static _reduxStore = null
 
   /**
    * Reference to actual redux reducers
+   * @private
    */
-  static reduxReducers = null
+  static _reduxReducers = null
 
   /**
    * Create an empty redux store configured for Heridux.
@@ -32,10 +35,10 @@ export default class Heridux {
     const DEVTOOLS = window.__REDUX_DEVTOOLS_EXTENSION__
     const reducer = state => state
 
-    Heridux.reduxStore = createStore(reducer, {}, DEVTOOLS?.())
-    Heridux.reduxReducers = reducer
+    Heridux._reduxStore = createStore(reducer, {}, DEVTOOLS?.())
+    Heridux._reduxReducers = reducer
 
-    return Heridux.reduxStore
+    return Heridux._reduxStore
   }
 
   /**
@@ -55,8 +58,8 @@ export default class Heridux {
    * export default store
    */
   static connect(store, initialReducers) {
-    Heridux.reduxStore = store
-    Heridux.reduxReducers = initialReducers
+    Heridux._reduxStore = store
+    Heridux._reduxReducers = initialReducers
   }
 
   constructor(STATE_PROPERTY) {
@@ -91,7 +94,7 @@ export default class Heridux {
    *  list : ["foo", "bar"]
    * })
    *
-   * myStore.createAction("pop", state => { state.list.pop() })
+   * myStore.createAction("pop", state => state.slice(0, -1))
    * @param {String} name action short name
    * @param {Function} reducer function to modify the state
    * @return {undefined}
@@ -133,9 +136,13 @@ export default class Heridux {
    *  list : ["foo", "bar"]
    * })
    *
-   * myStore.createAction("pop", state => { state.list.pop() })
+   * myStore.createAction("pop", state => state.slice(0, -1))
+   *
+   * myStore.register()
    *
    * myStore.execAction("pop")
+   *
+   * myStore.get("list") // ["foo"]
    */
   execAction(name, options) {
 
@@ -186,16 +193,16 @@ export default class Heridux {
    * @return {Object} redux store
    */
   _getReduxStore() {
-    const { reduxStore } = Heridux
+    const { _reduxStore } = Heridux
 
-    if (!reduxStore) throw new Error("Redux store has not been defined as reduxStore key of Heridux")
+    if (!_reduxStore) throw new Error("Redux store has not been defined as _reduxStore key of Heridux")
 
-    return reduxStore
+    return _reduxStore
   }
 
   /**
    * Get store slice
-   * @param {Object} [state] global state (if not specified, call getState method of redux store)
+   * @param {Object=} [_state] global state (if not specified, call getState method of redux store)
    * @return {Object} store slice
    * @example
    * import Heridux from "@heridux/core"
@@ -204,11 +211,13 @@ export default class Heridux {
    *
    * store.setInitialState({ counter : 0 })
    *
+   * store.register()
+   *
    * store.getState() // { counter : 0 }
    */
-  getState(state) {
+  getState(_state) {
 
-    const fullState = (state || this._getReduxStore().getState())[this.STATE_PROPERTY]
+    const fullState = (_state || this._getReduxStore().getState())[this.STATE_PROPERTY]
 
     if (fullState) return fullState
     else {
@@ -220,9 +229,9 @@ export default class Heridux {
   }
 
   /**
-   * Get js value of a first level key
+   * Shortcut to get js value of a first level key
    * @param {String} key key name
-   * @param {Object} [_state] global state (if not specified, call getState method of redux store)
+   * @param {Object=} [_state] global state (if not specified, call getState method of redux store)
    * @return {*} key value
    * @example
    * import Heridux from "@heridux/core"
@@ -231,7 +240,9 @@ export default class Heridux {
    *
    * store.setInitialState({ counter : 0 })
    *
-   * store.get("counter") // 0
+   * store.register()
+   *
+   * store.get("counter") === store.getState().counter // true
    */
   get(key, _state) {
 
@@ -313,7 +324,7 @@ export default class Heridux {
     } else {
 
       const newReducers = {
-        ...Heridux.reduxReducers,
+        ...Heridux._reduxReducers,
         [this.STATE_PROPERTY] : this._reducer
       }
 
@@ -321,7 +332,7 @@ export default class Heridux {
 
       reduxStore.replaceReducer(combineReducers(newReducers))
 
-      Heridux.reduxReducers = newReducers
+      Heridux._reduxReducers = newReducers
 
       if (Heridux.onRegister) Heridux.onRegister(newReducers)
     }
