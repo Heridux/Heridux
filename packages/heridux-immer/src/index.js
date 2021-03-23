@@ -3,7 +3,25 @@ import { produce } from "immer"
 
 
 /**
- * Creation of Heridux store
+ * Creation of Heridux immer store.
+ * The API is exactly the same as Heridux, but it will use Immer to manage state.
+ * @see {@link https://github.com/Heridux/Heridux/tree/main/packages/heridux|Heridux}
+ * @see {@link https://immerjs.github.io/immer/|Immer}
+ * @example
+ * const myStore = new Heridux("myPartialStore")
+ *
+ * myStore.setInitialState({
+ *  list : ["foo"]
+ * })
+ *
+ * // mutate the state all you want with immer
+ * myStore.createAction("push", (state, { item }) => { state.push(item) })
+ *
+ * myStore.register()
+ *
+ * myStore.execAction("push", { item : "bar" })
+ *
+ * myStore.get("list") // ["foo", "bar"]
  * @class
  */
 export default class HeriduxImmer extends Heridux {
@@ -11,6 +29,7 @@ export default class HeriduxImmer extends Heridux {
   /**
    * Constructor
    * @param {String} STATE_PROPERTY string name for this slice of state. Generated actions wille use this as a prefix.
+   * @private
    */
   constructor(STATE_PROPERTY) {
     super(STATE_PROPERTY)
@@ -34,6 +53,7 @@ export default class HeriduxImmer extends Heridux {
    * @param {String} name action short name
    * @param {Function} reducer function to modify the state
    * @return {undefined}
+   * @private
    */
   createAction(name, reducer) {
     return super.createAction(name, (state, props) => produce(state, draft => { reducer(draft, props) }))
@@ -57,6 +77,7 @@ export default class HeriduxImmer extends Heridux {
    * @param {String} prop property name
    * @param {any} value property value
    * @returns {undefined}
+   * @private
    */
   set(prop, value) {
     return this.execAction("set", { prop, value })

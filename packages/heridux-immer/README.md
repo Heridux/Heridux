@@ -4,76 +4,51 @@
 
 -   [HeriduxImmer][1]
     -   [Parameters][2]
-    -   [createAction][3]
-        -   [Parameters][4]
-        -   [Examples][5]
-    -   [set][6]
-        -   [Parameters][7]
+    -   [Examples][3]
 
 ## HeriduxImmer
 
 **Extends Heridux**
 
-Creation of Heridux store
+-   **See: [Heridux][4]
+    **
+-   **See: [Immer][5]
+    **
+
+Creation of Heridux immer store.
+The API is exactly the same as Heridux, but it will use Immer to manage state.
 
 ### Parameters
 
--   `STATE_PROPERTY` **[String][8]** string name for this slice of state. Generated actions wille use this as a prefix.
+-   `STATE_PROPERTY` **[String][6]** string name for this slice of state. Generated actions wille use this as a prefix.
 
-### createAction
-
-Create action/reducer couple
-
-#### Parameters
-
--   `name` **[String][8]** action short name
--   `reducer` **[Function][9]** function to modify the state
-
-#### Examples
+### Examples
 
 ```javascript
 const myStore = new Heridux("myPartialStore")
 
 myStore.setInitialState({
- list : ["foo", "bar"]
+ list : ["foo"]
 })
 
-myStore.createAction("pop", state => { state.list.pop() })
+// mutate the state all you want with immer
+myStore.createAction("push", (state, { item }) => { state.push(item) })
 
-myStore.execAction("pop")
+myStore.register()
 
-myStore.get("list") //  ["foo"]
+myStore.execAction("push", { item : "bar" })
+
+myStore.get("list") // ["foo", "bar"]
 ```
-
-Returns **[undefined][10]** 
-
-### set
-
-Set a first level value without creating a specific action
-
-#### Parameters
-
--   `prop` **[String][8]** property name
--   `value` **any** property value
-
-Returns **[undefined][10]** 
 
 [1]: #heriduximmer
 
 [2]: #parameters
 
-[3]: #createaction
+[3]: #examples
 
-[4]: #parameters-1
+[4]: https://github.com/Heridux/Heridux/tree/main/packages/heridux
 
-[5]: #examples
+[5]: https://immerjs.github.io/immer/
 
-[6]: #set
-
-[7]: #parameters-2
-
-[8]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
-
-[9]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
-
-[10]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined
+[6]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String

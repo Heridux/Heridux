@@ -4,110 +4,54 @@
 
 -   [HeriduxImmutable][1]
     -   [Parameters][2]
-    -   [set][3]
-        -   [Parameters][4]
-    -   [get][5]
-        -   [Parameters][6]
-    -   [getIn][7]
-        -   [Parameters][8]
-        -   [Examples][9]
-    -   [setInitialState][10]
-        -   [Parameters][11]
+    -   [Examples][3]
 
 ## HeriduxImmutable
 
 **Extends Heridux**
 
-Creation of Heridux store
+-   **See: [Heridux][4]
+    **
+-   **See: [Immutable][5]
+    **
+
+Creation of Heridux immutable store.
+The API is exactly the same as Heridux, but it will use Immutable to manage state.
 
 ### Parameters
 
--   `STATE_PROPERTY` **[String][12]** string name for this slice of state. Generated actions wille use this as a prefix.
+-   `STATE_PROPERTY` **[String][6]** string name for this slice of state. Generated actions wille use this as a prefix.
 
-### set
-
-Set a first level value without creating a specific action
-
-#### Parameters
-
--   `prop` **[String][12]** property name
--   `value` **any** property value
-
-Returns **[undefined][13]** 
-
-### get
-
-Get js value of a first level key
-
-#### Parameters
-
--   `key` **[String][12]** key name
--   `state` **Immutable.Map?** global state (if not specified, call getState method of redux store)
-
-Returns **any** key value (converted in plain js if immutable)
-
-### getIn
-
--   **See: [https://immutable-js.github.io/immutable-js/][14]
-    **
-
-Get js value of a nested key
-
-#### Parameters
-
--   `path` **[Array][15]** Iterable key path (more details in Immutable.js documentation)
--   `state` **Immutable.Map?** global state (if not specified, call getState method of redux store)
-
-#### Examples
+### Examples
 
 ```javascript
-const store = new Heridux("myPartialStore")
-store.setInitialState({
- list : [{ name : "foo"}, { name : "bar" }]
+const myStore = new Heridux("myPartialStore")
+
+// define initial state with a plain object, it will be converted to immutable map.
+myStore.setInitialState({
+ list : ["foo"]
 })
-store.getIn(["list", 0, "name"]) // foo
+
+// state is an immutable map in reducers
+myStore.createAction("push", (state, { item }) => {
+  return state.updateIn(["list"], arr => arr.push(item))
+})
+
+myStore.register()
+
+myStore.execAction("push", { item : "bar" })
+
+myStore.get("list") // ["foo", "bar"]
 ```
-
-Returns **any** key value (converted in plain js if immutable)
-
-### setInitialState
-
-Define the initial state of the store slice. It will automatically be converted to immutable.
-
-#### Parameters
-
--   `state` **[Object][16]** plain js state
-
-Returns **[undefined][13]** 
 
 [1]: #heriduximmutable
 
 [2]: #parameters
 
-[3]: #set
+[3]: #examples
 
-[4]: #parameters-1
+[4]: https://github.com/Heridux/Heridux/tree/main/packages/heridux
 
-[5]: #get
+[5]: https://immutable-js.github.io/immutable-js/
 
-[6]: #parameters-2
-
-[7]: #getin
-
-[8]: #parameters-3
-
-[9]: #examples
-
-[10]: #setinitialstate
-
-[11]: #parameters-4
-
-[12]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
-
-[13]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined
-
-[14]: https://immutable-js.github.io/immutable-js/
-
-[15]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
-
-[16]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object
+[6]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String

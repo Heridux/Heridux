@@ -2,7 +2,7 @@ import { createStore, combineReducers } from "redux"
 
 /**
  * Creation of a Heridux store
- * @param {String} STATE_PROPERTY string name for this slice of state. Generated actions wille use this as a prefix.
+ * @param {String} STATE_PROPERTY string name for this slice of state. Generated actions will use this name as a prefix.
  * @example
  * import Heridux from "@heridux/core"
  *

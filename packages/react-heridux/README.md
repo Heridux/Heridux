@@ -2,32 +2,44 @@
 
 ### Table of Contents
 
--   [connect][1]
-    -   [Parameters][2]
--   [Provider][3]
--   [useSelector][4]
-    -   [Parameters][5]
+-   [Provider][1]
+    -   [Examples][2]
+-   [useSelector][3]
+    -   [Parameters][4]
+    -   [Examples][5]
 -   [useStore][6]
--   [connect][7]
-    -   [Parameters][8]
-
-## connect
-
--   **See: [https://react-redux.js.org/][9]
-    **
-
-Connect a react component to heridux store
-
-### Parameters
-
--   `mapStateToProps` **[Function][10]** properties to inject to the component
--   `mapDispatchToProps` **[Function][10]** functions to inject to the component
-
-Returns **[Function][10]** function to connect the component
+    -   [Examples][7]
+-   [connect][8]
+    -   [Parameters][9]
+    -   [Examples][10]
 
 ## Provider
 
-Provider component
+Component that makes the Heridux store available to any nested components
+
+### Examples
+
+```javascript
+import Heridux from "@heridux/immer"
+import { Provider } from "@heridux/react"
+import Component from "./Component"
+
+const store = new Heridux("counterStore")
+
+store.setInitialState({ counter: 0 })
+
+store.createAction("increment", (state) => {
+ state.counter++
+})
+
+store.register()
+
+export default () => (
+ <Provider store={ store }>
+   <Component/>
+ </Provider>
+)
+```
 
 ## useSelector
 
@@ -38,53 +50,131 @@ Extract data from the store state, using a selector function
 
 ### Parameters
 
--   `selector` **[Function][10]** function receiving state as argument
+-   `selector` **[Function][12]** function receiving state as argument
+
+### Examples
+
+```javascript
+import React from "react"
+import { useSelector } from "@heridux/react"
+
+const MyComponent = () => {
+  const counter = useSelector((state) => state.counter)
+
+  return <div>Clicked: {counter} times</div>
+}
+```
 
 Returns **any** data extracted
 
 ## useStore
 
--   **See: [https://react-redux.js.org/api/hooks#usestore][12]
+-   **See: [https://react-redux.js.org/api/hooks#usestore][13]
     **
 
 Returns a reference to the store that was passed in to the <Provider> component
+
+### Examples
+
+```javascript
+import React, { useCallback } from "react"
+import { useStore } from "@heridux/react"
+
+const MyComponent = () => {
+  const store = useStore()
+  // function reference won't change, you can safely add it to dependencies
+  const handleClick = useCallback(() => store.execAction("increment"), [store])
+
+  return <button onClick={ handleClick }>+</button>
+}
+```
 
 Returns **Heridux** heridux store
 
 ## connect
 
--   **See: [https://react-redux.js.org/][9]
+-   **See: [https://react-redux.js.org/][14]
     **
 
 Connect a react component to heridux store, inside a <Provider> component
 
 ### Parameters
 
--   `mapStateToProps` **[Function][10]** properties to inject to the component
--   `mapDispatchToProps` **[Function][10]** functions to inject to the component
+-   `mapStateToProps` **[Function][12]** properties to inject to the component
+-   `mapDispatchToProps` **[Function][12]** functions to inject to the component
 
-Returns **[Function][10]** function to connect the component
+### Examples
 
-[1]: #connect
+store.js
 
-[2]: #parameters
 
-[3]: #provider
+```javascript
+import Heridux from "@heridux/immer"
 
-[4]: #useselector
+const store = new Heridux("counterStore")
 
-[5]: #parameters-1
+store.setInitialState({ counter: 0 })
+
+store.createAction("increment", (state) => {
+ state.counter++
+})
+
+store.register()
+
+export default store
+```
+
+Component.js
+
+
+```javascript
+import React from "react"
+import { connect } from "@heridux/react"
+
+const Component = ({ counter }) => <p>{ counter } times</p>
+
+const mapStateToProps = state => ({ counter : state.counter })
+
+export default connect(mapStateToProps)(Component)
+```
+
+App.js
+
+
+```javascript
+import { Provider } from "@heridux/react"
+import Component from "./Component"
+import store from "./store"
+
+export default () => <Provider store={ store }><Component/></Provider>
+```
+
+Returns **[Function][12]** function to connect the component
+
+[1]: #provider
+
+[2]: #examples
+
+[3]: #useselector
+
+[4]: #parameters
+
+[5]: #examples-1
 
 [6]: #usestore
 
-[7]: #connect-1
+[7]: #examples-2
 
-[8]: #parameters-2
+[8]: #connect
 
-[9]: https://react-redux.js.org/
+[9]: #parameters-1
 
-[10]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
+[10]: #examples-3
 
 [11]: <https://react-redux.js.org/api/hooks#useselector)>
 
-[12]: https://react-redux.js.org/api/hooks#usestore
+[12]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
+
+[13]: https://react-redux.js.org/api/hooks#usestore
+
+[14]: https://react-redux.js.org/

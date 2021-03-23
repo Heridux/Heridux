@@ -34,7 +34,7 @@ Creation of a Heridux store
 
 ### Parameters
 
--   `STATE_PROPERTY` **[String][26]** string name for this slice of state. Generated actions wille use this as a prefix.
+-   `STATE_PROPERTY` **[String][26]** string name for this slice of state. Generated actions will use this name as a prefix.
 
 ### Examples
 
