@@ -28,9 +28,7 @@ const store = new Heridux("counterStore")
 
 store.setInitialState({ counter: 0 })
 
-store.createAction("increment", (state) => {
- state.counter++
-})
+store.createAction("increment", state => { state.counter++ })
 
 store.register()
 
@@ -59,7 +57,7 @@ import React from "react"
 import { useSelector } from "@heridux/react"
 
 const MyComponent = () => {
-  const counter = useSelector((state) => state.counter)
+  const counter = useSelector(state => state.counter)
 
   return <div>Clicked: {counter} times</div>
 }
@@ -105,28 +103,6 @@ Connect a react component to heridux store, inside a <Provider> component
 
 ### Examples
 
-store.js
-
-
-```javascript
-import Heridux from "@heridux/immer"
-
-const store = new Heridux("counterStore")
-
-store.setInitialState({ counter: 0 })
-
-store.createAction("increment", (state) => {
- state.counter++
-})
-
-store.register()
-
-export default store
-```
-
-Component.js
-
-
 ```javascript
 import React from "react"
 import { connect } from "@heridux/react"
@@ -136,17 +112,6 @@ const Component = ({ counter }) => <p>{ counter } times</p>
 const mapStateToProps = state => ({ counter : state.counter })
 
 export default connect(mapStateToProps)(Component)
-```
-
-App.js
-
-
-```javascript
-import { Provider } from "@heridux/react"
-import Component from "./Component"
-import store from "./store"
-
-export default () => <Provider store={ store }><Component/></Provider>
 ```
 
 Returns **[Function][12]** function to connect the component

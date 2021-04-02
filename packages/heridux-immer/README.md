@@ -20,11 +20,13 @@ The API is exactly the same as Heridux, but it will use Immer to manage state.
 
 ### Parameters
 
--   `STATE_PROPERTY` **[String][6]** string name for this slice of state. Generated actions wille use this as a prefix.
+-   `STATE_PROPERTY`  
 
 ### Examples
 
 ```javascript
+import Heridux from "@heridux/immer"
+
 const myStore = new Heridux("myPartialStore")
 
 myStore.setInitialState({
@@ -50,5 +52,3 @@ myStore.get("list") // ["foo", "bar"]
 [4]: https://github.com/Heridux/Heridux/tree/main/packages/heridux
 
 [5]: https://immerjs.github.io/immer/
-
-[6]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String

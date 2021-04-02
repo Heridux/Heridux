@@ -8,7 +8,8 @@ import { fromJS } from "immutable"
  * @see {@link https://github.com/Heridux/Heridux/tree/main/packages/heridux|Heridux}
  * @see {@link https://immutable-js.github.io/immutable-js/|Immutable}
  * @link The API is exactly the same
- * @example
+ * @example import Heridux from "@heridux/immutable"
+ *
  * const myStore = new Heridux("myPartialStore")
  *
  * // define initial state with a plain object, it will be converted to immutable map.
@@ -30,11 +31,6 @@ import { fromJS } from "immutable"
  */
 export default class HeriduxImmutable extends Heridux {
 
-  /**
-   * Constructor
-   * @param {String} STATE_PROPERTY string name for this slice of state. Generated actions wille use this as a prefix.
-   * @private
-   */
   constructor(STATE_PROPERTY) {
     super(STATE_PROPERTY)
     this._createGenericActions()

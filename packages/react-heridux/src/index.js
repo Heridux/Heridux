@@ -58,9 +58,7 @@ export default class ReactHeridux extends Heridux {
  *
  * store.setInitialState({ counter: 0 })
  *
- * store.createAction("increment", (state) => {
- *  state.counter++
- * })
+ * store.createAction("increment", state => { state.counter++ })
  *
  * store.register()
  *
@@ -101,7 +99,7 @@ export const Provider = memo(({ store, children }) => {
  * import { useSelector } from "@heridux/react"
  *
  * const MyComponent = () => {
- *   const counter = useSelector((state) => state.counter)
+ *   const counter = useSelector(state => state.counter)
  *
  *   return <div>Clicked: {counter} times</div>
  * }
@@ -140,23 +138,7 @@ export const useStore = () => {
    * @param {Function} mapDispatchToProps functions to inject to the component
    * @return {Function} function to connect the component
    * @see {@link https://react-redux.js.org/}
-   * @example <caption>store.js</caption>
-   * import Heridux from "@heridux/immer"
-   *
-   * const store = new Heridux("counterStore")
-   *
-   * store.setInitialState({ counter: 0 })
-   *
-   * store.createAction("increment", (state) => {
-   *  state.counter++
-   * })
-   *
-   * store.register()
-   *
-   * export default store
-   *
-   * @example <caption>Component.js</caption>
-   * import React from "react"
+   * @example import React from "react"
    * import { connect } from "@heridux/react"
    *
    * const Component = ({ counter }) => <p>{ counter } times</p>
@@ -164,13 +146,6 @@ export const useStore = () => {
    * const mapStateToProps = state => ({ counter : state.counter })
    *
    * export default connect(mapStateToProps)(Component)
-   *
-   * @example <caption>App.js</caption>
-   * import { Provider } from "@heridux/react"
-   * import Component from "./Component"
-   * import store from "./store"
-   *
-   * export default () => <Provider store={ store }><Component/></Provider>
    */
 export const connect = (mapStateToProps, mapDispatchToProps) => Component => props => {
   const { store, state } = useContext(context)

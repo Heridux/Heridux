@@ -20,11 +20,13 @@ The API is exactly the same as Heridux, but it will use Immutable to manage stat
 
 ### Parameters
 
--   `STATE_PROPERTY` **[String][6]** string name for this slice of state. Generated actions wille use this as a prefix.
+-   `STATE_PROPERTY`  
 
 ### Examples
 
 ```javascript
+import Heridux from "@heridux/immutable"
+
 const myStore = new Heridux("myPartialStore")
 
 // define initial state with a plain object, it will be converted to immutable map.
@@ -53,5 +55,3 @@ myStore.get("list") // ["foo", "bar"]
 [4]: https://github.com/Heridux/Heridux/tree/main/packages/heridux
 
 [5]: https://immutable-js.github.io/immutable-js/
-
-[6]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String

@@ -7,7 +7,8 @@ import { produce } from "immer"
  * The API is exactly the same as Heridux, but it will use Immer to manage state.
  * @see {@link https://github.com/Heridux/Heridux/tree/main/packages/heridux|Heridux}
  * @see {@link https://immerjs.github.io/immer/|Immer}
- * @example
+ * @example import Heridux from "@heridux/immer"
+ *
  * const myStore = new Heridux("myPartialStore")
  *
  * myStore.setInitialState({
@@ -26,11 +27,6 @@ import { produce } from "immer"
  */
 export default class HeriduxImmer extends Heridux {
 
-  /**
-   * Constructor
-   * @param {String} STATE_PROPERTY string name for this slice of state. Generated actions wille use this as a prefix.
-   * @private
-   */
   constructor(STATE_PROPERTY) {
     super(STATE_PROPERTY)
     this._createGenericActions()
