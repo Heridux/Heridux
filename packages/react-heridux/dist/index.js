@@ -33,6 +33,7 @@ class ReactHeridux extends Heridux__default['default'] {
    * @param {Function} mapDispatchToProps functions to inject to the component
    * @return {Function} function to connect the component
    * @see {@link https://react-redux.js.org/}
+   * @private
    */
   connect(mapStateToProps, mapDispatchToProps) {
     if (this._isReduxRegistered()) {
@@ -54,7 +55,25 @@ class ReactHeridux extends Heridux__default['default'] {
 
 }
 /**
- * Provider component
+ * Component that makes the Heridux store available to any nested components
+ * @example
+ * import Heridux from "@heridux/immer"
+ * import { Provider } from "@heridux/react"
+ * import Component from "./Component"
+ *
+ * const store = new Heridux("counterStore")
+ *
+ * store.setInitialState({ counter: 0 })
+ *
+ * store.createAction("increment", state => { state.counter++ })
+ *
+ * store.register()
+ *
+ * export default () => (
+ *  <Provider store={ store }>
+ *    <Component/>
+ *  </Provider>
+ * )
  */
 
 const Provider = /*#__PURE__*/React.memo(({
@@ -88,6 +107,14 @@ const Provider = /*#__PURE__*/React.memo(({
  * @param {Function} selector function receiving state as argument
  * @see {@link https://react-redux.js.org/api/hooks#useselector)}
  * @returns {*} data extracted
+ * @example import React from "react"
+ * import { useSelector } from "@heridux/react"
+ *
+ * const MyComponent = () => {
+ *   const counter = useSelector(state => state.counter)
+ *
+ *   return <div>Clicked: {counter} times</div>
+ * }
  */
 
 const useSelector = selector => {
@@ -101,6 +128,16 @@ const useSelector = selector => {
  * Returns a reference to the store that was passed in to the <Provider> component
  * @see {@link https://react-redux.js.org/api/hooks#usestore}
  * @returns {Heridux} heridux store
+ * @example import React, { useCallback } from "react"
+ * import { useStore } from "@heridux/react"
+ *
+ * const MyComponent = () => {
+ *   const store = useStore()
+ *   // function reference won't change, you can safely add it to dependencies
+ *   const handleClick = useCallback(() => store.execAction("increment"), [store])
+
+ *   return <button onClick={ handleClick }>+</button>
+ * }
  */
 
 const useStore = () => {
@@ -115,6 +152,14 @@ const useStore = () => {
    * @param {Function} mapDispatchToProps functions to inject to the component
    * @return {Function} function to connect the component
    * @see {@link https://react-redux.js.org/}
+   * @example import React from "react"
+   * import { connect } from "@heridux/react"
+   *
+   * const Component = ({ counter }) => <p>{ counter } times</p>
+   *
+   * const mapStateToProps = state => ({ counter : state.counter })
+   *
+   * export default connect(mapStateToProps)(Component)
    */
 
 const connect = (mapStateToProps, mapDispatchToProps) => Component => props => {
@@ -131,10 +176,8 @@ const connect = (mapStateToProps, mapDispatchToProps) => Component => props => {
   }));
 };
 
-exports.ContextProvider = ContextProvider;
 exports.Provider = Provider;
 exports.connect = connect;
-exports.context = context;
 exports.default = ReactHeridux;
 exports.useSelector = useSelector;
 exports.useStore = useStore;

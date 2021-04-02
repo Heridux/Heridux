@@ -2,15 +2,34 @@ import Heridux from '@heridux/core';
 import { fromJS } from 'immutable';
 
 /**
- * Creation of Heridux store
+ * Creation of Heridux immutable store.
+ * The API is exactly the same as Heridux, but it will use Immutable to manage state.
+ * @see {@link https://github.com/Heridux/Heridux/tree/main/packages/heridux|Heridux}
+ * @see {@link https://immutable-js.github.io/immutable-js/|Immutable}
+ * @link The API is exactly the same
+ * @example import Heridux from "@heridux/immutable"
+ *
+ * const myStore = new Heridux("myPartialStore")
+ *
+ * // define initial state with a plain object, it will be converted to immutable map.
+ * myStore.setInitialState({
+ *  list : ["foo"]
+ * })
+ *
+ * // state is an immutable map in reducers
+ * myStore.createAction("push", (state, { item }) => {
+ *   return state.updateIn(["list"], arr => arr.push(item))
+ * })
+ *
+ * myStore.register()
+ *
+ * myStore.execAction("push", { item : "bar" })
+ *
+ * myStore.get("list") // ["foo", "bar"]
  * @class
  */
 
 class HeriduxImmutable extends Heridux {
-  /**
-   * Constructor
-   * @param {String} STATE_PROPERTY string name for this slice of state. Generated actions wille use this as a prefix.
-   */
   constructor(STATE_PROPERTY) {
     super(STATE_PROPERTY);
 
@@ -39,6 +58,7 @@ class HeriduxImmutable extends Heridux {
    * @param {String} prop property name
    * @param {any} value property value
    * @returns {undefined}
+   * @private
    */
 
 
@@ -53,6 +73,7 @@ class HeriduxImmutable extends Heridux {
    * @param {String} key key name
    * @param {Immutable.Map} [state] global state (if not specified, call getState method of redux store)
    * @return {*} key value (converted in plain js if immutable)
+   * @private
    */
 
 
@@ -74,6 +95,7 @@ class HeriduxImmutable extends Heridux {
    * @param {Immutable.Map} [state] global state (if not specified, call getState method of redux store)
    * @return {*} key value (converted in plain js if immutable)
    * @see {@link https://immutable-js.github.io/immutable-js/}
+   * @private
    */
 
 
@@ -85,6 +107,7 @@ class HeriduxImmutable extends Heridux {
    * Define the initial state of the store slice. It will automatically be converted to immutable.
    * @param {Object} state plain js state
    * @return {undefined}
+   * @private
    */
 
 

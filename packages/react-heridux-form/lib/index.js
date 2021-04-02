@@ -1,9 +1,17 @@
-import React, { memo, useCallback, useEffect } from 'react';
+import React, { memo, useCallback, useEffect, useRef } from 'react';
 import FormStore from '@heridux/form-arrays';
 import { useStore, useSelector, Provider } from '@heridux/react';
 export { Provider, connect, useSelector, useStore } from '@heridux/react';
 import _extends from '@babel/runtime/helpers/extends';
 import { normalizeKey, stringifyKey } from '@heridux/form';
+
+function usePrevious(value) {
+  const ref = useRef();
+  useEffect(() => {
+    ref.current = value;
+  });
+  return ref.current;
+}
 
 const Form = /*#__PURE__*/memo(({
   onSubmit,
@@ -14,6 +22,7 @@ const Form = /*#__PURE__*/memo(({
 }) => {
   const store = useStore();
   const changesCount = useSelector(state => state.get("changesCount"));
+  const prevChangesCount = usePrevious(changesCount);
   const handleSubmit = useCallback(e => {
     e.preventDefault();
     e.stopPropagation();
@@ -24,22 +33,17 @@ const Form = /*#__PURE__*/memo(({
     }
   }, [store, looseControl, onSubmit]);
   useEffect(() => {
-    if (onChange) onChange(store.getFormValues());
-  }, [store, onChange, changesCount]);
+    if (onChange && changesCount !== prevChangesCount) onChange(store.getFormValues());
+  }, [store, onChange, changesCount, prevChangesCount]);
   useEffect(() => () => {
     if (store.templateDriven) {
       // nettoyage au démontage
-      // store est un objet dont le prototype est le store réel
-      Object.getPrototypeOf(store).validationRules = {};
+      store.validationRules = {};
     }
   }, [store]);
-  return (
-    /*#__PURE__*/
-    // eslint-disable-next-line react/jsx-no-bind
-    React.createElement("form", _extends({}, rest, {
-      onSubmit: handleSubmit
-    }), children)
-  );
+  return /*#__PURE__*/React.createElement("form", _extends({}, rest, {
+    onSubmit: handleSubmit
+  }), children);
 });
 
 /* eslint-disable max-statements */

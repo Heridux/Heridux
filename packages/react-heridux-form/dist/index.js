@@ -10,6 +10,14 @@ var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
 var FormStore__default = /*#__PURE__*/_interopDefaultLegacy(FormStore);
 var _extends__default = /*#__PURE__*/_interopDefaultLegacy(_extends);
 
+function usePrevious(value) {
+  const ref = React.useRef();
+  React.useEffect(() => {
+    ref.current = value;
+  });
+  return ref.current;
+}
+
 const Form = /*#__PURE__*/React.memo(({
   onSubmit,
   looseControl,
@@ -19,6 +27,7 @@ const Form = /*#__PURE__*/React.memo(({
 }) => {
   const store = react.useStore();
   const changesCount = react.useSelector(state => state.get("changesCount"));
+  const prevChangesCount = usePrevious(changesCount);
   const handleSubmit = React.useCallback(e => {
     e.preventDefault();
     e.stopPropagation();
@@ -29,22 +38,17 @@ const Form = /*#__PURE__*/React.memo(({
     }
   }, [store, looseControl, onSubmit]);
   React.useEffect(() => {
-    if (onChange) onChange(store.getFormValues());
-  }, [store, onChange, changesCount]);
+    if (onChange && changesCount !== prevChangesCount) onChange(store.getFormValues());
+  }, [store, onChange, changesCount, prevChangesCount]);
   React.useEffect(() => () => {
     if (store.templateDriven) {
       // nettoyage au démontage
-      // store est un objet dont le prototype est le store réel
-      Object.getPrototypeOf(store).validationRules = {};
+      store.validationRules = {};
     }
   }, [store]);
-  return (
-    /*#__PURE__*/
-    // eslint-disable-next-line react/jsx-no-bind
-    React__default['default'].createElement("form", _extends__default['default']({}, rest, {
-      onSubmit: handleSubmit
-    }), children)
-  );
+  return /*#__PURE__*/React__default['default'].createElement("form", _extends__default['default']({}, rest, {
+    onSubmit: handleSubmit
+  }), children);
 });
 
 /* eslint-disable max-statements */

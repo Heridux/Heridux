@@ -1,10 +1,20 @@
 /* eslint-disable react/prop-types */
-import React, { memo, useEffect, useCallback } from "react"
+import React, { memo, useEffect, useCallback, useRef } from "react"
 import { useSelector, useStore } from "@heridux/react"
+
+// https://reactjs.org/docs/hooks-faq.html#how-to-get-the-previous-props-or-state
+function usePrevious(value) {
+  const ref = useRef()
+
+  useEffect(() => { ref.current = value })
+
+  return ref.current
+}
 
 const Form = memo(({ onSubmit, looseControl, children, onChange, ...rest }) => {
   const store = useStore()
   const changesCount = useSelector(state => state.get("changesCount"))
+  const prevChangesCount = usePrevious(changesCount)
 
   const handleSubmit = useCallback(e => {
     e.preventDefault()
@@ -18,18 +28,16 @@ const Form = memo(({ onSubmit, looseControl, children, onChange, ...rest }) => {
   }, [store, looseControl, onSubmit])
 
   useEffect(() => {
-    if (onChange) onChange(store.getFormValues())
-  }, [store, onChange, changesCount])
+    if (onChange && changesCount !== prevChangesCount) onChange(store.getFormValues())
+  }, [store, onChange, changesCount, prevChangesCount])
 
   useEffect(() => () => {
     if (store.templateDriven) { // nettoyage au démontage
-      // store est un objet dont le prototype est le store réel
-      Object.getPrototypeOf(store).validationRules = {}
+      store.validationRules = {}
     }
   }, [store])
 
   return (
-    // eslint-disable-next-line react/jsx-no-bind
     <form { ...rest } onSubmit={ handleSubmit }>
       { children }
     </form>

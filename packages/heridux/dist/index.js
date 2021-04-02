@@ -10,7 +10,7 @@ var _defineProperty__default = /*#__PURE__*/_interopDefaultLegacy(_definePropert
 
 /**
  * Creation of a Heridux store
- * @param {String} STATE_PROPERTY string name for this slice of state. Generated actions wille use this as a prefix.
+ * @param {String} STATE_PROPERTY string name for this slice of state. Generated actions will use this name as a prefix.
  * @example
  * import Heridux from "@heridux/core"
  *
@@ -162,6 +162,8 @@ class Heridux {
    *
    * myStore.createAction("pop", state => state.slice(0, -1))
    *
+   * myStore.register()
+   *
    * myStore.execAction("pop")
    *
    * myStore.get("list") // ["foo"]
@@ -229,6 +231,8 @@ class Heridux {
    *
    * store.setInitialState({ counter : 0 })
    *
+   * store.register()
+   *
    * store.getState() // { counter : 0 }
    */
 
@@ -254,6 +258,8 @@ class Heridux {
    * const store = new Heridux("counterStore")
    *
    * store.setInitialState({ counter : 0 })
+   *
+   * store.register()
    *
    * store.get("counter") === store.getState().counter // true
    */
