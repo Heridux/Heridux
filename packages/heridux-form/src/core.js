@@ -7,8 +7,36 @@ import { Rules, FormWarning } from "@heridux/form-rules"
 import { getKeyValue, setKeyValue, normalizeKey, stateWithChanges } from "./utils"
 
 /**
- * Manage forms with Heridux
+ * Form store constructor
  * @extends Heridux
+ * @param {String} [STATE_PROPERTY] string name for this store (if you plan to use it with redux)
+ * @returns {undefined}
+ * @example import HeriduxForm from "@heridux/form"
+ * import Rules from "@heridux/rules"
+ *
+ * const store = new HeriduxForm("myForm")
+ *
+ * store.defineForm({
+ *   name : Rules.string.isRequired,
+ *   age : Rules.number,
+ *   address : {
+ *     street : Rules.string,
+ *     city : Rules.string,
+ *     zipCode : Rules.number
+ *   }
+ * })
+ *
+ * // register store in redux store (see @heridux/core for more details)
+ * store.register()
+ *
+ * store.initFormValues({
+ *   name : "Roger",
+ *   age : 56
+ * })
+ *
+ * store.setFieldValue(["address", "city"], "Paris")
+ *
+ * store.getFieldValue("age") // 56
  */
 export default class HeriduxForm extends Heridux {
 
@@ -218,6 +246,119 @@ export default class HeriduxForm extends Heridux {
   }
 
   /**
+   * Defines structure of the form
+   * @param {Object} fields object describing the form (field name in key, Rules object in value)
+   * @returns {undefined}
+   * @example import HeriduxForm from "@heridux/form"
+ * import Rules from "@heridux/rules"
+ *
+ * const store = new HeriduxForm("myForm")
+ *
+ * store.defineForm({
+ *   name : Rules.string.isRequired,
+ *   age : Rules.number,
+ *   address : {
+ *     street : Rules.string,
+ *     city : Rules.string,
+ *     zipCode : Rules.number
+ *   }
+ * })
+ *
+ * // register store in redux store (see @heridux/core for more details)
+ * store.register()
+   */
+  defineForm(fields) {
+
+    this.validationRules = {}
+
+    const form = this._processForm(fields)
+
+    if (this.initialFormDefinition) this.execAction("redefineForm", { form })
+    else this.setInitialState({ ...this.initialState.toJS(), form })
+
+    this.initialFormDefinition = form
+  }
+
+
+  /**
+   * Initialization of the form. Undeclared fields will be ignored.
+   * @param {Object} values initialization values
+   * @returns {undefined}
+   * @example import HeriduxForm from "@heridux/form"
+ * import Rules from "@heridux/rules"
+ *
+ * const store = new HeriduxForm("myForm")
+ *
+ * store.defineForm({
+ *   name : Rules.string.isRequired,
+ *   age : Rules.number
+ * })
+ *
+ * store.register()
+ *
+ * store.initFormValues({
+ *   name : "Roger",
+ *   age : 56,
+ *   address : "Paris"
+ * })
+ *
+ * // initFormValues won't consider form has been touched
+ * store.get("touched") // false
+ *
+ * // unknown keys are ignored
+ * store.getFieldValue("address") // null
+   */
+  initFormValues(values) {
+    return this.execAction("initFormValues", { values })
+  }
+
+  /**
+   * Initialization of part of the form. Undeclared fields will be ignored.
+   * @param {Array} path entry point
+   * @param {Object} values initialization values
+   * @returns {undefined}
+   * @example import HeriduxForm from "@heridux/form"
+ * import Rules from "@heridux/rules"
+ *
+ * const store = new HeriduxForm("myForm")
+ *
+ * store.defineForm({
+ *   name : Rules.string.isRequired,
+ *   age : Rules.number,
+ *   address : {
+ *     street : Rules.string,
+ *     city : Rules.string,
+ *     zipCode : Rules.number
+ * }
+ * })
+ *
+ * store.register()
+ *
+ * store.initFormValuesIn(["address"], {
+ *   street : "Victor Hugo",
+ *   city : "Toulouse",
+ *   zipCode : 31000
+ * })
+ *
+ * // initFormValuesIn won't consider form has been touched
+ * store.get("touched") // false
+ *
+ * store.getFormValues()
+ * // {
+ * //   name : null,
+ * //   age : null,
+ * //   address : {
+ * //     street : "Victor Hugo",
+ * //     city : "Toulouse",
+ * //     zipCode : 31000
+ * //   }
+ * //}
+   */
+  initFormValuesIn(path, values) {
+    return this.execAction("initFormValues", { values, path : path && normalizeKey(path) })
+  }
+
+  /**
    * Transform array path to string
    * @private
    * @param {Array} path array path
@@ -230,25 +371,18 @@ export default class HeriduxForm extends Heridux {
    * Get validation rules of form field
    * @param {Array} path field key path
    * @returns {Rules} object containing validation rules
+   * @private
    */
   getValidationRules(path) {
     return getKeyValue(this.validationRules, path)
   }
 
   /**
-   * Set current values as initial values
-   * @returns {undefined}
-   */
-  validateForm() {
-    this.execAction("validateForm")
-  }
-
-  /**
    * Returns an object composed of the results of a callback executed on each form field
    * @param {Function} callback function to run on each form field
-   * @param {Object} _state state to use if available
-   * @param {Object} _values values to iterate over if they are not those of the form in the store
-   * @param {Array} _path internal key value
+   * @param {Object} [_state] state to use if available
+   * @param {Object} [_values] values to iterate over if they are not those of the form in the store
+   * @param {Array} [_path] internal key value
    * @returns {Object} result
    * @private
    */
@@ -309,13 +443,14 @@ export default class HeriduxForm extends Heridux {
   }
 
   /**
-   * Vérification de la validité de la valeur d'un champ
-   * @param {Object} params objet contenant les clés suivantes :
-   * key : position du champ dans le formulaire ;
-   * value : valeur du champ ;
-   * values : autres valeurs du formulaire (en cas de champs dépendants les uns des autres) ;
+   * Check validity of a field value
+   * @param {Object} params object
+   * @param {Array} params.key keypath to field
+   * @param {any} params.value field value
+   * @param {Object} params.values other values of form
    * @returns {undefined}
-   * @throws {FormError|FormWarning} en cas de non validité
+   * @throws {FormError|FormWarning} in case of unvalidity
+   * @private
    */
   checkFieldValue({ key, value, values }) {
 
@@ -344,14 +479,14 @@ export default class HeriduxForm extends Heridux {
   }
 
   /**
-   * Vérification du formulaire
-   * @param {Object} formValues valeurs à vérifier si ce ne sont pas celles du store
-   * @returns {Boolean} true si tous les champs sont corrects, false sinon
+   * Check validity of the form
+   * @param {Object} [_formValues] values to check if they are not those of the store
+   * @returns {Boolean} true if all fields are valid, false otherwise
    */
-  checkForm(formValues = null) {
+  checkForm(_formValues = null) {
 
     const state = this.getState()
-    const values = formValues || state.get("form").toJS()
+    const values = _formValues || state.get("form").toJS()
 
     let valid = true
 
@@ -374,26 +509,7 @@ export default class HeriduxForm extends Heridux {
   }
 
   /**
-   * Initialisation du formulaire. Les champs non déclarés seront ignorés
-   * @param {Object} values valeurs d'initialisation
-   * @returns {undefined}
-   */
-  initFormValues(values) {
-    return this.execAction("initFormValues", { values })
-  }
-
-  /**
-   * Initialisation d'une partie du formulaire. Les champs non déclarés seront ignorés
-   * @param {Array} path point d'entrée
-   * @param {Object} values valeurs d'initialisation
-   * @returns {undefined}
-   */
-  initFormValuesIn(path, values) {
-    return this.execAction("initFormValues", { values, path : path && normalizeKey(path) })
-  }
-
-  /**
-   * Annulation des modifications (retour aux valeurs initiales définies par la méthode initFormValues)
+   * Cancel modifications (return to the initial values defined by the initFormValues method)
    * @returns {undefined}
    */
   cancelFormValues() {
@@ -401,9 +517,8 @@ export default class HeriduxForm extends Heridux {
   }
 
   /**
-   * Annulation des modifications d'une partie du formulaure
-   * (retour aux valeurs initiales définies par la méthode initFormValues)
-   * @param {Array} path point d'entrée
+   * Cancel modifications to part of form (return to the initial values defined by the initFormValues method)
+   * @param {Array} path entry point
    * @returns {undefined}
    */
   cancelFormValuesIn(path) {
@@ -678,23 +793,6 @@ export default class HeriduxForm extends Heridux {
   }
 
   /**
-   * Définit la structure du formulaire
-   * @param {Object} fields objet décrivant le formulaire (nom des champs en clé, objet Rules en valeur)
-   * @returns {undefined}
-   */
-  defineForm(fields) {
-
-    this.validationRules = {}
-
-    const form = this._processForm(fields)
-
-    if (this.initialFormDefinition) this.execAction("redefineForm", { form })
-    else this.setInitialState({ ...this.initialState.toJS(), form })
-
-    this.initialFormDefinition = form
-  }
-
-  /**
    * Réinitialise complètement la structure du formulaire
    * @returns {undefined}
    */
@@ -707,6 +805,7 @@ export default class HeriduxForm extends Heridux {
    * @param {Array|String} path chemin du champ
    * @param {Rules} rules objet de validation
    * @returns {undefined}
+   * @private
    */
   defineFieldRules(path, rules) {
     setKeyValue(this.validationRules, path, rules && rules instanceof Rules ? rules : new Rules())
@@ -755,10 +854,10 @@ export default class HeriduxForm extends Heridux {
   }
 
   /**
-   * Lance les validations du formulaire et renvoie les valeurs s'il n'y a pas d'erreur.
-   * Une erreur est jetée dans le cas contraire
-   * @returns {Object} objet contenant les valeurs
-   * @throws jète une erreur si des champs ne sont pas valides
+   * Starts form validation and returns form values if there is no error.
+   * An error is thrown otherwise
+   * @returns {Object} form values
+   * @throws {Error} if some fields are incorrect
    */
   submitForm() {
 
@@ -773,6 +872,36 @@ export default class HeriduxForm extends Heridux {
     }
 
     return this.getFormValues()
+  }
+
+  /**
+   * Set current values as initial values. Form will be considered unmodified.
+   * Warning : field rules won't be check (use checkForm if needed)
+   * @returns {undefined}
+   * @example import HeriduxForm from "@heridux/form"
+   * import Rules from "@heridux/rules"
+   *
+   * const store = new HeriduxForm("myForm")
+   *
+   * store.defineForm({
+   *   name : Rules.string.isRequired,
+   *   age : Rules.number
+   * })
+   *
+   * store.register()
+   *
+   * store.setFieldValue("name", "Roger")
+   * store.setFieldValue("age", "56")
+   *
+   * store.get("touched") // true
+   *
+   * store.validateForm()
+   *
+   * store.get("touched") // false
+   * store.cancelFormValues() // no effect since values are now considered as initial values
+  */
+  validateForm() {
+    this.execAction("validateForm")
   }
 
 }

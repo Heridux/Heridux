@@ -47,7 +47,7 @@ store.createAction("decrement", state => {
 })
 ```
 
-### [@heridux/imutable](packages/heridux-imutable)
+### [@heridux/imutable](packages/heridux-immutable)
 Manage your state with [ImmutableJS](https://immutable-js.github.io/immutable-js/)
 
 ```javascript
