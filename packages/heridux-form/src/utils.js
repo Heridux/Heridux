@@ -36,6 +36,7 @@ export function setKeyValue(obj, key, value) {
  * @param {Immutable.Map} oldState état avant la modification
  * @param {Immutable.Map} newState état après la modification
  * @returns {Immutable.Map} état avec la propriété changesCount et touched à jour
+ * @private
  */
 export function stateWithChanges(oldState, newState) {
 

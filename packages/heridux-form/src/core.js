@@ -367,116 +367,6 @@ export default class HeriduxForm extends Heridux {
   _stringifyPath(path) {
     return "[" + path.join(", ") + "]"
   }
-  /**
-   * Get validation rules of form field
-   * @param {Array} path field key path
-   * @returns {Rules} object containing validation rules
-   * @private
-   */
-  getValidationRules(path) {
-    return getKeyValue(this.validationRules, path)
-  }
-
-  /**
-   * Returns an object composed of the results of a callback executed on each form field
-   * @param {Function} callback function to run on each form field
-   * @param {Object} [_state] state to use if available
-   * @param {Object} [_values] values to iterate over if they are not those of the form in the store
-   * @param {Array} [_path] internal key value
-   * @returns {Object} result
-   * @private
-   */
-  // eslint-disable-next-line max-params
-  mapFields(callback, _state, _values, _path = []) {
-
-    const state = _state || this.getState()
-    const path = normalizeKey(_path)
-
-    let values = _values || state.getIn(["form", ...path])
-
-    if (Iterable.isIterable(values)) values = values.toJS()
-
-    const isArray = Array.isArray(values)
-    const map = isArray ? [] : {}
-
-    const processField = (value, n) => {
-      const newKey = [...path, n]
-
-      if (this.isField(newKey)) {
-        return callback(value, newKey)
-      } else if (Array.isArray(value) || isPlainObject(value)) {
-        return this.mapFields(callback, state, value, newKey)
-      } else {
-        // pour éviter de confondre ce cas avec celui ou callback renvoie null
-        throw new Error("unexpected value")
-      }
-    }
-
-    if (isArray) {
-      values.forEach((value, i) => {
-        try {
-          map.push(processField(value, i))
-        } catch (e) {}
-      })
-    } else if (isPlainObject(values)) {
-      for (const n in values) {
-        try {
-          map[n] = processField(values[n], n)
-        } catch (e) {}
-      }
-    } else if (values) {
-      throw new Error((typeof values) + " : type incorrect for values iteration")
-    } else {
-      console.warn("values is a falsy value", values, path)
-    }
-
-    return map
-  }
-
-  /**
-   * Checks if a field is registered at path passed as argument
-   * @param {Array} path key path
-   * @returns {Bool} true if a field is registered
-   */
-  isField(path) {
-    return this.getValidationRules(path) instanceof Rules
-  }
-
-  /**
-   * Check validity of a field value
-   * @param {Object} params object
-   * @param {Array} params.key keypath to field
-   * @param {any} params.value field value
-   * @param {Object} params.values other values of form
-   * @returns {undefined}
-   * @throws {FormError|FormWarning} in case of unvalidity
-   * @private
-   */
-  checkFieldValue({ key, value, values }) {
-
-    const rules = this.getValidationRules(key)
-
-    if (!rules) return
-
-    if (!(rules instanceof Rules)) {
-      const msg = "rules must be an instance of Rules class"
-
-      console.error(msg, rules)
-      throw new Error(msg)
-    }
-
-    try {
-      rules.check(value, values, { key })
-    } catch (e) {
-      if (e instanceof FormWarning) {
-        this.setFieldWarning(key, e.message, e.properties)
-      } else {
-        this.setFieldError(key, e.message, e.properties)
-      }
-
-      throw e
-    }
-  }
 
   /**
    * Check validity of the form
@@ -721,22 +611,22 @@ export default class HeriduxForm extends Heridux {
   }
 
   /**
-   * Récupère l'ensemble des valeurs du formulaire
-   * @param {Immutable.Map} state optionnel état du store si on l'a sous la main
-   * @returns {Object} objet décrivant les valeurs
+   * Retrieves form values
+   * @param {Immutable.Map} [_state] state of the store if available
+   * @returns {Object} object describing values
    */
-  getFormValues(state) {
-    return this.mapFields(field => field.value, state)
+  getFormValues(_state) {
+    return this.mapFields(field => field.value, _state)
   }
 
   /**
-   * Récupère une partie des valeurs du formulaire
-   * @param {Array} path optionnel, point d'entrée si on ne veut récupérer qu'une partie du formulaire
-   * @param {Immutable.Map} state optionnel état du store si on l'a sous la main
-   * @returns {Object} objet décrivant les valeurs
+   * Retrieves values of a form part
+   * @param {Array|String} path key path to form part
+   * @param {Immutable.Map} [_state] state of the store if available
+   * @returns {Object} object describing values
    */
-  getFormValuesIn(path, state) {
-    return this.mapFields(field => field.value, state, null, path && normalizeKey(path))
+  getFormValuesIn(path, _state) {
+    return this.mapFields(field => field.value, _state, null, path && normalizeKey(path))
   }
 
   _getFieldProp(path, prop, state) {
@@ -749,51 +639,51 @@ export default class HeriduxForm extends Heridux {
   }
 
   /**
-   * Récupération de la valeur d'un champ
-   * @param {Array|String} path chemin du champ
-   * @param {Immutable.Map} state optionnel état du store si on l'a sous la main
-   * @returns {*} valeur du champ
+   * Retrieves field value
+   * @param {Array|String} path key path to the field
+   * @param {Immutable.Map} [_state] state of the store if available
+   * @returns {*} field value
    */
-  getFieldValue(path, state) {
-    return this._getFieldProp(path, "value", state)
+  getFieldValue(path, _state) {
+    return this._getFieldProp(path, "value", _state)
   }
 
   /**
-   * Récupération du message d'avertissement d'un champ
-   * @param {Array|String} path chemin du champ
-   * @param {Immutable.Map} state optionnel état du store si on l'a sous la main
-   * @returns {String} message d'avertissement du champ
+   * Retrieves the warning message of a field
+   * @param {Array|String} path key path to the field
+   * @param {Immutable.Map} [_state] state of the store if available
+   * @returns {String} warning message
    */
-  getFieldWarning(path, state) {
-    const warning = this._getFieldProp(path, "warning", state)
+  getFieldWarning(path, _state) {
+    const warning = this._getFieldProp(path, "warning", _state)
 
     return warning?.message ? warning : null
   }
 
   /**
-   * Récupération du message d'erreur d'un champ
-   * @param {Array|String} path chemin du champ
-   * @param {Immutable.Map} state optionnel état du store si on l'a sous la main
-   * @returns {String} message d'erreur du champ
+   * Retrieves the error message of a field
+   * @param {Array|String} path key path to the field
+   * @param {Immutable.Map} [_state] state of the store if available
+   * @returns {String} error message
    */
-  getFieldError(path, state) {
-    const error = this._getFieldProp(path, "error", state)
+  getFieldError(path, _state) {
+    const error = this._getFieldProp(path, "error", _state)
 
     return error?.message ? error : null
   }
 
   /**
-   * Teste si un champ a été modifié
-   * @param {Array|String} path chemin du champ
-   * @param {Immutable.Map} state optionnel état du store si on l'a sous la main
-   * @returns {Boolean} true si le champ a été modifié
+   * Tests if a field has been modified
+   * @param {Array|String} path key path to the field
+   * @param {Immutable.Map} [_state] state of the store if available
+   * @returns {Boolean} true if the field has been modified
    */
-  isFieldTouched(path, state) {
-    return this._getFieldProp(path, "touched", state)
+  isFieldTouched(path, _state) {
+    return this._getFieldProp(path, "touched", _state)
   }
 
   /**
-   * Réinitialise complètement la structure du formulaire
+   * Completely reset the form structure
    * @returns {undefined}
    */
   destroyForm() {
@@ -801,9 +691,9 @@ export default class HeriduxForm extends Heridux {
   }
 
   /**
-   * Définit les règles de validation pour un champ donné
-   * @param {Array|String} path chemin du champ
-   * @param {Rules} rules objet de validation
+   * Defines validation rules for a given field
+   * @param {Array|String} path key path to the field
+   * @param {Rules} rules validation object
    * @returns {undefined}
    * @private
    */
@@ -858,6 +748,7 @@ export default class HeriduxForm extends Heridux {
    * An error is thrown otherwise
    * @returns {Object} form values
    * @throws {Error} if some fields are incorrect
+   * @private
    */
   submitForm() {
 
@@ -902,6 +793,117 @@ export default class HeriduxForm extends Heridux {
   */
   validateForm() {
     this.execAction("validateForm")
+  }
+
+  /**
+   * Get validation rules of form field
+   * @param {Array} path field key path
+   * @returns {Rules} object containing validation rules
+   * @private
+   */
+  getValidationRules(path) {
+    return getKeyValue(this.validationRules, path)
+  }
+
+  /**
+   * Returns an object composed of the results of a callback executed on each form field
+   * @param {Function} callback function to run on each form field
+   * @param {Object} [_state] state to use if available
+   * @param {Object} [_values] values to iterate over if they are not those of the form in the store
+   * @param {Array} [_path] internal key value
+   * @returns {Object} result
+   * @private
+   */
+  // eslint-disable-next-line max-params
+  mapFields(callback, _state, _values, _path = []) {
+
+    const state = _state || this.getState()
+    const path = normalizeKey(_path)
+
+    let values = _values || state.getIn(["form", ...path])
+
+    if (Iterable.isIterable(values)) values = values.toJS()
+
+    const isArray = Array.isArray(values)
+    const map = isArray ? [] : {}
+
+    const processField = (value, n) => {
+      const newKey = [...path, n]
+
+      if (this.isField(newKey)) {
+        return callback(value, newKey)
+      } else if (Array.isArray(value) || isPlainObject(value)) {
+        return this.mapFields(callback, state, value, newKey)
+      } else {
+        // pour éviter de confondre ce cas avec celui ou callback renvoie null
+        throw new Error("unexpected value")
+      }
+    }
+
+    if (isArray) {
+      values.forEach((value, i) => {
+        try {
+          map.push(processField(value, i))
+        } catch (e) {}
+      })
+    } else if (isPlainObject(values)) {
+      for (const n in values) {
+        try {
+          map[n] = processField(values[n], n)
+        } catch (e) {}
+      }
+    } else if (values) {
+      throw new Error((typeof values) + " : type incorrect for values iteration")
+    } else {
+      console.warn("values is a falsy value", values, path)
+    }
+
+    return map
+  }
+
+  /**
+   * Checks if a field is registered at path passed as argument
+   * @param {Array} path key path
+   * @returns {Bool} true if a field is registered
+   */
+  isField(path) {
+    return this.getValidationRules(path) instanceof Rules
+  }
+
+  /**
+   * Check validity of a field value
+   * @param {Object} params object
+   * @param {Array} params.key keypath to field
+   * @param {any} params.value field value
+   * @param {Object} params.values other values of form
+   * @returns {undefined}
+   * @throws {FormError|FormWarning} in case of unvalidity
+   * @private
+   */
+  checkFieldValue({ key, value, values }) {
+
+    const rules = this.getValidationRules(key)
+
+    if (!rules) return
+
+    if (!(rules instanceof Rules)) {
+      const msg = "rules must be an instance of Rules class"
+
+      console.error(msg, rules)
+      throw new Error(msg)
+    }
+
+    try {
+      rules.check(value, values, { key })
+    } catch (e) {
+      if (e instanceof FormWarning) {
+        this.setFieldWarning(key, e.message, e.properties)
+      } else {
+        this.setFieldError(key, e.message, e.properties)
+      }
+
+      throw e
+    }
   }
 
 }

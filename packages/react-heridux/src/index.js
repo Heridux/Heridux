@@ -93,7 +93,7 @@ export const Provider = memo(({ store, children }) => {
 /**
  * Extract data from the store state, using a selector function
  * @param {Function} selector function receiving state as argument
- * @see {@link https://react-redux.js.org/api/hooks#useselector)}
+ * @see {@link https://react-redux.js.org/api/hooks#useselector}
  * @returns {*} data extracted
  * @example import React from "react"
  * import { useSelector } from "@heridux/react"

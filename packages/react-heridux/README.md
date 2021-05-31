@@ -41,7 +41,7 @@ export default () => (
 
 ## useSelector
 
--   **See: [https://react-redux.js.org/api/hooks#useselector)][11]
+-   **See: [https://react-redux.js.org/api/hooks#useselector][11]
     **
 
 Extract data from the store state, using a selector function
@@ -136,7 +136,7 @@ Returns **[Function][12]** function to connect the component
 
 [10]: #examples-3
 
-[11]: <https://react-redux.js.org/api/hooks#useselector)>
+[11]: https://react-redux.js.org/api/hooks#useselector
 
 [12]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Statements/function
 
